@@ -1,21 +1,26 @@
+#ifndef AI_H
+#define AI_H
+
+#include "graph_registry.h"
+#include <map>
+#include <vector>
+#include <string>
+
 namespace path_finder
 {
-	#ifndef AI_H
-	#define AI_H
-
-	//#define ID std::string
-
 	class AI{
 		public:
-			AI* Instance(vector<string>&, map<string, vector<string>>&);
+			static AI* Instance(std::vector<std::string>&, 
+				std::map<std::string, std::vector<std::string>>&);
 		protected:
-			AI(vector<string>&, map<string, vector<string>>&);
+			AI(std::vector<std::string>&, 
+				std::map<std::string, std::vector<std::string>>&);
 			//List<ID> find_path();
 		private:
 			static AI* _ai;
 			static GraphRegistry _registry;
 			//static PathFinder _path_finder;
 	};
-
-	#endif /*AI_H*/
 }
+
+#endif /*AI_H*/
