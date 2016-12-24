@@ -1,13 +1,13 @@
 CXX = g++
 CFLAGS = -std=c++14 -Wall -Werror
 COMPILER = -c
-LINKER = -o 
-LIB = -I
 
 SRCDIR  = src
 OBJDIR = obj
 BINDIR = bin
-LIBDIR= /usr/include/boost
+LIBDIR= /usr/include
+LIB=python2.7
+INCLUDE= /usr/include/boost
 
 SRC= main.cc
 OBJ = $(SRC:.cc=.o)
@@ -19,10 +19,10 @@ OBJ_EXT = .o
 all: $(SRCDIR)/$(SRC) $(BINDIR)/$(BIN)
 
 $(BINDIR)/$(BIN): $(OBJDIR)/$(OBJ) 
-	$(CXX) $(LIB) $(LIBDIR) $(OBJDIR)/$(OBJ) $(CFLAGS) $(LINKER) $@
+	$(CXX) -I $(INCLUDE) $(OBJDIR)/$(OBJ) $(CFLAGS) -o $@ -L $(LIBDIR) -l$(LIB0) -L$(LIBDIR) -l$(LIB)
 
 $(OBJDIR)/$(OBJ):
-	$(CXX) $(COMPILER) $(LIB) $(LIBDIR) $(CFLAGS) $(SRCDIR)/$(SRC) $(LINKER) $(OBJDIR)/$(OBJ)
+	$(CXX) $(COMPILER) -I $(INCLUDE) $(CFLAGS) $(SRCDIR)/$(SRC) -o $(OBJDIR)/$(OBJ) -L$(LIBDIR) -l$(LIB)
 
 .PHONY: run
 run:
