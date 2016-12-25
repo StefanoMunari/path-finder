@@ -1,8 +1,15 @@
+#ifndef GRAPH_FACTORY_H
+#define GRAPH_FACTORY_H
+
+#include "dictionary_factory.h"
+#include "graph_encoder.h"
+#include <map>
+#include <vector>
+#include <string>
+
+
 namespace path_finder
 {
-	#ifndef GRAPH_FACTORY_H
-	#define GRAPH_FACTORY_H
-
 	class GraphFactory{
 		public:
 			GraphFactory(const int&, char**);
@@ -11,6 +18,6 @@ namespace path_finder
 			DictionaryFactory _dictionary_factory;
 			GraphEncoder _graph_encoder;
 	};
-
-	#endif /*GRAPH_FACTORY_H*/
 }
+
+#endif /*GRAPH_FACTORY_H*/

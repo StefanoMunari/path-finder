@@ -13,11 +13,11 @@ namespace path_finder
 			static AI* Instance(std::vector<std::string>&, 
 				std::map<std::string, std::vector<std::string>>&);
 		protected:
-			AI(std::vector<std::string>&, 
+			static AI(std::vector<std::string>&, 
 				std::map<std::string, std::vector<std::string>>&);
 			//List<ID> find_path();
 		private:
-			static AI* _ai;
+			static AI* _instance;
 			static GraphRegistry _registry;
 			//static PathFinder _path_finder;
 	};

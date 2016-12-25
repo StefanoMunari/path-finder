@@ -1,5 +1,7 @@
 #include "function_factory.h"
 
+using std::string;
+
 namespace path_finder
 {
 	FunctionFactory::FunctionFactory(PyObject *module){

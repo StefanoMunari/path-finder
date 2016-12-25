@@ -1,5 +1,9 @@
 #include "dictionary_factory.h"
 
+using std::map;
+using std::vector;
+using std::string;
+
 namespace path_finder
 {
 	DictionaryFactory::DictionaryFactory(const string& file_name){

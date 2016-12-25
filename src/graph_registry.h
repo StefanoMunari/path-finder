@@ -1,18 +1,23 @@
+#ifndef GRAPH_REGISTRY_H
+#define GRAPH_REGISTRY_H
+
+#include <map>
+#include <vector>
+#include <string>
+
 namespace path_finder
 {
-	#ifndef GRAPH_REGISTRY_H
-	#define GRAPH_REGISTRY_H
-
 	class GraphRegistry{
 		public:
 			GraphRegistry();
-			void SetFactory(vector<string>&);
-			void AddGraph(const string&, map<string, vector<string>>&);
-			Graph* GetGraph(const string&);
+			void SetFactory(std::vector<std::string>&);
+			void AddGraph(const std::string&, 
+				std::map<string, std::vector<std::string>>&);
+			Graph* GetGraph(const std::string&);
 		private:
-			map<string, Graph> _registry;
+			std::map<std::string, Graph> _registry;
 			GraphFactory _graph_factory;
 	};
-
-	#endif /*GRAPH_REGISTRY_H*/
 }
+
+#endif /*GRAPH_REGISTRY_H*/

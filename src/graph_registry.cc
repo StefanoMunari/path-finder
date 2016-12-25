@@ -1,5 +1,9 @@
 #include "graph_registry.h"
 
+using std::map;
+using std::vector;
+using std::string;
+
 namespace path_finder
 {
 	GraphRegistry::GraphRegistry(){

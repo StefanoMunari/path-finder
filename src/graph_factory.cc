@@ -1,4 +1,9 @@
 #include "graph_factory.h"
+#include <python2.7/Python.h>
+
+using std::map;
+using std::vector;
+using std::string;
 
 namespace path_finder
 {
