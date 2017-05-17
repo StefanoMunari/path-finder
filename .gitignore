@@ -27,3 +27,11 @@
 *.exe
 *.out
 *.app
+bin/*
+
+
+# PyC files
+**/*.pyc
+
+# Project files
+*.project
