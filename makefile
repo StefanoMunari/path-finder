@@ -1,46 +1,48 @@
-CXX = g++
-CFLAGS = -std=c++14 -Wall -Werror
-COMPILER = -c
+CXX=g++
+CFLAGS=-std=c++17 -Wall -Werror
+CVG=
+CDBG=
 
-SRCDIR  = src
-OBJDIR = obj
-BINDIR = bin
-LIBDIR= /usr/include
+SRCDIR=$(PWD)/src
+OBJDIR=$(PWD)/obj
+BINDIR=$(PWD)/bin
+TRASHDIR=$(SRCDIR)/_trash
+LIBDIR=/usr/include
 LIB=python2.7
-INCLUDE= /usr/include/boost
+INCLUDE=/usr/include/boost
 
-SRC= main.cc
-OBJ = $(SRC:.cc=.o)
-BIN = find_path
+SRC=$(wildcard $(SRCDIR)/*.cc)
+OBJ=$(SRC:%.cc=%.o)
+BIN=find_path
 
-SRC_EXT = .cc
-OBJ_EXT = .o
+all: compile
 
-all: $(SRCDIR)/$(SRC) $(BINDIR)/$(BIN)
+$(OBJDIR)/%.o: $(SRCDIR)/%.cc
+	@echo "=>Compiling: $@" \
+	$(CXX) $(CFLAGS) -I $(INCLUDE) -c $@ $<
 
-$(BINDIR)/$(BIN): $(OBJDIR)/$(OBJ) 
-	$(CXX) -I $(INCLUDE) $(OBJDIR)/$(OBJ) $(CFLAGS) -o $@ -L $(LIBDIR) -l$(LIB0) -L$(LIBDIR) -l$(LIB)
+preprocessing:
+	@echo '' \
+	$$(mv $(TRASHDIR)/*.o $(SRCDIR) 2>&-) >/dev/null
 
-$(OBJDIR)/$(OBJ):
-	$(CXX) $(COMPILER) -I $(INCLUDE) $(CFLAGS) $(SRCDIR)/$(SRC) -o $(OBJDIR)/$(OBJ) -L$(LIBDIR) -l$(LIB)
+copy_to_obj: preprocessing $(OBJ)
+	@echo '' \
+	$$(cp $(SRCDIR)/*.o $(OBJDIR) ) >/dev/null
+
+$(BINDIR)/$(BIN): copy_to_obj
+	@echo "=>Linking: $(OBJDIR)/*.o"
+	$(CXX) $(CFLAGS) $(OBJDIR)/*.o -o $@ -L$(LIBDIR) -l$(LIB)
+
+compile: $(BINDIR)/$(BIN)
+	@echo '' \
+	$$(mv $(SRCDIR)/*.o $(TRASHDIR) ) >/dev/null
 
 .PHONY: run
-run:
-	sh $(BINDIR)/$(BIN)
+run: compile
+	@echo "=>Running: $(BINDIR)/$(BIN)"
+	$(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
+
 
 .PHONY: clean
 clean:
-	@if [ "$(ls -A ./$BINDIR/)" ]; \
-		then \
-		rm $(OBJDIR)/* ; \
-	fi \
-	$(info ${OBJDIR} cleaned)
-
-.PHONY: remove
-remove:
-	@if [ "$(ls -A ./$BINDIR/)" ]; \
-		then \
-		rm $(BINDIR)/* ; \
-	fi \
-	$(info ${BINDIR} cleaned)
-
+	rm -rf $(OBJDIR)/*.o $(TRASHDIR)/*.o $(SRCDIR)/*.o
