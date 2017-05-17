@@ -1,3 +1,10 @@
+/**
+ * @file
+ * @brief  Interface of the path-finder system
+ * @author <stefanomunari.sm@gmail.com>
+ *
+ * Singleton class which acts as a Facade for the undelying system
+ */
 #ifndef AI_H
 #define AI_H
 
@@ -5,15 +12,24 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <iostream>
 
 namespace path_finder
 {
+
 	class AI{
 		public:
-			static AI* Instance(std::vector<std::string>&, 
-				std::map<std::string, std::vector<std::string>>&);
+			AI() =delete;
+			AI(AI const&) =delete;
+			void operator=(AI const&) =delete;
+			static AI* Instance();
+			static AI* Instance(std::vector<std::string> factory_data,
+				std::map<std::string, std::vector<std::string>> data_map);
+			#ifdef DEBUG
+			static void Print();
+			#endif /*DEBUG*/
 		protected:
-			static AI(std::vector<std::string>&, 
+			AI(std::vector<std::string>&,
 				std::map<std::string, std::vector<std::string>>&);
 			//List<ID> find_path();
 		private:

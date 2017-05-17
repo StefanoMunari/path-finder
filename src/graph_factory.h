@@ -1,3 +1,10 @@
+/**
+ * @file
+ * @brief  Brief description of file.
+ * @author <stefanomunari.sm@gmail.com>
+ *
+ * Detailed description of file.
+ */
 #ifndef GRAPH_FACTORY_H
 #define GRAPH_FACTORY_H
 
@@ -12,8 +19,10 @@ namespace path_finder
 {
 	class GraphFactory{
 		public:
-			GraphFactory(const int&, char**);
-			Graph* CreateGraph(map<string, vector<string>>&);
+			GraphFactory(){};
+			GraphFactory(std::vector<std::string>&);
+			Graph* CreateGraph(std::map<std::string,
+				std::vector<std::string>>&);
 		private:
 			DictionaryFactory _dictionary_factory;
 			GraphEncoder _graph_encoder;

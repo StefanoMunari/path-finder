@@ -1,3 +1,10 @@
+/**
+ * @file
+ * @brief  Brief description of file.
+ * @author <stefanomunari.sm@gmail.com>
+ *
+ * Detailed description of file.
+ */
 #ifndef DICTIONARY_FACTORY_H
 #define DICTIONARY_FACTORY_H
 
@@ -5,16 +12,18 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <python2.7/Python.h>
 
 namespace path_finder
 {
 	class DictionaryFactory{
 		public:
-			DictionaryFactory(const std::string&);
-			PyDictObject* CreateDictionary(std::map<std::string, 
-				std::vector<string>>&);
+			DictionaryFactory(){};
+			DictionaryFactory(const std::string&, const std::string&);
+			PyDictObject* CreateDictionary(const std::string&,
+				const std::string&);
 		private:
-			FunctionFactory _function_factory;
+			FunctionFactory* _function_factory;
 	};
 }
 
