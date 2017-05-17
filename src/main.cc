@@ -38,7 +38,7 @@ int main(int argc, char **argv){
 	data_map.insert(
 		pair<string, vector<string>>(
 			"configuration_paths", configuration_paths));
-	AI* ai= AI::Instance(factory_data, data_map);
+	AI* ai= AI::Instance(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
 	#ifdef DEBUG
 	AI::Print();
 	#endif /*DEBUG*/

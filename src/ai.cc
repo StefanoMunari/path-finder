@@ -31,17 +31,20 @@ namespace path_finder
 	}
 
 	AI* AI::Instance(vector<string> factory_data,
-		map<string, vector<string>> data_map){
-		if(_instance == nullptr){
-			AI::_instance= new AI(factory_data, data_map);
-		}
+		map<string,vector<string>> data_map,
+		const string& subject_file, const string& subject_dir)
+	{
+		if(_instance == nullptr)
+			AI::_instance= new AI(factory_data, data_map, subject_file, subject_dir);
 		return AI::_instance;
 	}
 
-	AI::AI(vector<string>& factory_data,
-		map<string, vector<string>>& data_map){
+	AI::AI(vector<string>& factory_data, map<string, vector<string>>& data_map,
+		const string& subject_file, const string& subject_dir)
+	{
 		AI::_registry.SetFactory(factory_data);
-		AI::_registry.AddGraph("static", data_map);
+		AI::_registry.AddGraph("static"+subject_file, data_map);
+		AI::_graph_observer=GraphObserver(subject_dir);
 	}
 
 	#ifdef DEBUG
