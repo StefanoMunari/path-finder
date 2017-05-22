@@ -13,6 +13,7 @@
 using std::map;
 using std::vector;
 using std::string;
+
 /*
 * WARNING: Avoid using "static" prefix for methods in file definitions
 * cause it enables internal linkage making the methods visibile only
@@ -45,7 +46,7 @@ namespace path_finder
 	{
 		AI::_registry.SetFactory(factory_data);
 		AI::_registry.AddGraph("static"+subject_file, data_map);
-		AI::_graph_observer=GraphObserver(subject_dir);
+		AI::_graph_observer.Observe(subject_dir);
 	}
 
 	#ifdef DEBUG

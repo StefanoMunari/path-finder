@@ -13,7 +13,6 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <iostream>
 
 namespace path_finder
 {

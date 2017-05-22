@@ -8,6 +8,7 @@
 #ifndef GRAPH_OBSERVER_H
 #define GRAPH_OBSERVER_H
 
+#include "process_state.h"
 #include <string>
 #include <sys/inotify.h>
 
@@ -16,12 +17,13 @@ namespace path_finder
 	class GraphObserver{
 		public:
 			GraphObserver() {};
-			GraphObserver(const std::string &);
 			~GraphObserver();
+			void Observe(const std::string &);
 		private:
 			void EventLoop();
-			int notifier;
-			int subject;
+			int _notifier;
+			int _subject;
+		    ProcessState _state=WAITING;
 	};
 }
 
