@@ -24,6 +24,7 @@ namespace path_finder
 
 	AI* AI::_instance=nullptr;
 	GraphRegistry AI::_registry=GraphRegistry();
+	GraphObserver AI::_graph_observer=GraphObserver();
 	//PathFinder AI::_path_finder=PathFinder();
 
 	AI* AI::Instance(){
