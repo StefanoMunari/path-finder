@@ -11,15 +11,15 @@ LIBDIR=/usr/include
 LIB=python2.7
 INCLUDE=/usr/include/boost
 
-SRC=$(wildcard $(SRCDIR)/*.cc)
+SRC=$(shell find $(SRCDIR) -name *.cc)
 OBJ=$(SRC:%.cc=%.o)
 BIN=find_path
 
 all: compile
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cc
-	@echo "=>Compiling: $@" \
-	$(CXX) $(CFLAGS) -I $(INCLUDE) -c $@ $<
+%.o: %.cc
+	@echo "\n=>Compiling: $@"
+	$(CXX) $(CFLAGS) -I $(INCLUDE) -c $< -o $@
 
 preprocessing:
 	@echo '' \
@@ -27,15 +27,15 @@ preprocessing:
 
 copy_to_obj: preprocessing $(OBJ)
 	@echo '' \
-	$$(cp $(SRCDIR)/*.o $(OBJDIR) ) >/dev/null
+	$$(cp $(OBJ) $(OBJDIR) ) >/dev/null
 
 $(BINDIR)/$(BIN): copy_to_obj
-	@echo "=>Linking: $(OBJDIR)/*.o"
+	@echo "\n=>Linking: $(OBJDIR)/*.o"
 	$(CXX) $(CFLAGS) $(OBJDIR)/*.o -o $@ -L$(LIBDIR) -l$(LIB)
 
 compile: $(BINDIR)/$(BIN)
 	@echo '' \
-	$$(mv $(SRCDIR)/*.o $(TRASHDIR) ) >/dev/null
+	$$(mv $(OBJ) $(TRASHDIR) ) >/dev/null
 
 .PHONY: run
 run: compile
@@ -45,4 +45,4 @@ run: compile
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJDIR)/*.o $(TRASHDIR)/*.o $(SRCDIR)/*.o
+	find $(PWD) -type f -name "*.o" -delete
