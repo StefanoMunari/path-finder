@@ -26,7 +26,7 @@ int main(int argc, char **argv){
 	map<string, vector<string>> data_map= map<string, vector<string>>();
 
 	factory_data.push_back("reader.py");
-	factory_data.push_back("/home/m/Git/path-finder/src/");
+	factory_data.push_back("/home/m/Git/path-finder/src/io/");
 	function_names.push_back("get_dictionary_from_file");
 	function_names.push_back("get_dictionary_from_file");
 	configuration_paths.push_back("/home/m/Git/path-finder/data/graph_10n.json");
@@ -39,6 +39,7 @@ int main(int argc, char **argv){
 		pair<string, vector<string>>(
 			"configuration_paths", configuration_paths));
 	AI* ai= AI::Instance(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
+	std::cout<<ai<<std::endl;
 	#ifdef DEBUG
 	AI::Print();
 	#endif /*DEBUG*/

@@ -9,7 +9,7 @@
 #define GRAPH_REGISTRY_H
 
 #include "graph_factory.h"
-#include "boost_types.h"
+#include "../utils/boost_types.h"
 #include <map>
 #include <vector>
 #include <string>

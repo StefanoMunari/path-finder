@@ -8,7 +8,7 @@
 #ifndef GRAPH_ENCODER_H
 #define GRAPH_ENCODER_H
 
-#include "boost_types.h"
+#include "../utils/boost_types.h"
 #include <python2.7/Python.h>
 
 namespace path_finder

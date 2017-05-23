@@ -8,7 +8,7 @@
 #ifndef GRAPH_OBSERVER_H
 #define GRAPH_OBSERVER_H
 
-#include "process_state.h"
+#include "../utils/process_state.h"
 #include <string>
 #include <sys/inotify.h>
 

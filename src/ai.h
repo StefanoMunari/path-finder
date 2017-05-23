@@ -8,8 +8,8 @@
 #ifndef AI_H
 #define AI_H
 
-#include "graph_registry.h"
-#include "graph_observer.h"
+#include "graph/graph_registry.h"
+#include "graph/graph_observer.h"
 #include <map>
 #include <vector>
 #include <string>
