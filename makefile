@@ -1,7 +1,6 @@
 CXX=g++
-CFLAGS=-std=c++17 -Wall -Werror
-CVG=
-CDBG=
+CFLAGS=-std=c++17 -Wall -Werror $(CDBG)
+RVG=--track-origins=yes
 
 SRCDIR=$(PWD)/src
 OBJDIR=$(PWD)/obj
@@ -19,7 +18,7 @@ all: compile
 
 %.o: %.cc
 	@echo "\n=>Compiling: $@"
-	$(CXX) $(CFLAGS) -I $(INCLUDE) -c $< -o $@
+	$(CXX) $(CFLAGS) $(CVG) -I $(INCLUDE) -c $< -o $@
 
 preprocessing:
 	@echo '' \
@@ -41,6 +40,11 @@ compile: $(BINDIR)/$(BIN)
 run: compile
 	@echo "=>Running: $(BINDIR)/$(BIN)"
 	$(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
+
+.PHONY: profile
+profile: compile
+	@echo "=>Profiling: $(BINDIR)/$(BIN)"
+	valgrind $(RVG) $(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
 
 
 .PHONY: clean

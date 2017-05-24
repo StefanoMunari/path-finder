@@ -6,7 +6,6 @@
  * Detailed description of file.
  */
 #include "graph_registry.h"
-#include <iostream>
 
 using std::map;
 using std::vector;
@@ -29,6 +28,7 @@ namespace path_finder
 	}
 
 	Graph* GraphRegistry::GetGraph(const string& id){
+		std::cout<<id<<std::endl;
 		return _registry[id];
 	}
 

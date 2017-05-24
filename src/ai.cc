@@ -25,7 +25,8 @@ namespace path_finder
 
 	AI* AI::_instance=nullptr;
 	GraphRegistry AI::_registry=GraphRegistry();
-	GraphObserver AI::_graph_observer=GraphObserver();
+	string AI::_subject="";
+	//GraphObserver AI::_graph_observer=GraphObserver();
 	//PathFinder AI::_path_finder=PathFinder();
 
 	AI* AI::Instance(){
@@ -44,14 +45,15 @@ namespace path_finder
 	AI::AI(vector<string>& factory_data, map<string, vector<string>>& data_map,
 		const string& subject_file, const string& subject_dir)
 	{
+		AI::_subject=subject_file;
 		AI::_registry.SetFactory(factory_data);
 		AI::_registry.AddGraph("static"+subject_file, data_map);
-		AI::_graph_observer.Observe(subject_dir);
+		//AI::_graph_observer.Observe(subject_dir);
 	}
 
 	#ifdef DEBUG
-	void AI::Print(){
-		AI::_registry.PrintGraph(AI::_registry.GetGraph("static"));
+	void AI::Print(void){
+		AI::_registry.PrintGraph(AI::_registry.GetGraph("static"+AI::_subject));
 	}
 	#endif /*DEBUG*/
 }

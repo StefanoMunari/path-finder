@@ -9,7 +9,7 @@
 #define AI_H
 
 #include "graph/graph_registry.h"
-#include "graph/graph_observer.h"
+//#include "graph/graph_observer.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -28,7 +28,7 @@ namespace path_finder
 				const std::string& subject_file,
 				const std::string& subject_dir);
 			#ifdef DEBUG
-			static void Print();
+			static void Print(void);
 			#endif /*DEBUG*/
 		protected:
 			AI(std::vector<std::string>&,
@@ -38,7 +38,8 @@ namespace path_finder
 		private:
 			static AI* _instance;
 			static GraphRegistry _registry;
-			static GraphObserver _graph_observer;
+			//static GraphObserver _graph_observer;
+			static std::string _subject;
 			//static PathFinder _path_finder;
 	};
 }
