@@ -51,6 +51,13 @@ namespace path_finder
 		//AI::_graph_observer.Observe(subject_dir);
 	}
 
+	//List<ID>
+	void AI::FindPath(){
+		string source="B";
+		string destination="L";
+		AI::_path_finder.Find(source, destination, AI::_registry);
+	}
+
 	#ifdef DEBUG
 	void AI::Print(void){
 		AI::_registry.PrintGraph(AI::_registry.GetGraph("static"+AI::_subject));

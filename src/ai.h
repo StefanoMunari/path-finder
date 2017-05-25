@@ -28,6 +28,8 @@ namespace path_finder
 				std::map<std::string, std::vector<std::string>> data_map,
 				const std::string& subject_file,
 				const std::string& subject_dir);
+			//List<ID>
+			void FindPath();
 			#ifdef DEBUG
 			static void Print(void);
 			#endif /*DEBUG*/
@@ -35,8 +37,6 @@ namespace path_finder
 			AI(std::vector<std::string>&,
 				std::map<std::string, std::vector<std::string>>&,
 				const std::string& subject_file, const std::string& subject_dir);
-			//List<ID>
-			void find_path();
 		private:
 			static AI* _instance;
 			static GraphRegistry _registry;

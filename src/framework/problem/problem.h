@@ -17,7 +17,7 @@ namespace path_finder
       ~Problem() noexcept;
       Problem& operator=(const Problem&) =delete;
       Problem& operator=(Problem&&) noexcept;
-      State getFirstState() const;
+      State GetFirstState() const;
       bool IsGoal(const State& state) const;
       /*
       GoalTest<State>* getGoalTest() const;
@@ -54,7 +54,7 @@ namespace path_finder
   };
 */
   template <typename State>
-  State Problem<State>::getFirstState() const {
+  State Problem<State>::GetFirstState() const {
     return _source;
   };
 
