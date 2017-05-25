@@ -43,6 +43,5 @@ int main(int argc, char **argv){
 	#ifdef DEBUG
 	AI::Print();
 	#endif /*DEBUG*/
-	std::cout<<"MAIN-COMPLETED"<<std::endl;
 	return 0;
 }
