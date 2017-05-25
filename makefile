@@ -1,6 +1,5 @@
 CXX=g++
-CFLAGS=-std=c++17 -Wall -Werror $(CDBG)
-RVG=--track-origins=yes
+CFLAGS=-std=c++17 -Wall -Werror $(CDBG) $(CVGD)
 
 SRCDIR=$(PWD)/src
 OBJDIR=$(PWD)/obj
@@ -29,7 +28,7 @@ copy_to_obj: preprocessing $(OBJ)
 	$$(cp $(OBJ) $(OBJDIR) ) >/dev/null
 
 $(BINDIR)/$(BIN): copy_to_obj
-	@echo "\n=>Linking: $(OBJDIR)/*.o"
+	@echo "\n=>Linking: $(OBJDIR)/*.o"\
 	$(CXX) $(CFLAGS) $(OBJDIR)/*.o -o $@ -L$(LIBDIR) -l$(LIB)
 
 compile: $(BINDIR)/$(BIN)
@@ -38,15 +37,28 @@ compile: $(BINDIR)/$(BIN)
 
 .PHONY: run
 run: compile
-	@echo "=>Running: $(BINDIR)/$(BIN)"
+	@echo "=>Running: $(BINDIR)/$(BIN)" \
 	$(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
 
 .PHONY: profile
 profile: compile
-	@echo "=>Profiling: $(BINDIR)/$(BIN)"
-	valgrind $(RVG) $(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
+	@echo "=>Profiled: $(BINDIR)/$(BIN)"\
+	valgrind $(VGDOPTS) $(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
+
+.PHONY: help
+help:
+	@echo "Usage: make [commands] [options]\n"\
+		"Options:\n"\
+		"\t CDBG=-DDEBUG=1\t\t\t\t  Compiles with the debugging flag activated.\n"\
+		"\t CVGD=-g\t\t\t\t\t  Compiles with the valgrind flag activated.\n"\
+		"\t VGDOPTS=<valgrind_options>\t  Execs with the defined options for valgrind (only in profile mode).\n"\
+		"\n"\
+		"Commands:\n" \
+		"\t {compile, run, profile, clean, help}\n"
 
 
 .PHONY: clean
 clean:
-	find $(PWD) -type f -name "*.o" -delete
+	@echo ""\
+	$$(find $(PWD) -type f -name "*.o" -delete) >/dev/null
+	@echo "=>Cleaned object files"
