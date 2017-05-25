@@ -22,7 +22,7 @@ namespace path_finder
 			void SetFactory(std::vector<std::string>&);
 			void AddGraph(const std::string&,
 				std::map<std::string, std::vector<std::string>>&);
-			Graph* GetGraph(const std::string&);
+			Graph* GetGraph(std::string&);
 			#ifdef DEBUG
 			void PrintGraph(Graph* graph);
 			#endif /*DEBUG*/

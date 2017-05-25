@@ -28,7 +28,7 @@ namespace path_finder
 		_registry.insert(std::pair<string, Graph*>(id,g));
 	}
 
-	Graph* GraphRegistry::GetGraph(const string& id){
+	Graph* GraphRegistry::GetGraph(string& id){
 		return _registry[id];
 	}
 

@@ -27,7 +27,7 @@ namespace path_finder
 	GraphRegistry AI::_registry=GraphRegistry();
 	string AI::_subject="";
 	//GraphObserver AI::_graph_observer=GraphObserver();
-	//PathFinder AI::_path_finder=PathFinder();
+	PathFinderActivator<string> AI::_path_finder=PathFinderActivator<string>();
 
 	AI* AI::Instance(){
 		return AI::_instance;

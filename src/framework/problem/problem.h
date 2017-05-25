@@ -11,7 +11,9 @@ namespace path_finder
       Problem(const State&, const State&) noexcept;
         //, GoalTest<State>*
       Problem(const Problem &) =delete;
+      /*
       Problem(Problem &&) noexcept;
+      */
       ~Problem() noexcept;
       Problem& operator=(const Problem&) =delete;
       Problem& operator=(Problem&&) noexcept;
@@ -36,28 +38,28 @@ namespace path_finder
   template <typename State>
   Problem<State>::Problem(const State& source, const State& goal) noexcept
   : _source(source), _goal(goal) {};
-
+/*
   template <typename State>
   Problem<State>::Problem(Problem && problem) noexcept
   : _source(problem._source), _goal(problem._goal) {};
-
+*/
   template <typename State>
-  Problem<State>::~Problem(){};
-
+  Problem<State>::~Problem() noexcept {};
+/*
   template <typename State>
-  Problem&
   Problem<State>::Problem(Problem && problem) noexcept{
     this->~Problem();
     this->Problem(problem);
     return *this;
   };
-
+*/
   template <typename State>
   State Problem<State>::getFirstState() const {
     return _source;
   };
 
-  bool IsGoal(const State& state) const{
+  template <typename State>
+  bool Problem<State>::IsGoal(const State& state) const{
     return (state == _goal);
   }
 /*
