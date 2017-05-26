@@ -42,6 +42,7 @@ int main(int argc, char **argv){
 	std::cout<<"AI initialized"<<std::endl;
 	//ai->FindPath();
 	std::cout<<"AI path-finder"<<std::endl;
+	std::cout<<ai<<std::endl;
 	#ifdef DEBUG
 	AI::Print();
 	#endif /*DEBUG*/
