@@ -23,7 +23,7 @@ namespace path_finder
 			void EventLoop();
 			int _notifier;
 			int _subject;
-		    ProcessState _state=WAITING;
+		    ProcessState _state = WAITING;
 	};
 }
 

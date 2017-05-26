@@ -20,9 +20,9 @@ namespace path_finder
 		PyObject* sysPath = PySys_GetObject((char*)"path");
 		PyList_Append(sysPath, PyString_FromString(directory.c_str()));
 		/* retrieve the target module */
-		PyObject * module=PyImport_Import(PyString_FromString(file_name.c_str()));
+		PyObject * module = PyImport_Import(PyString_FromString(file_name.c_str()));
 		/* get the corresponding factory */
-		_function_factory=new FunctionFactory(module);
+		_function_factory = new FunctionFactory(module);
 	}
 
 	PyDictObject* DictionaryFactory::CreateDictionary

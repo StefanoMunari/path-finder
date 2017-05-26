@@ -12,7 +12,7 @@ using std::string;
 namespace path_finder
 {
 	FunctionFactory::FunctionFactory(PyObject* module){
-		this->_module=module;
+		this->_module = module;
 	}
 
 	FunctionFactory::~FunctionFactory(){
@@ -20,15 +20,15 @@ namespace path_finder
 	}
 
 	PyObject* FunctionFactory::CreateFunction(const string& function_name){
-		PyObject *function=nullptr;
-		if(this->_module != nullptr)
-			function=PyObject_GetAttrString(this->_module,
+		PyObject *function = nullptr;
+		if(this->_module !=  nullptr)
+			function = PyObject_GetAttrString(this->_module,
 				function_name.c_str());
 		return function;
 	}
 
 	PyObject* FunctionFactory::CreateArgument(const string& file_path){
-	    PyObject* argument=PyTuple_New(1);
+	    PyObject* argument = PyTuple_New(1);
 	    PyTuple_SetItem((PyObject*)argument, 0, PyString_FromString(file_path.c_str()));
 	    return argument;
 	}

@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <iostream>
 
 using std::map;
 using std::vector;
@@ -23,11 +24,11 @@ using std::string;
 namespace path_finder
 {
 
-	AI* AI::_instance=nullptr;
-	GraphRegistry AI::_registry=GraphRegistry();
-	string AI::_subject="";
-	//GraphObserver AI::_graph_observer=GraphObserver();
-	PathFinderActivator<string> AI::_path_finder=PathFinderActivator<string>();
+	AI* AI::_instance = nullptr;
+	GraphRegistry AI::_registry = GraphRegistry();
+	string AI::_subject = "";
+	//GraphObserver AI::_graph_observer = GraphObserver();
+	//PathFinderActivator<string> AI::_path_finder = PathFinderActivator<string>();
 
 	AI* AI::Instance(){
 		return AI::_instance;
@@ -37,30 +38,33 @@ namespace path_finder
 		map<string,vector<string>> data_map,
 		const string& subject_file, const string& subject_dir)
 	{
-		if(_instance == nullptr)
-			AI::_instance= new AI(factory_data, data_map, subject_file, subject_dir);
+		if(_instance  ==  nullptr)
+			AI::_instance = new AI(factory_data, data_map, subject_file, subject_dir);
 		return AI::_instance;
 	}
 
 	AI::AI(vector<string>& factory_data, map<string, vector<string>>& data_map,
 		const string& subject_file, const string& subject_dir)
 	{
-		AI::_subject=subject_file;
+		AI::_subject = subject_file;
 		AI::_registry.SetFactory(factory_data);
 		AI::_registry.AddGraph("static"+subject_file, data_map);
 		//AI::_graph_observer.Observe(subject_dir);
 	}
 
 	//List<ID>
+	/*
 	void AI::FindPath(){
-		string source="B";
-		string destination="L";
-		AI::_path_finder.Find(source, destination, AI::_registry);
-	}
+		string source = "B";
+		string destination = "L";
+		std::cout<<"FindPath invoked"<<std::endl;
+		//AI::_path_finder.Find(source, destination, AI::_registry);
+	}*/
 
 	#ifdef DEBUG
 	void AI::Print(void){
-		AI::_registry.PrintGraph(AI::_registry.GetGraph("static"+AI::_subject));
+		string name = "static"+AI::_subject;
+		AI::_registry.PrintGraph(AI::_registry.GetGraph(name));
 	}
 	#endif /*DEBUG*/
 }

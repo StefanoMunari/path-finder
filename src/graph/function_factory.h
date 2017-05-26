@@ -21,7 +21,7 @@ namespace path_finder
 			PyObject* CreateFunction(const std::string&);
 			PyObject* CreateArgument(const std::string&);
 		private:
-			PyObject* _module=nullptr;
+			PyObject* _module = nullptr;
 	};
 }
 

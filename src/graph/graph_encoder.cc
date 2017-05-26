@@ -7,58 +7,82 @@
  */
 #include "graph_encoder.h"
 #include <boost/graph/adjacency_list.hpp>
+#include <map>
+#include <vector>
+#include <string>
+#include <utility>
+#include <iostream>
+
+using std::map;
+using std::vector;
+using std::string;
+using namespace std;
 
 namespace path_finder
 {
 	Graph* GraphEncoder::Encode(PyDictObject* graph_dictionary,
 		PyDictObject* costs_dictionary){
-		Graph* graph=nullptr;
-		int index2=0;
+		Graph* graph = nullptr;
 
 		if(PyDict_Check(graph_dictionary) && PyDict_Check(costs_dictionary)){
 			/* set up graph */
-			graph=new Graph();
-			/* Boost-property accessors */
-			boost::property_map<Graph, boost::vertex_name_t>::type
-				node_id = boost::get(boost::vertex_name, (*graph));
-			boost::property_map<Graph, boost::vertex_index2_t>::type
-				node_index2 = boost::get(boost::vertex_index2, (*graph));
+			graph = new Graph();
+			/* vars */
+			StringToVertexMap converter;
+			vector<vector<string>> neighbors = vector<vector<string>>();
+			int index =0;
 			/* PyC objects */
 			PyObject *keys[2], *values[2];
 			Py_ssize_t positions[2] = {0};
 
-			while
-			(PyDict_Next((PyObject*) graph_dictionary,
-				&positions[0], &keys[0], &values[0])
-			 &&
-			 PyDict_Next((PyObject*) costs_dictionary, &positions[1],
+			while(PyDict_Next((PyObject*) graph_dictionary,
+				&positions[0], &keys[0], &values[0]))
+			{
+			  if(PyList_Check(values[0])){
+					VertexDescriptor vertex_descr;
+					vertex_descr = boost::add_vertex(vertex_descr,(*graph));
+					(*graph)[index] = index;
+					std::string vertex_id = PyString_AsString(PyObject_Str(keys[0]));
+					converter.insert(
+						std::pair<std::string, VertexDescriptor>(
+							vertex_id, vertex_descr));
+					neighbors.push_back(vector<string>());
+					int size = PyList_Size(values[0]);
+					for(int i =0; i < size; ++i){
+						std::string neighbor_id = PyString_AsString(PyObject_Str(
+							PyList_GetItem(values[0],i)));
+						neighbors[index].push_back(neighbor_id);
+					}
+					++index;
+				}
+			}
+
+			index =0;
+			while(PyDict_Next((PyObject*) costs_dictionary, &positions[1],
 			 	&keys[1], &values[1]))
 			{
-				VertexDescriptor vertex_descr;
-			    vertex_descr= boost::add_vertex((*graph));
-				std::string vertex_id=PyString_AsString(PyObject_Str(keys[0]));
-				node_id[vertex_descr]=vertex_id;
-				node_index2[vertex_descr]=index2;
-				++index2;
-			    if(PyList_Check(values[0]) && PyList_Check(values[1])){
-			    	int size=PyList_Size(values[0]);
-			    	for(int i=0; i < size; ++i){
-			    		std::string neighbor_id=PyString_AsString(PyObject_Str(
-			    			PyList_GetItem(values[0],i)));
+			    if(PyList_Check(values[1])){
+			    	for(int i =0; i < neighbors[index].size(); ++i){
 						VertexDescriptor neighbor_descr;
-			   		 	neighbor_descr=boost::add_vertex((*graph));
-						node_id[neighbor_descr]=neighbor_id;
-						node_index2[neighbor_descr]=index2;
-						++index2;
-						PyList_GetItem(values[1],i);
-			    		int cost=
-			    			PyObject_AsFileDescriptor(
-			    				PyList_GetItem(values[1],i));
-			    		const EdgeWeigthProperty cost_property=
-			    			EdgeWeigthProperty((unsigned int) cost);
-			    		boost::add_edge(vertex_descr, neighbor_descr,
-			    			cost_property, (*graph));
+						VertexDescriptor source_descr;
+			    		neighbor_descr = converter[neighbors[index][i]];
+						source_descr = (*graph)[index];
+			    		const Weight cost = ((unsigned int)
+			    				PyObject_AsFileDescriptor(
+			    				PyList_GetItem(values[1],i)));
+						EdgeDescriptor edge_descr = boost::add_edge(
+														source_descr,
+														neighbor_descr,
+														cost, (*graph)).first;
+						/*
+						cout<<"Index Source : "<<node_index[source_descr]<<endl;
+						cout<<"Neighbor : "<<neighbors[index][i]<<
+						" = > Index Neighbor: "<<node_index[neighbor_descr]<<endl;
+						cout<<"Weight : "<<(*graph)[edge_descr]<<endl;
+						cout<<"----------------------"<<endl;
+						*/
 			    	}
+			    	++index;
 			    }
 			}
 			Py_DECREF(keys[0]);

@@ -15,11 +15,11 @@ using std::string;
 namespace path_finder
 {
 	GraphRegistry::GraphRegistry(){
-		_registry=map<string, Graph*>();
+		_registry = map<string, Graph*>();
 	}
 
 	void GraphRegistry::SetFactory(vector<string>& factory_data){
-		_graph_factory=GraphFactory(factory_data);
+		_graph_factory = GraphFactory(factory_data);
 	}
 
 	void GraphRegistry::AddGraph(const string& id,
@@ -35,21 +35,17 @@ namespace path_finder
 	#ifdef DEBUG
 	void GraphRegistry::PrintGraph(Graph* graph){
 		/* Boost-property accessors */
-		boost::property_map<Graph, boost::vertex_name_t>::type
-			node_id = boost::get(boost::vertex_name, (*graph));
-		boost::property_map<Graph, boost::edge_weight_t>::type
-			edge_cost = boost::get(boost::edge_weight, (*graph));
+		IndexMap node_index = boost::get(boost::vertex_index, (*graph));
 		/* local vars */
-		auto vertexes= boost::vertices((*graph));
-
+		auto vertexes = boost::vertices((*graph));
 		std::cout<<"---PRINT GRAPH ---"<< std::endl;
 		std::cout<<"VERTEX : NEIGHBOR = COST"<< std::endl;
-		for(auto v_it= vertexes.first; v_it != vertexes.second; ++v_it){
-		   auto neighbors= boost::adjacent_vertices(*v_it, (*graph));
-		   for (auto n_it = neighbors.first; n_it != neighbors.second; ++n_it)
-		       std::cout << node_id[*v_it] <<" : "
-		       			 << node_id[*n_it] <<" = "
-		       			 << edge_cost[boost::edge(*v_it,*n_it,(*graph)).first]
+		for(auto v_it = vertexes.first; v_it !=  vertexes.second; ++v_it){
+		   auto neighbors = boost::adjacent_vertices(*v_it, (*graph));
+		   for (auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it)
+		       std::cout << node_index[*v_it] <<" : "
+		       			 << node_index[*n_it] <<" = "
+		       			 << (*graph)[boost::edge(*v_it,*n_it,(*graph)).first]
 		      	<< std::endl;
 	   }
 	}

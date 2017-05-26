@@ -10,7 +10,7 @@
 
 #include "graph/graph_registry.h"
 //#include "graph/graph_observer.h"
-#include "sched/path_finder_activator.h"
+//#include "sched/path_finder_activator.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -20,16 +20,16 @@ namespace path_finder
 
 	class AI{
 		public:
-			AI() =delete;
-			AI(AI const&) =delete;
-			void operator=(AI const&) =delete;
+			AI()  =delete;
+			AI(AI const&)  =delete;
+			void operator= (AI const&)  =delete;
 			static AI* Instance();
 			static AI* Instance(std::vector<std::string> factory_data,
 				std::map<std::string, std::vector<std::string>> data_map,
 				const std::string& subject_file,
 				const std::string& subject_dir);
 			//List<ID>
-			void FindPath();
+			//void FindPath();
 			#ifdef DEBUG
 			static void Print(void);
 			#endif /*DEBUG*/
@@ -42,7 +42,7 @@ namespace path_finder
 			static GraphRegistry _registry;
 			//static GraphObserver _graph_observer;
 			static std::string _subject;
-			static PathFinderActivator<std::string> _path_finder;
+			//static PathFinderActivator<std::string> _path_finder;
 	};
 }
 
