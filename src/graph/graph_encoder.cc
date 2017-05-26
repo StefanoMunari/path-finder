@@ -60,7 +60,8 @@ namespace path_finder
 			 	&keys[1], &values[1]))
 			{
 			    if(PyList_Check(values[1])){
-			    	for(int i =0; i < neighbors[index].size(); ++i){
+			    	int size=neighbors[index].size();
+			    	for(int i =0; i < size; ++i){
 						VertexDescriptor neighbor_descr;
 						VertexDescriptor source_descr;
 			    		neighbor_descr = converter[neighbors[index][i]];
@@ -68,10 +69,10 @@ namespace path_finder
 			    		const Weight cost = ((unsigned int)
 			    				PyObject_AsFileDescriptor(
 			    				PyList_GetItem(values[1],i)));
-						EdgeDescriptor edge_descr = boost::add_edge(
-														source_descr,
-														neighbor_descr,
-														cost, (*graph)).first;
+						//EdgeDescriptor edge_descr =
+						boost::add_edge(source_descr,
+										neighbor_descr,
+										cost, (*graph)).first;
 						/*
 						cout<<"Index Source : "<<node_index[source_descr]<<endl;
 						cout<<"Neighbor : "<<neighbors[index][i]<<
