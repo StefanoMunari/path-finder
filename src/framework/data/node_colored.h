@@ -17,7 +17,7 @@ namespace path_finder
 	NodeColored<State>::NodeColored(State state, NodeColored<State>* parent, NodeColor color)
 	noexcept : Node<State>(state, parent)
 	{
-		this->color=color;
+		this->color = color;
 	};
 }
 #endif /*NODE_COLORED_H*/

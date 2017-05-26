@@ -10,7 +10,7 @@
 
 namespace path_finder
 {
-	enum NodeColor {WHITE, GRAY, BLACK};
+	enum NodeColor {WHITE, GRAY};
 }
 
 #endif /*NODE_COLOR_H*/

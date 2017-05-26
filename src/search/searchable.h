@@ -4,6 +4,7 @@
 //#include <vector>
 //#include "../framework/problem/action.h"
 #include "../framework/problem/problem.h"
+#include "../framework/data/node.h"
 #include "../utils/boost_types.h"
 
 namespace path_finder
@@ -14,7 +15,7 @@ namespace path_finder
 	class Searchable{
 	  public:
 	  	//std::vector<Action>*
-	    virtual void Search(Graph*, const Problem<State>&) =0;
+	    virtual Node<State>* Search(Graph*, const Problem<State>&) =0;
 	};
 }
 #endif /*SEARCHABLE_H*/

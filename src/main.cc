@@ -20,10 +20,10 @@ int main(int argc, char **argv){
 	using std::string;
 	using std::pair;
 
-	vector<string> factory_data= vector<string>();
-	vector<string> function_names= vector<string>();
-	vector<string> configuration_paths= vector<string>();
-	map<string, vector<string>> data_map= map<string, vector<string>>();
+	vector<string> factory_data = vector<string>();
+	vector<string> function_names = vector<string>();
+	vector<string> configuration_paths = vector<string>();
+	map<string, vector<string>> data_map = map<string, vector<string>>();
 
 	factory_data.push_back("reader.py");
 	factory_data.push_back("/home/m/Git/path-finder/src/io/");
@@ -38,8 +38,10 @@ int main(int argc, char **argv){
 	data_map.insert(
 		pair<string, vector<string>>(
 			"configuration_paths", configuration_paths));
-	AI* ai= AI::Instance(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
-	std::cout<<ai<<std::endl;
+	AI* ai = AI::Instance(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
+	std::cout<<"AI initialized"<<std::endl;
+	//ai->FindPath();
+	std::cout<<"AI path-finder"<<std::endl;
 	#ifdef DEBUG
 	AI::Print();
 	#endif /*DEBUG*/

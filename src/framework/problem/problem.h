@@ -10,13 +10,13 @@ namespace path_finder
     public:
       Problem(const State&, const State&) noexcept;
         //, GoalTest<State>*
-      Problem(const Problem &) =delete;
+      Problem(const Problem &)  =delete;
       /*
       Problem(Problem &&) noexcept;
       */
       ~Problem() noexcept;
-      Problem& operator=(const Problem&) =delete;
-      Problem& operator=(Problem&&) noexcept;
+      Problem& operator= (const Problem&)  =delete;
+      Problem& operator= (Problem&&) noexcept;
       State GetFirstState() const;
       bool IsGoal(const State& state) const;
       /*
@@ -29,8 +29,8 @@ namespace path_finder
       State _source;
       State _goal;
       /*
-      GoalTest<State>* test_= nullptr;
-      ActionFunction* action_function_= nullptr;
+      GoalTest<State>* test_ = nullptr;
+      ActionFunction* action_function_ = nullptr;
       CostFunction* cost_function_;
       */
   };
@@ -60,7 +60,7 @@ namespace path_finder
 
   template <typename State>
   bool Problem<State>::IsGoal(const State& state) const{
-    return (state == _goal);
+    return (state  ==  _goal);
   }
 /*
   template <typename State>

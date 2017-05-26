@@ -11,12 +11,10 @@
 #include <vector>
 #include <string>
 #include <utility>
-#include <iostream>
 
 using std::map;
 using std::vector;
 using std::string;
-using namespace std;
 
 namespace path_finder
 {

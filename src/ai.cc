@@ -9,7 +9,6 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <iostream>
 
 using std::map;
 using std::vector;
@@ -57,7 +56,6 @@ namespace path_finder
 	void AI::FindPath(){
 		string source = "B";
 		string destination = "L";
-		std::cout<<"FindPath invoked"<<std::endl;
 		//AI::_path_finder.Find(source, destination, AI::_registry);
 	}*/
 
