@@ -29,8 +29,8 @@ int main(int argc, char **argv){
 	factory_data.push_back("/home/m/Git/path-finder/src/io/");
 	function_names.push_back("get_dictionary_from_file");
 	function_names.push_back("get_dictionary_from_file");
-	configuration_paths.push_back("/home/m/Git/path-finder/data/graph_10n.json");
-	configuration_paths.push_back("/home/m/Git/path-finder/data/cost_10n.json");
+	configuration_paths.push_back("/home/m/Git/path-finder/data/graph_8n.json");
+	configuration_paths.push_back("/home/m/Git/path-finder/data/cost_8n.json");
 
 	data_map.insert(
 		pair<string, vector<string>>(
@@ -39,9 +39,7 @@ int main(int argc, char **argv){
 		pair<string, vector<string>>(
 			"configuration_paths", configuration_paths));
 	AI* ai = AI::Instance(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
-	std::cout<<"AI initialized"<<std::endl;
 	ai->FindPath();
-	std::cout<<"AI path-finder"<<std::endl;
 	std::cout<<ai<<std::endl;
 	#ifdef DEBUG
 	AI::Print();

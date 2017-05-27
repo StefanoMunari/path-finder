@@ -36,11 +36,14 @@ namespace path_finder
 	template <typename State>
 	void
 	PathFinderActivator<State>::PrintIDList(Node<State>* last){
+		std::cout<<"PrintIDList -Start-"<<std::endl;
+		std::cout<<"(Path from the last node to the first one)"<<std::endl;
 		Node<State>* iterator = last;
 		while(iterator){
 			std::cout<<"NODE : "<<iterator->state<<std::endl;
 			iterator = iterator->parent;
 		}
+		std::cout<<"PrintIDList -End-"<<std::endl;
 	};
 }
 #endif /*PATH_FINDER_ACTIVATOR_H*/

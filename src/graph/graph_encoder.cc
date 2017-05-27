@@ -11,7 +11,10 @@
 #include <vector>
 #include <string>
 #include <utility>
-
+#ifdef DEBUG
+#include <iostream>
+#include "../utils/algorithm.h"
+#endif /*DEBUG*/
 using std::map;
 using std::vector;
 using std::string;
@@ -29,7 +32,7 @@ namespace path_finder
 			/* vars */
 			converter = new IdVertexMap();
 			vector<vector<string>> neighbors = vector<vector<string>>();
-			int index =0;
+			IndexMap node_index = boost::get(boost::vertex_index, (*graph));
 			/* PyC objects */
 			PyObject *keys[2], *values[2];
 			Py_ssize_t positions[2] = {0};
@@ -40,7 +43,7 @@ namespace path_finder
 			  if(PyList_Check(values[0])){
 					VertexDescriptor vertex_descr;
 					vertex_descr = boost::add_vertex(vertex_descr,(*graph));
-					(*graph)[index] = index;
+					//(*graph)[index] = index;
 					std::string vertex_id = PyString_AsString(PyObject_Str(keys[0]));
 					converter->insert(
 						std::pair<std::string, VertexDescriptor>(
@@ -50,39 +53,42 @@ namespace path_finder
 					for(int i =0; i < size; ++i){
 						std::string neighbor_id = PyString_AsString(PyObject_Str(
 							PyList_GetItem(values[0],i)));
-						neighbors[index].push_back(neighbor_id);
+						neighbors[node_index[vertex_descr]].push_back(neighbor_id);
 					}
-					++index;
 				}
 			}
-
-			index =0;
+			VertexIterator it, end;
+			boost::tie(it, end) = boost::vertices(*graph);
+			auto ids_map = Algorithm::GetReversedMap<string, luint>(converter);
 			while(PyDict_Next((PyObject*) costs_dictionary, &positions[1],
 			 	&keys[1], &values[1]))
 			{
-			    if(PyList_Check(values[1])){
-			    	int size=neighbors[index].size();
+			    if(PyList_Check(values[1]) && it != end){
+			    	int size=neighbors[node_index[*it]].size();
 			    	for(int i =0; i < size; ++i){
 						VertexDescriptor neighbor_descr;
-						VertexDescriptor source_descr;
-			    		neighbor_descr = (*converter)[neighbors[index][i]];
-						source_descr = (*graph)[index];
+						//VertexDescriptor source_descr;
+			    		neighbor_descr = (*converter)[neighbors[node_index[*it]][i]];
+						//source_descr = (*graph)[node_index[*it]];
 			    		const Weight cost = ((unsigned int)
 			    				PyObject_AsFileDescriptor(
 			    				PyList_GetItem(values[1],i)));
-						//EdgeDescriptor edge_descr =
-						boost::add_edge(source_descr,
+			    		#ifdef DEBUG
+						EdgeDescriptor edge_descr =
+						#endif /*DEBUG*/
+						boost::add_edge(*it,
 										neighbor_descr,
 										cost, (*graph)).first;
-						/*
-						cout<<"Index Source : "<<node_index[source_descr]<<endl;
-						cout<<"Neighbor : "<<neighbors[index][i]<<
-						" = > Index Neighbor: "<<node_index[neighbor_descr]<<endl;
-						cout<<"Weight : "<<(*graph)[edge_descr]<<endl;
-						cout<<"----------------------"<<endl;
-						*/
+						#ifdef DEBUG
+						std::cout<<"Source : "<< ids_map[node_index[*it]]<<
+						" = > Index Source: "<< node_index[*it] <<std::endl;
+						std::cout<<"Neighbor : "<<neighbors[node_index[*it]][i]<<
+						" = > Index Neighbor: "<< node_index[neighbor_descr] <<std::endl;
+						std::cout<<"Weight : "<<(*graph)[edge_descr]<<std::endl;
+						std::cout<<"----------------------"<<std::endl;
+						#endif /*DEBUG*/
 			    	}
-			    	++index;
+			    	++it;
 			    }
 			}
 			Py_DECREF(keys[0]);

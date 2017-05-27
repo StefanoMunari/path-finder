@@ -18,6 +18,7 @@ namespace path_finder
       Problem& operator= (const Problem&)  =delete;
       Problem& operator= (Problem&&) noexcept;
       State GetFirstState() const;
+      State GetGoalState() const;
       bool IsGoal(const State& state) const;
       /*
       GoalTest<State>* getGoalTest() const;
@@ -56,6 +57,11 @@ namespace path_finder
   template <typename State>
   State Problem<State>::GetFirstState() const {
     return _source;
+  };
+
+  template <typename State>
+  State Problem<State>::GetGoalState() const {
+    return _goal;
   };
 
   template <typename State>

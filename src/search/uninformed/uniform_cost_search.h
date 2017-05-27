@@ -81,29 +81,30 @@ namespace path_finder
 		auto contour = this->_MakeQueue(problem.GetFirstState());
 		auto search_map = this->_MakeSearchMap(
 			(contour->top()).first->state, &ids_map);
-		VertexIterator it, end;
-		boost::tie(it, end) = boost::vertices(*static_graph);
+		VertexDescriptor current, end;
+		end = boost::graph_traits<Graph>::null_vertex();
 		/* body */
-		while(!contour->empty() && (it != end)){
+		while(!contour->empty() && (current != end)){
 			auto current_node = contour->top();
 			contour->pop();
+			current = (*indexes_map)[current_node.first->state];
 			if(problem.IsGoal(current_node.first->state))
 				return current_node.first;/* goal reached */
-			auto neighbors = boost::adjacent_vertices(*it, *_static_graph.first);
+			auto neighbors = boost::adjacent_vertices(current, *_static_graph.first);
+
 			for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
 				string neighbor = ids_map[node_index[*n_it]];
 				auto current_neigh = (*search_map)[neighbor];
 				if(current_neigh.first->color  ==  WHITE){
 					current_neigh.first->color = GRAY;
 					auto neigh_cost = current_node.second +
-			   			(*static_graph)[boost::edge(*it,*n_it,(*static_graph)).first] +
-			   			(*dynamic_graph)[boost::edge(*it,*n_it,(*dynamic_graph)).first];
+			   			(*static_graph)[boost::edge(current,*n_it,(*static_graph)).first] +
+			   			(*dynamic_graph)[boost::edge(current,*n_it,(*dynamic_graph)).first];
 			   		current_neigh.first->parent = current_node.first;
 			   		current_neigh.second = neigh_cost;
 			   		contour->push(current_neigh);
 				}
 			}
-			++it;
 		}
 		/* search failed */
 		return nullptr;

@@ -24,7 +24,7 @@ namespace path_finder
 				std::map<std::string, std::vector<std::string>>&);
 			GraphPtr_IdMap GetGraph(std::string&);
 			#ifdef DEBUG
-			void PrintGraph(Graph* graph);
+			void PrintGraph(GraphPtr_IdMap);
 			#endif /*DEBUG*/
 		private:
 			std::map<std::string, GraphPtr_IdMap> _registry;

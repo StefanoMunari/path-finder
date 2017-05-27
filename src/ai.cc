@@ -53,8 +53,8 @@ namespace path_finder
 
 	//List<ID>
 	void AI::FindPath(){
-		string source = "B";
-		string destination = "L";
+		string source = "A";
+		string destination = "H";
 		AI::_path_finder.Find(source, destination, AI::_registry);
 	}
 
