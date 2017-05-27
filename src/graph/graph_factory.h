@@ -21,7 +21,7 @@ namespace path_finder
 		public:
 			GraphFactory(){};
 			GraphFactory(std::vector<std::string>&);
-			Graph* CreateGraph(std::map<std::string,
+			GraphPtr_IdMap CreateGraph(std::map<std::string,
 				std::vector<std::string>>&);
 		private:
 			DictionaryFactory _dictionary_factory;

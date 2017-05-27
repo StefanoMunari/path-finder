@@ -18,15 +18,16 @@ using std::string;
 
 namespace path_finder
 {
-	Graph* GraphEncoder::Encode(PyDictObject* graph_dictionary,
+	GraphPtr_IdMap GraphEncoder::Encode(PyDictObject* graph_dictionary,
 		PyDictObject* costs_dictionary){
 		Graph* graph = nullptr;
+		IdVertexMap* converter = nullptr;
 
 		if(PyDict_Check(graph_dictionary) && PyDict_Check(costs_dictionary)){
 			/* set up graph */
 			graph = new Graph();
 			/* vars */
-			StringToVertexMap converter;
+			converter = new IdVertexMap();
 			vector<vector<string>> neighbors = vector<vector<string>>();
 			int index =0;
 			/* PyC objects */
@@ -41,7 +42,7 @@ namespace path_finder
 					vertex_descr = boost::add_vertex(vertex_descr,(*graph));
 					(*graph)[index] = index;
 					std::string vertex_id = PyString_AsString(PyObject_Str(keys[0]));
-					converter.insert(
+					converter->insert(
 						std::pair<std::string, VertexDescriptor>(
 							vertex_id, vertex_descr));
 					neighbors.push_back(vector<string>());
@@ -64,7 +65,7 @@ namespace path_finder
 			    	for(int i =0; i < size; ++i){
 						VertexDescriptor neighbor_descr;
 						VertexDescriptor source_descr;
-			    		neighbor_descr = converter[neighbors[index][i]];
+			    		neighbor_descr = (*converter)[neighbors[index][i]];
 						source_descr = (*graph)[index];
 			    		const Weight cost = ((unsigned int)
 			    				PyObject_AsFileDescriptor(
@@ -89,6 +90,6 @@ namespace path_finder
 			Py_DECREF(values[0]);
 			Py_DECREF(values[1]);
 		}
-		return graph;
+		return std::pair<Graph*, IdVertexMap*>(graph, converter);
 	}
 }

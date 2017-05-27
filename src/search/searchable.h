@@ -15,7 +15,7 @@ namespace path_finder
 	class Searchable{
 	  public:
 	  	//std::vector<Action>*
-	    virtual Node<State>* Search(Graph*, const Problem<State>&) =0;
+	    virtual Node<State>* Search(GraphPtr_IdMap, const Problem<State>&) =0;
 	};
 }
 #endif /*SEARCHABLE_H*/

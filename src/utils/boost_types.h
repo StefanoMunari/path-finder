@@ -28,6 +28,7 @@ typedef boost::graph_traits<Graph>::vertex_iterator VertexIterator;
 typedef boost::graph_traits<Graph>::vertex_descriptor VertexDescriptor;
 typedef boost::graph_traits<Graph>::edge_descriptor EdgeDescriptor;
 /* Auxiliary Structures */
-typedef std::map<std::string, VertexDescriptor> StringToVertexMap;
+typedef std::map<std::string, VertexDescriptor> IdVertexMap;
+typedef std::pair<Graph*, IdVertexMap*> GraphPtr_IdMap;
 
 #endif /*BOOST_TYPES_H*/

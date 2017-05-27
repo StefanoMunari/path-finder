@@ -26,7 +26,8 @@ namespace path_finder
 		_graph_encoder = GraphEncoder();
 	}
 
-	Graph* GraphFactory::CreateGraph(map<string, vector<string>>& data_map){
+	GraphPtr_IdMap
+	GraphFactory::CreateGraph(map<string, vector<string>>& data_map){
 		/*
 		 0 : = graph_data
 		 1 : = costs_data

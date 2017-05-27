@@ -22,12 +22,12 @@ namespace path_finder
 			void SetFactory(std::vector<std::string>&);
 			void AddGraph(const std::string&,
 				std::map<std::string, std::vector<std::string>>&);
-			Graph* GetGraph(std::string&);
+			GraphPtr_IdMap GetGraph(std::string&);
 			#ifdef DEBUG
 			void PrintGraph(Graph* graph);
 			#endif /*DEBUG*/
 		private:
-			std::map<std::string, Graph*> _registry;
+			std::map<std::string, GraphPtr_IdMap> _registry;
 			GraphFactory _graph_factory;
 	};
 }

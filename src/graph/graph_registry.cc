@@ -15,7 +15,7 @@ using std::string;
 namespace path_finder
 {
 	GraphRegistry::GraphRegistry(){
-		_registry = map<string, Graph*>();
+		_registry = map<string, GraphPtr_IdMap>();
 	}
 
 	void GraphRegistry::SetFactory(vector<string>& factory_data){
@@ -24,11 +24,11 @@ namespace path_finder
 
 	void GraphRegistry::AddGraph(const string& id,
 		map<string, vector<string>>& data_map){
-		Graph* g = _graph_factory.CreateGraph(data_map);
-		_registry.insert(std::pair<string, Graph*>(id,g));
+		GraphPtr_IdMap g = _graph_factory.CreateGraph(data_map);
+		_registry.insert(std::pair<string, GraphPtr_IdMap>(id,g));
 	}
 
-	Graph* GraphRegistry::GetGraph(string& id){
+	GraphPtr_IdMap GraphRegistry::GetGraph(string& id){
 		return _registry[id];
 	}
 

@@ -16,7 +16,7 @@ namespace path_finder
 	class GraphEncoder{
 		public:
 			GraphEncoder(){};
-			Graph* Encode(PyDictObject*, PyDictObject*);
+			GraphPtr_IdMap Encode(PyDictObject*, PyDictObject*);
 	};
 }
 

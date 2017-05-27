@@ -12,8 +12,9 @@
 #include "../../framework/problem/problem.h"
 #include "../../framework/data/node_colored.h"
 #include "../../framework/utils/node_comparator.h"
-#include "../../utils/constants.h"
 #include "../../utils/boost_types.h"
+#include "../../utils/constants.h"
+#include "../../utils/algorithm.h"
 #include <queue>
 #include <map>
 #include <vector>
@@ -37,9 +38,9 @@ namespace path_finder
 	class UniformCostSearch : public Searchable<State> {
 	/*, Solve, Expand {*/
 	  public:
-	    UniformCostSearch(Graph* static_graph) noexcept;
+	    UniformCostSearch(GraphPtr_IdMap static_graph) noexcept;
 	    //virtual std::vector<Action>*
-	    Node<State>* Search(Graph*, const Problem<State>&);
+	    Node<State>* Search(GraphPtr_IdMap, const Problem<State>&);
 	  private:
 	  	/*
 	    virtual std::vector<Action>* Solve(Node*);
@@ -49,14 +50,14 @@ namespace path_finder
 			std::pair<NodeColored<State>*, uint>,
 			vector<std::pair<NodeColored<State>*, uint>>,
 			NodeComparator<State, uint>>*
-		_MakeQueue(Graph*, State);
+		_MakeQueue(State);
 		map<string, std::pair<NodeColored<State>*, uint>>*
-		_MakeSearchMap(State source);
-	    Graph* _static_graph;
+		_MakeSearchMap(State, map<int, string>*);
+	    GraphPtr_IdMap _static_graph;
 	};
 
 	template <typename State>
-	UniformCostSearch<State>::UniformCostSearch(Graph* static_graph) noexcept{
+	UniformCostSearch<State>::UniformCostSearch(GraphPtr_IdMap static_graph) noexcept{
 		this->_static_graph = static_graph;
 	};
 /*
@@ -67,59 +68,42 @@ namespace path_finder
 	template <typename State>
 	//std::vector<Action>*
 	Node<State>*
-	UniformCostSearch<State>::Search(Graph* dynamic_graph,
+	UniformCostSearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 		const Problem<State>& problem){
 		/* Boost-property accessors */
-		boost::property_map<Graph, boost::vertex_name_t>::type
-			node_id = boost::get(boost::vertex_name, (*dynamic_graph));
-		boost::property_map<Graph, boost::edge_weight_t>::type
-			edge_cost = boost::get(boost::edge_weight, (*dynamic_graph));
+		IndexMap node_index =
+			boost::get(boost::vertex_index, (*_static_graph.first));
 		/* vars */
-		auto contour = this->_MakeQueue(dynamic_graph, problem.GetFirstState());
-		auto search_map = this->_MakeSearchMap((contour->top()).first->state);
-		int counter =0;
+		Graph *static_graph = _static_graph.first;
+		Graph *dynamic_graph = dynamic_graph_.first;
+		map<string, int>* indexes_map = (map<string, int>*)_static_graph.second;
+		auto ids_map = Algorithm::GetReversedMap<string, int>(indexes_map);
+		auto contour = this->_MakeQueue(problem.GetFirstState());
+		auto search_map = this->_MakeSearchMap(
+			(contour->top()).first->state, &ids_map);
+		VertexIterator it, end;
+		boost::tie(it, end) = boost::vertices(*static_graph);
 		/* body */
-		while(!contour->empty()){
+		while(!contour->empty() && (it != end)){
 			auto current_node = contour->top();
 			contour->pop();
 			if(problem.IsGoal(current_node.first->state))
-				return current_node.first;/* search success */
-			auto vertexes = boost::vertices((*_static_graph));
-			VertexIterator current_it;
-			VertexDescriptor vdescr = VertexDescriptor((void*)&current_node.first->state);
-			auto neighbors = boost::adjacent_vertices(vdescr, (*_static_graph));
-			/*
-			auto v_it = vertexes.first;
-			auto neighbors = boost::adjacent_vertices(*v_it, (*_static_graph));
-			do{
-				while(v_it !=  vertexes.second){
-					if(node_id[*v_it]  ==  current_node.first->state){
-						cout<<"found match "<<endl;
-						current_it = v_it;
-						break;
-					}
-					++v_it;
-				}
-				neighbors = boost::adjacent_vertices(*current_it, (*_static_graph));
-			}while(neighbors.first  ==  neighbors.second);
+				return current_node.first;/* goal reached */
+			auto neighbors = boost::adjacent_vertices(*it, *_static_graph.first);
 			for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
-				cout<<"NEIGH = "<<counter<<" -> "<<node_id[*n_it]<<endl;
-				string neighbor = node_id[*n_it];
+				string neighbor = ids_map[node_index[*n_it]];
 				auto current_neigh = (*search_map)[neighbor];
-				cout<<"NEIGH-ID = "<<current_neigh.first->state<<endl;
 				if(current_neigh.first->color  ==  WHITE){
-					cout<<"NEIGH-WHITE "<<endl;
 					current_neigh.first->color = GRAY;
-					auto neigh_cost = current_node.second+
-			   			edge_cost[boost::edge(*current_it,*n_it,(*_static_graph)).first] +
-			   			edge_cost[boost::edge(*current_it,*n_it,(*dynamic_graph)).first];
+					auto neigh_cost = current_node.second +
+			   			(*static_graph)[boost::edge(*it,*n_it,(*static_graph)).first] +
+			   			(*dynamic_graph)[boost::edge(*it,*n_it,(*dynamic_graph)).first];
 			   		current_neigh.first->parent = current_node.first;
 			   		current_neigh.second = neigh_cost;
 			   		contour->push(current_neigh);
 				}
 			}
-			++counter;
-			*/
+			++it;
 		}
 		/* search failed */
 		return nullptr;
@@ -131,75 +115,47 @@ namespace path_finder
 		vector<std::pair<NodeColored<State>*, uint>>,
 		NodeComparator<State, uint>
 		>*
-	UniformCostSearch<State>::_MakeQueue(Graph* dynamic_graph, State source_id) {
+	UniformCostSearch<State>::_MakeQueue(State source_id) {
 		/* shortcut for verbose type */
 		typedef std::pair<NodeColored<State>*, uint> SearchableTreeNode;
-		/* Boost-property accessors */
-		/*
-		boost::property_map<Graph, boost::vertex_name_t>::type
-			node_id = boost::get(boost::vertex_name, (*_static_graph));
-		boost::property_map<Graph, boost::edge_weight_t>::type
-			edge_cost = boost::get(boost::edge_weight, (*_static_graph));
-		*/
 		/* declare local vars */
-		auto source_node = SearchableTreeNode(new NodeColored<State>(source_id, nullptr, GRAY), 0);
+		auto source_node =
+			SearchableTreeNode(
+				new NodeColored<State>(source_id, nullptr, GRAY), 0);
 		auto contour =
 			new priority_queue<SearchableTreeNode, vector<SearchableTreeNode>,
 			NodeComparator<State, uint>>();
-		/*
-		VertexIterator source_it;
-		auto vertexes = boost::vertices((*_static_graph));
-		for(auto v_it = vertexes.first; v_it !=  vertexes.second; ++v_it){
-			if(node_id[*v_it]  ==  source_id){
-				source_it = v_it;
-				break;
-			}
-		}
-		auto neighbors = boost::adjacent_vertices(*source_it, (*_static_graph));
-		cout<<"Head"<<endl;
-		for(auto v_it = vertexes.first; v_it !=  vertexes.second; ++v_it){
-			vertex_map.insert(std::pair<string, uint>((string) node_id[*v_it], UINT_MAX));
-		}
-		cout<<"--COUNTOUR - START--"<<endl;
-		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
-			cout<<"--COUNTOUR--"<<endl;
-			contour->push(SearchableTreeNode(
-					new NodeColored<State>(node_id[*n_it], source_node.first, GRAY),
-		   			edge_cost[boost::edge(*source_it,*n_it,(*_static_graph)).first] +
-		   			edge_cost[boost::edge(*source_it,*n_it,(*dynamic_graph)).first]));
-			vertex_map.erase((string) node_id[*n_it]);
-		}*/
 		contour->push(source_node);
 		return contour;
 	};
 
 	template <typename State>
 	map<string, std::pair<NodeColored<State>*, uint>>*
-	UniformCostSearch<State>::_MakeSearchMap(State source)
+	UniformCostSearch<State>::_MakeSearchMap(State source,
+		map<int, string>* ids_map)
 	{
 		/* Boost-property accessors */
-		boost::property_map<Graph, boost::vertex_name_t>::type
-			node_id = boost::get(boost::vertex_name, (*_static_graph));
+		IndexMap node_index =
+			boost::get(boost::vertex_index, (*(_static_graph.first)));
 		/* shortcut for verbose type */
 		typedef std::pair<NodeColored<State>*, uint> SearchableTreeNode;
 		/* vars */
 		auto search_map = new map<string, SearchableTreeNode>();
-		auto vertexes = boost::vertices((*_static_graph));
+		auto vertexes = boost::vertices((*(_static_graph.first)));
 		/* body */
 		search_map->insert(
 				std::pair<string, SearchableTreeNode>(
 					source,
 					SearchableTreeNode(
-						new NodeColored<State>(source, nullptr, GRAY),
-						0)));
-		for(auto v_it = vertexes.first; v_it !=  vertexes.second; ++v_it){
+						new NodeColored<State>(source, nullptr, GRAY),0)));
+		for(auto v_it = vertexes.first; v_it !=  vertexes.second; ++v_it)
 			search_map->insert(
 				std::pair<string, SearchableTreeNode>(
-					(string) node_id[*v_it],
+					(*ids_map)[node_index[*v_it]],
 					SearchableTreeNode(
-						new NodeColored<State>((string) node_id[*v_it], nullptr, WHITE),
-						UINT_MAX)));
-		}
+						new NodeColored<State>(
+							(*ids_map)[node_index[*v_it]], nullptr, WHITE),
+							UINT_MAX)));
 		return search_map;
 	}
 }

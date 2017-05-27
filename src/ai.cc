@@ -27,7 +27,7 @@ namespace path_finder
 	GraphRegistry AI::_registry = GraphRegistry();
 	string AI::_subject = "";
 	//GraphObserver AI::_graph_observer = GraphObserver();
-	//PathFinderActivator<string> AI::_path_finder = PathFinderActivator<string>();
+	PathFinderActivator<string> AI::_path_finder = PathFinderActivator<string>();
 
 	AI* AI::Instance(){
 		return AI::_instance;
@@ -52,12 +52,11 @@ namespace path_finder
 	}
 
 	//List<ID>
-	/*
 	void AI::FindPath(){
 		string source = "B";
 		string destination = "L";
-		//AI::_path_finder.Find(source, destination, AI::_registry);
-	}*/
+		AI::_path_finder.Find(source, destination, AI::_registry);
+	}
 
 	#ifdef DEBUG
 	void AI::Print(void){

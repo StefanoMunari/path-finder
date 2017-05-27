@@ -40,7 +40,7 @@ int main(int argc, char **argv){
 			"configuration_paths", configuration_paths));
 	AI* ai = AI::Instance(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
 	std::cout<<"AI initialized"<<std::endl;
-	//ai->FindPath();
+	ai->FindPath();
 	std::cout<<"AI path-finder"<<std::endl;
 	std::cout<<ai<<std::endl;
 	#ifdef DEBUG
