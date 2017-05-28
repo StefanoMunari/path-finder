@@ -1,0 +1,7 @@
+{
+  "Sibiu": ["Fagaras","Rimnicu Vilcea"],
+  "Rimnicu Vilcea": ["Sibiu","Pitesti"],
+  "Fagaras": ["Sibiu","Bucharest"],
+  "Pitesti": ["Rimnicu Vilcea","Bucharest"],
+  "Bucharest": ["Pitesti", "Fagaras"]
+}
