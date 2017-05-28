@@ -5,8 +5,8 @@
  *
  * Detailed description of file.
  */
-#ifndef UNIFORM_COST_SEARCH_H
-#define UNIFORM_COST_SEARCH_H
+#ifndef GREEDY_SEARCH_H
+#define GREEDY_SEARCH_H
 
 #include "../searchable.h"
 #include "../solvable.h"
@@ -24,7 +24,6 @@
 #include <utility>// std::pair
 #include <algorithm>// std::for_each
 #include <climits>// UINT_MAX
-#include <iostream>
 
 using std::priority_queue;
 using std::map;
@@ -36,13 +35,13 @@ typedef unsigned int uint;
 
 namespace path_finder
 {
-	template <typename State> class UniformCostSearch;
+	template <typename State> class GreedySearch;
 
 	template <typename State>
-	class UniformCostSearch : public Searchable<State>, public Solvable<State> {
+	class GreedySearch : public Searchable<State>, public Solvable<State> {
 	/*, Expand {*/
 	  public:
-	    UniformCostSearch(GraphPtr_IdMap static_graph) noexcept;
+	    GreedySearch(GraphPtr_IdMap static_graph) noexcept;
 		std::list<State>* Solve(Node<State>*);
 	    list<State>* Search(GraphPtr_IdMap, const Problem<State>&);
 	  private:
@@ -62,6 +61,6 @@ namespace path_finder
 	};
 
 	/* import template implementation */
-	#include "uniform_cost_search.cpp"
+	#include "greedy_search.cpp"
 }
-#endif /*UNIFORM_COST_SEARCH_H*/
+#endif /*GREEDY_SEARCH_H*/

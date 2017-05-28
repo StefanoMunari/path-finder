@@ -6,6 +6,7 @@
 #include "../framework/problem/problem.h"
 #include "../framework/data/node.h"
 #include "../utils/boost_types.h"
+#include <list>
 
 namespace path_finder
 {
@@ -13,9 +14,9 @@ namespace path_finder
 
 	template <typename State>
 	class Searchable{
-	  public:
-	  	//std::vector<Action>*
-	    virtual Node<State>* Search(GraphPtr_IdMap, const Problem<State>&) =0;
+		public:
+			virtual std::list<State>*
+			Search(GraphPtr_IdMap, const Problem<State>&) =0;
 	};
 }
 #endif /*SEARCHABLE_H*/

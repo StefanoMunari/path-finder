@@ -8,17 +8,13 @@
 #include "ai.h"
 #include <map>
 #include <vector>
+#include <list>
 #include <string>
 
 using std::map;
 using std::vector;
+using std::list;
 using std::string;
-
-/*
-* WARNING: Avoid using "static" prefix for methods in file definitions
-* cause it enables internal linkage making the methods visibile only
-* inside the definition file
-*/
 
 namespace path_finder
 {
@@ -49,13 +45,6 @@ namespace path_finder
 		AI::_registry.SetFactory(factory_data);
 		AI::_registry.AddGraph("static"+subject_file, data_map);
 		//AI::_graph_observer.Observe(subject_dir);
-	}
-
-	//List<ID>
-	void AI::FindPath(){
-		string source = "A";
-		string destination = "H";
-		AI::_path_finder.Find(source, destination, AI::_registry);
 	}
 
 	#ifdef DEBUG

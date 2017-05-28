@@ -14,7 +14,7 @@ namespace path_finder
 	    bool operator()(const std::pair<Node<State>*, Num>& n1,
 	      const std::pair<Node<State>*, Num>& n2) const
 	    {
-	        return n1.second < n2.second;
+	        return n1.second > n2.second;
 	    }
 	};
 }

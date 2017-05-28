@@ -12,12 +12,7 @@ namespace path_finder
 	  	NodeColored(State state, NodeColored<State>* parent, NodeColor color) noexcept;
 	  	NodeColor color;
 	};
-
-	template <typename State>
-	NodeColored<State>::NodeColored(State state, NodeColored<State>* parent, NodeColor color)
-	noexcept : Node<State>(state, parent)
-	{
-		this->color = color;
-	};
+	/* import template implementation */
+	#include "node_colored.cpp"
 }
 #endif /*NODE_COLORED_H*/

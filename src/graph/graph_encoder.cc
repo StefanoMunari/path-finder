@@ -6,6 +6,7 @@
  * Detailed description of file.
  */
 #include "graph_encoder.h"
+#include "../utils/algorithm.h"
 #include <boost/graph/adjacency_list.hpp>
 #include <map>
 #include <vector>
@@ -13,7 +14,6 @@
 #include <utility>
 #ifdef DEBUG
 #include <iostream>
-#include "../utils/algorithm.h"
 #endif /*DEBUG*/
 using std::map;
 using std::vector;

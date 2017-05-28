@@ -8,6 +8,7 @@
 #include "ai.h"
 #include <map>
 #include <vector>
+#include <list>
 #include <string>
 #include <utility>
 #include <iostream>
@@ -20,6 +21,12 @@ int main(int argc, char **argv){
 	using std::string;
 	using std::pair;
 
+	if(argc != 3)
+		return 1;
+
+	const string source=argv[1];
+	const string destination=argv[2];
+
 	vector<string> factory_data = vector<string>();
 	vector<string> function_names = vector<string>();
 	vector<string> configuration_paths = vector<string>();
@@ -29,8 +36,8 @@ int main(int argc, char **argv){
 	factory_data.push_back("/home/m/Git/path-finder/src/io/");
 	function_names.push_back("get_dictionary_from_file");
 	function_names.push_back("get_dictionary_from_file");
-	configuration_paths.push_back("/home/m/Git/path-finder/data/graph_8n.json");
-	configuration_paths.push_back("/home/m/Git/path-finder/data/cost_8n.json");
+	configuration_paths.push_back("/home/m/Git/path-finder/data/smallromania_graph_5n.json");
+	configuration_paths.push_back("/home/m/Git/path-finder/data/smallromania_cost_5n.json");
 
 	data_map.insert(
 		pair<string, vector<string>>(
@@ -39,7 +46,11 @@ int main(int argc, char **argv){
 		pair<string, vector<string>>(
 			"configuration_paths", configuration_paths));
 	AI* ai = AI::Instance(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
-	ai->FindPath();
+	auto result = ai->FindPath<std::string>(source, destination);
+	std::cout<<"==========PRINT RESULT========="<<std::endl;
+	for(auto const& node : (*result)) {
+	    std::cout<< node <<std::endl;
+	}
 	std::cout<<ai<<std::endl;
 	#ifdef DEBUG
 	AI::Print();

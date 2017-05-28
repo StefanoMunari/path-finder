@@ -27,7 +27,7 @@ typedef boost::property_map<Graph, boost::vertex_index_t>::type IndexMap;
 typedef boost::graph_traits<Graph>::vertex_iterator VertexIterator;
 typedef boost::graph_traits<Graph>::vertex_descriptor VertexDescriptor;
 typedef boost::graph_traits<Graph>::edge_descriptor EdgeDescriptor;
-/* Auxiliary Structures */
+/* Auxiliary Types */
 typedef std::map<std::string, VertexDescriptor> IdVertexMap;
 typedef std::pair<Graph*, IdVertexMap*> GraphPtr_IdMap;
 typedef long unsigned int luint;

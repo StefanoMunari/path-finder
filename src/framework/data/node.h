@@ -12,9 +12,7 @@ namespace path_finder
 	  	State state;
 	  	Node* parent;
 	};
-
-  template <typename State>
-  Node<State>::Node(State state, Node* parent) noexcept
-  : state(state), parent(parent) {};
+	/* import template implementation */
+	#include "node.cpp"
 }
 #endif /*NODE_H*/
