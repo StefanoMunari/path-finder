@@ -1,9 +1,7 @@
 /**
  * @file
- * @brief  Brief description of file.
+ * @brief  Uniform-cost search on a graph.
  * @author <stefanomunari.sm@gmail.com>
- *
- * Detailed description of file.
  */
 #ifndef UNIFORM_COST_SEARCH_H
 #define UNIFORM_COST_SEARCH_H
@@ -32,18 +30,45 @@ namespace path_finder
 {
 	template <typename State> class UniformCostSearch;
 
+	/**
+	 * @brief  Uniform-cost search on a graph.
+	 *
+	 * @pre the branching factor of each node of the graph must be finite
+	 * @pre the step cost of each edge of the graph must be >= 0
+	 *
+	 * Search for the optimal path on the graph.
+	 * Analysis (assuming that pre-conditions hold):
+	 * - Complete: TRUE
+	 * - Optimal: TRUE
+	 * - Time: O(braching^(1+round(optimal_cost/epsilon)))
+	 * - Space: O(braching^(1+round(optimal_cost/epsilon)))
+	*/
 	template <typename State>
 	class UniformCostSearch
 	: public Searchable<State>, public Solvable<State> {
 
 		public:
+			/**
+			 * @brief Class constructor
+			 * @param static_graph - a pair which represents the static topology
+			 *	with the associated static costs for each edge
+			 * @return a uniform-cost search algorithm
+			*/
 			UniformCostSearch(GraphPtr_IdMap static_graph) noexcept;
 			std::list<State>* Solve(Node<State>*);
 			list<State>* Search(GraphPtr_IdMap, const Problem<State>&);
 
 		private:
 			GraphPtr_IdMap _static_graph;
+			/**
+			 * @brief instance of a colored queue factory class
+			 * @see colored_queue_maker.h
+			*/
 			ColoredQueueMaker<State> _qmaker;
+			/**
+			 * @brief instance of a colored search map factory class
+			 * @see colored_search_map_maker.h
+			*/
 			ColoredSearchMapMaker<State> _search_map_maker;
 	};
 

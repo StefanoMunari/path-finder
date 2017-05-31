@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief A solver interface.
+ * @brief Interface for the solver.
  * @author <stefanomunari.sm@gmail.com>
  */
 #ifndef SOLVABLE_H
@@ -13,6 +13,10 @@ namespace path_finder
 {
 	template <typename State> class Solvable;
 
+
+	/**
+	 * @brief Interface for the solver.
+	*/
 	template <typename State>
 	class Solvable{
 		public:

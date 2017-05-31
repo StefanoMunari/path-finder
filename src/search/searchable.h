@@ -1,19 +1,38 @@
+/**
+ * @file
+ * @brief Interface for the search algorithms.
+ * @author <stefanomunari.sm@gmail.com>
+ */
 #ifndef SEARCHABLE_H
 #define SEARCHABLE_H
 
-#include "../framework/problem/problem.h"
 #include "../utils/boost_types.h"
+#include "../framework/problem/problem.h"
 #include <list>
 
 namespace path_finder
 {
 	template <typename State> class Searchable;
 
+	/**
+	 * @brief Interface for the search algorithms.
+	 * @see boost_types.h
+	 * @see problem.h
+	*/
 	template <typename State>
 	class Searchable{
 		public:
+			/**
+			 * Search for a path from source to destination
+			 * @param dynamic_graph_ - a pair which contains info about the
+			 *	current (dynamic) cost graph
+			 * @param problem - an instance of a problem which contains info
+			 *	about source and destination
+			 * @return the list of states which represents the resulting path
+			 */
 			virtual std::list<State>*
-			Search(GraphPtr_IdMap, const Problem<State>&) =0;
+			Search(GraphPtr_IdMap dynamic_graph_,
+					const Problem<State>& problem) =0;
 	};
 }
 #endif /*SEARCHABLE_H*/

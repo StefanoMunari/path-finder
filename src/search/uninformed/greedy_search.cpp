@@ -31,7 +31,7 @@ GreedySearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 	/* boost-property accessors */
 	IndexMap node_index =
 		boost::get(boost::vertex_index, (*_static_graph.first));
-	/* variables */
+	/* define variables */
 	Graph *static_graph = _static_graph.first;
 	Graph *dynamic_graph = dynamic_graph_.first;
 	map<string, int>* indexes_map = (map<string, int>*)_static_graph.second;
@@ -58,7 +58,9 @@ GreedySearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
 			string neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*search_map)[neighbor];
+			/* node not yet explored */
 			if(current_neigh.first->color  ==  WHITE){
+				/* mark the node as explored */
 				current_neigh.first->color = BLACK;
 				auto neigh_cost = current_node.second +
 		   			(*static_graph)

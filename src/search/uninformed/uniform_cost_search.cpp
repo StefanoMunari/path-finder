@@ -27,13 +27,14 @@ UniformCostSearch<State>::Solve(Node<State>* last){
 template <typename State>
 list<State>*
 UniformCostSearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
-	const Problem<State>& problem){
+	const Problem<State>& problem)
+{
 	/* shortcut for verbose type */
 	typedef std::pair<NodeColored<State>*, uint> SearchableColoredNode;
 	/* boost-property accessors */
 	IndexMap node_index =
 		boost::get(boost::vertex_index, (*_static_graph.first));
-	/* variables */
+	/* define variables */
 	Graph *static_graph = _static_graph.first;
 	Graph *dynamic_graph = dynamic_graph_.first;
 	map<string, int>* indexes_map = (map<string, int>*)_static_graph.second;
@@ -66,12 +67,15 @@ UniformCostSearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 					[boost::edge(current,*n_it,(*static_graph)).first] +
 					(*dynamic_graph)
 					[boost::edge(current,*n_it,(*dynamic_graph)).first];
+			/* neighbor not yet explored */
 			if(current_neigh.first->color  ==  WHITE){
 				current_neigh.first->color = GRAY;
 		   		current_neigh.first->parent = current_node.first;
 		   		current_neigh.second = neigh_cost;
 		   		contour->push(current_neigh);
 			}
+			/* neighbor has been explored and
+				has an higher cost than the current one */
 			else if((current_neigh.first->color == GRAY) &&
 					(current_neigh.second > neigh_cost)){
 				current_neigh.first->parent = current_node.first;
