@@ -2,8 +2,6 @@
  * @file
  * @brief A solver interface.
  * @author <stefanomunari.sm@gmail.com>
- *
- * Detailed description of file.
  */
 #ifndef SOLVABLE_H
 #define SOLVABLE_H
