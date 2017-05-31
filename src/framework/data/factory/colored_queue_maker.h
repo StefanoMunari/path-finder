@@ -9,7 +9,7 @@
 #define COLORED_QUEUE_MAKER_H
 
 #include "../node.h"
-#include "../../utils/node_comparator.h"
+#include "../utils/node_comparator.h"
 #include <queue>
 #include <vector>
 #include <utility>// std::pair

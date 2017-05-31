@@ -2,7 +2,7 @@
 #define NODE_COLORED_H
 
 #include "node.h"
-#include "../utils/node_color.h"
+#include "utils/node_color.h"
 
 namespace path_finder
 {

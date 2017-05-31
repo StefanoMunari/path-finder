@@ -1,7 +1,7 @@
 #ifndef NODE_COMPARATOR_H
 #define NODE_COMPARATOR_H
 
-#include "../data/node.h"
+#include "../node.h"
 #include <utility>// std::pair
 
 namespace path_finder
