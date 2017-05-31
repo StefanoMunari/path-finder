@@ -3,9 +3,9 @@ std::list<State>*
 PathFinderActivator<State>::Find(const State& source,
 	const State& destination, GraphRegistry& registry){
 	string graph_name = "staticfootway";
-	UniformCostSearch<State> finder =
-		UniformCostSearch<State>(registry.GetGraph(graph_name));
-	//GreedySearch<State>(registry.GetGraph(graph_name));
+	GreedySearch<State> finder =
+		//UniformCostSearch<State>(registry.GetGraph(graph_name));
+	GreedySearch<State>(registry.GetGraph(graph_name));
 	graph_name = "staticfootway";
 	return finder.Search(registry.GetGraph(graph_name),
 		Problem<State>(source, destination));
