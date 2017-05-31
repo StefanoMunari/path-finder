@@ -29,6 +29,8 @@
 *.app
 bin/*
 
+# Doc
+doc/*
 
 # PyC files
 **/*.pyc
