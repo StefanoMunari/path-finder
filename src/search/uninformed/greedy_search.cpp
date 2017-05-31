@@ -28,10 +28,10 @@ list<State>*
 GreedySearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 	const Problem<State>& problem){
 
-	/* Boost-property accessors */
+	/* boost-property accessors */
 	IndexMap node_index =
 		boost::get(boost::vertex_index, (*_static_graph.first));
-	/* Variables */
+	/* variables */
 	Graph *static_graph = _static_graph.first;
 	Graph *dynamic_graph = dynamic_graph_.first;
 	map<string, int>* indexes_map = (map<string, int>*)_static_graph.second;
@@ -43,7 +43,7 @@ GreedySearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 	VertexDescriptor current, end;
 	end = boost::graph_traits<Graph>::null_vertex();
 
-	/* Body */
+	/* body */
 	while(!contour->empty() && (current != end)){
 		auto current_node = contour->top();
 		contour->pop();
@@ -72,5 +72,5 @@ GreedySearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 		}
 	}
 	/* search failed */
-	return nullptr;
+	return EMPTY;
 }

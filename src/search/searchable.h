@@ -1,10 +1,7 @@
 #ifndef SEARCHABLE_H
 #define SEARCHABLE_H
 
-//#include <vector>
-//#include "../framework/problem/action.h"
 #include "../framework/problem/problem.h"
-#include "../framework/data/node.h"
 #include "../utils/boost_types.h"
 #include <list>
 
