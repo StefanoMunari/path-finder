@@ -1,0 +1,28 @@
+#===============================================================================
+# Deploys the services
+# -path_finder : a C++ path finder
+#*******************************************************************************
+# NOTE:
+# for variable substitution in KEYS definition check
+# https://github.com/docker/compose/issues/3998
+# It is ONLY supported using default docker environment variables
+##******************************************************************************
+version: '2'
+services:
+
+    path_finder_data:
+      build: ./data
+      container_name: path_finder_data
+      volumes:
+        - K:PFINDER_ROOT:/home/cds/path_finder
+
+    path_finder:
+      build: ./path_finder
+      container_name: path_finder
+      depends_on:
+        - path_finder_data
+      volumes_from:
+        - path_finder_data
+      working_dir: /home/cds/path_finder
+volumes:
+   path_finder_data:
