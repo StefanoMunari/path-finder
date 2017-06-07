@@ -17,22 +17,32 @@ using std::string;
 
 namespace path_finder
 {
-	GraphRegistry::GraphRegistry(){
-		_registry = map<string, GraphPtr_IdMap>();
-	}
 
-	void GraphRegistry::SetFactory(vector<string>& factory_data){
-		_graph_factory = GraphFactory(factory_data);
+	GraphRegistry GraphRegistry::_instance = GraphRegistry();
+
+	GraphRegistry& GraphRegistry::Instance(){
+		return GraphRegistry::_instance;
 	}
 
 	void GraphRegistry::AddGraph(const string& id,
-		map<string, vector<string>>& data_map){
-		GraphPtr_IdMap g = _graph_factory.CreateGraph(data_map);
-		_registry.insert(std::pair<string, GraphPtr_IdMap>(id,g));
+								map<string, vector<string>>& data_map,
+								vector<string>& factory_data)
+	{
+		if(GraphRegistry::_instance._registry.count(id) == 0){
+			GraphFactory factory = GraphFactory(factory_data);
+			cout<<&factory<<endl;
+			GraphPtr_IdMap g = factory.CreateGraph(data_map);
+			GraphRegistry::_instance._registry.insert(
+				std::pair<string, GraphPtr_IdMap>(id,g));
+		}
 	}
 
 	GraphPtr_IdMap GraphRegistry::GetGraph(string& id){
-		return _registry[id];
+		return GraphRegistry::_instance._registry[id];
+	}
+
+	GraphRegistry::GraphRegistry(){
+		GraphRegistry::_instance._registry = map<string, GraphPtr_IdMap>();
 	}
 
 	#ifdef DEBUG

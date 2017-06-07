@@ -22,13 +22,24 @@ namespace path_finder
 		/* retrieve the target module */
 		PyObject * module = PyImport_Import(PyString_FromString(file_name.c_str()));
 		/* get the corresponding factory */
-		_function_factory = new FunctionFactory(module);
+		_function_factory = FunctionFactory(module);
+	}
+
+	DictionaryFactory::DictionaryFactory(const DictionaryFactory& that){
+		this->_function_factory = that._function_factory;
+	}
+
+	DictionaryFactory& DictionaryFactory::operator=(
+		const DictionaryFactory& that)
+	{
+		this->_function_factory = that._function_factory;
+		return *this;
 	}
 
 	PyDictObject* DictionaryFactory::CreateDictionary
 	(const string& function_name, const string& configuration_path){
 		return (PyDictObject*) PyObject_CallObject(
-					_function_factory->CreateFunction(function_name),
-					_function_factory->CreateArgument(configuration_path));
+					_function_factory.CreateFunction(function_name),
+					_function_factory.CreateArgument(configuration_path));
 	}
 }

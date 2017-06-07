@@ -21,12 +21,9 @@ namespace path_finder
 
 	class AI{
 		public:
-			AI()  =delete;
-			AI(AI const&)  =delete;
-			void operator= (AI const&)  =delete;
-			static AI* Instance();
-			static AI* Instance(std::vector<std::string> factory_data,
-				std::map<std::string, std::vector<std::string>> data_map,
+			AI() =delete;
+			AI(std::vector<std::string>&,
+				std::map<std::string, std::vector<std::string>>&,
 				const std::string& subject_file,
 				const std::string& subject_dir);
 			template<typename State>
@@ -34,22 +31,18 @@ namespace path_finder
 			#ifdef DEBUG
 			static void Print(void);
 			#endif /*DEBUG*/
-		protected:
-			AI(std::vector<std::string>&,
-				std::map<std::string, std::vector<std::string>>&,
-				const std::string& subject_file, const std::string& subject_dir);
 		private:
-			static AI* _instance;
-			static GraphRegistry _registry;
 			//static GraphObserver _graph_observer;
-			static std::string _subject;
-			static PathFinderActivator<std::string> _path_finder;
+			std::string _subject;
+			PathFinderActivator<std::string> _path_finder;
 	};
 
 
 	template<typename State>
 	list<State>* AI::FindPath(const string& source, const string& destination){
-		return AI::_path_finder.Find(source, destination, AI::_registry);
+		return _path_finder.Find(source,
+								destination,
+								GraphRegistry::Instance());
 	}
 
 }

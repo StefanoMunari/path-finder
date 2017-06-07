@@ -18,17 +18,22 @@ namespace path_finder
 {
 	class GraphRegistry{
 		public:
-			GraphRegistry();
-			void SetFactory(std::vector<std::string>&);
-			void AddGraph(const std::string&,
-				std::map<std::string, std::vector<std::string>>&);
-			GraphPtr_IdMap GetGraph(std::string&);
+			static GraphRegistry& Instance();
+			static void AddGraph(const std::string&,
+								std::map<std::string,std::vector<std::string>>&,
+								std::vector<std::string>&);
+			static GraphPtr_IdMap GetGraph(std::string&);
 			#ifdef DEBUG
 			void PrintGraph(GraphPtr_IdMap);
 			#endif /*DEBUG*/
+		protected:
+			GraphRegistry();
+			~GraphRegistry() noexcept {};
+			GraphRegistry(const GraphRegistry&);
+			GraphRegistry& operator= (const GraphRegistry&);
 		private:
+			static GraphRegistry _instance;
 			std::map<std::string, GraphPtr_IdMap> _registry;
-			GraphFactory _graph_factory;
 	};
 }
 

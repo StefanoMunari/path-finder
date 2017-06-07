@@ -22,8 +22,20 @@ namespace path_finder
 		Py_Initialize();
 		PySys_SetArgv(argc,argv);
 		_dictionary_factory = DictionaryFactory
-			(factory_data[0].substr(0, factory_data[0].size()-3), factory_data[1]);
+			(factory_data[0].substr(0, factory_data[0].size()-3),
+				factory_data[1]);
 		_graph_encoder = GraphEncoder();
+	}
+
+	GraphFactory::GraphFactory(const GraphFactory& that){
+		this->_dictionary_factory = that._dictionary_factory;
+		this->_graph_encoder = that._graph_encoder;
+	}
+
+	GraphFactory& GraphFactory::operator=(const GraphFactory& that){
+		this->_dictionary_factory = that._dictionary_factory;
+		this->_graph_encoder = that._graph_encoder;
+		return *this;
 	}
 
 	GraphPtr_IdMap

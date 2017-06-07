@@ -8,6 +8,7 @@
 #ifndef FUNCTION_FACTORY_H
 #define FUNCTION_FACTORY_H
 
+#include <memory>
 #include <string>
 #include <python2.7/Python.h>
 
@@ -15,13 +16,15 @@ namespace path_finder
 {
 	class FunctionFactory{
 		public:
-			FunctionFactory(){};
+			FunctionFactory() {};
 			FunctionFactory(PyObject*);
-			~FunctionFactory();
+			FunctionFactory(const FunctionFactory&);
+			FunctionFactory& operator=(const FunctionFactory&);
+			~FunctionFactory() noexcept {};
 			PyObject* CreateFunction(const std::string&);
 			PyObject* CreateArgument(const std::string&);
 		private:
-			PyObject* _module = nullptr;
+			std::shared_ptr<PyObject> _module = nullptr;
 	};
 }
 

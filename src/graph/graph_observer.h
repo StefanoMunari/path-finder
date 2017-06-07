@@ -16,7 +16,7 @@ namespace path_finder
 {
 	class GraphObserver{
 		public:
-			GraphObserver() {};
+			GraphObserver(){};
 			~GraphObserver();
 			void Observe(const std::string &);
 		private:

@@ -14,13 +14,15 @@
 #include <vector>
 #include <string>
 
-
 namespace path_finder
 {
 	class GraphFactory{
 		public:
-			GraphFactory(){};
+			GraphFactory() = delete;
 			GraphFactory(std::vector<std::string>&);
+			GraphFactory(const GraphFactory&);
+			GraphFactory& operator=(const GraphFactory&);
+			~GraphFactory() noexcept {};
 			GraphPtr_IdMap CreateGraph(std::map<std::string,
 				std::vector<std::string>>&);
 		private:

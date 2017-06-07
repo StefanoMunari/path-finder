@@ -18,12 +18,15 @@ namespace path_finder
 {
 	class DictionaryFactory{
 		public:
-			DictionaryFactory(){};
+			DictionaryFactory() {};
 			DictionaryFactory(const std::string&, const std::string&);
+			DictionaryFactory(const DictionaryFactory&);
+			DictionaryFactory& operator=(const DictionaryFactory&);
+			~DictionaryFactory() noexcept {};
 			PyDictObject* CreateDictionary(const std::string&,
 				const std::string&);
 		private:
-			FunctionFactory* _function_factory;
+			FunctionFactory _function_factory;
 	};
 }
 

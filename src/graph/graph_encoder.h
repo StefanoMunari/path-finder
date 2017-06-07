@@ -11,11 +11,19 @@
 #include "../utils/boost_types.h"
 #include <python2.7/Python.h>
 
+
+#include <iostream>
+
+using namespace std;
+
 namespace path_finder
 {
 	class GraphEncoder{
 		public:
-			GraphEncoder(){};
+			GraphEncoder() {};
+			GraphEncoder(const GraphEncoder& that) {};
+			GraphEncoder& operator=(const GraphEncoder& that) { return *this; }
+			~GraphEncoder() noexcept {};
 			GraphPtr_IdMap Encode(PyDictObject*, PyDictObject*);
 	};
 }

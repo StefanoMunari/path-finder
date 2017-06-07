@@ -28,7 +28,7 @@ copy_to_obj: preprocessing $(OBJ)
 	$$(cp $(OBJ) $(OBJDIR) ) >/dev/null
 
 $(BINDIR)/$(BIN): copy_to_obj
-	@echo "\n=>Linking: $(OBJDIR)/*.o"\
+	@echo "\n=>Linking: $(OBJDIR)/*.o"
 	$(CXX) $(CFLAGS) $(OBJDIR)/*.o -o $@ -L$(LIBDIR) -l$(LIB)
 
 compile: $(BINDIR)/$(BIN)
@@ -37,7 +37,7 @@ compile: $(BINDIR)/$(BIN)
 
 .PHONY: run
 run: compile
-	@echo "=>Running: $(BINDIR)/$(BIN)" \
+	@echo "=>Running: $(BINDIR)/$(BIN)"\
 	$(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
 
 .PHONY: profile

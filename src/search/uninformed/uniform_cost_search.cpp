@@ -29,8 +29,6 @@ list<State>*
 UniformCostSearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 	const Problem<State>& problem)
 {
-	/* shortcut for verbose type */
-	typedef std::pair<NodeColored<State>*, uint> SearchableColoredNode;
 	/* boost-property accessors */
 	IndexMap node_index =
 		boost::get(boost::vertex_index, (*_static_graph.first));

@@ -12,17 +12,24 @@ using std::string;
 namespace path_finder
 {
 	FunctionFactory::FunctionFactory(PyObject* module){
-		this->_module = module;
+		auto destructor = [](PyObject* object){ Py_DECREF(object); };
+		this->_module = std::shared_ptr<PyObject>(module, destructor);
 	}
 
-	FunctionFactory::~FunctionFactory(){
-		Py_DECREF(_module);
+	FunctionFactory::FunctionFactory(const FunctionFactory& that){
+		this->_module = that._module;
+	}
+
+	FunctionFactory& FunctionFactory::operator=(const FunctionFactory& that){
+		this->_module = that._module;
+		return *this;
 	}
 
 	PyObject* FunctionFactory::CreateFunction(const string& function_name){
 		PyObject *function = nullptr;
-		if(this->_module !=  nullptr)
-			function = PyObject_GetAttrString(this->_module,
+		if(this->_module.get() !=  nullptr)
+			function = PyObject_GetAttrString(
+				this->_module.get(),
 				function_name.c_str());
 		return function;
 	}
