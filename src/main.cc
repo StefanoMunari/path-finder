@@ -6,6 +6,7 @@
  * Detailed description of file.
  */
 #include "ai.h"
+#include "search/utils/searchable_type.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -47,16 +48,16 @@ int main(int argc, char **argv){
 			"configuration_paths", configuration_paths));
 	AI ai = AI(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
 	AI ai0 = AI(factory_data, data_map,"footway","/home/m/Git/path-finder/data");
-	auto result = ai.FindPath<std::string>(source, destination);
-	auto result0 = ai0.FindPath<std::string>(source, destination);
+	auto result = ai.FindPath<std::string>(source, destination, path_finder::UNIFORM_COST);
+	auto result0 = ai0.FindPath<std::string>(source, destination, path_finder::GREEDY);
 	std::cout<<"==========PRINT RESULT========="<<std::endl;
+	std::cout<<"==========UNIFORM COST========="<<std::endl;
 	for(auto const& node : (*result)) {
 	    std::cout<< node <<std::endl;
 	}
+	std::cout<<"==========GREEDY========="<<std::endl;
 	for(auto const& node : (*result0)) {
 	    std::cout<< node <<std::endl;
 	}
-	std::cout<<&ai<<std::endl;
-	std::cout<<&ai0<<std::endl;
 	return 0;
 }

@@ -31,7 +31,8 @@ namespace path_finder
 			 * @return the list of states which represents the resulting path
 			 */
 			virtual std::list<State>*
-			Search(GraphPtr_IdMap dynamic_graph_,
+			Search(GraphPtr_IdMap static_graph_,
+					GraphPtr_IdMap dynamic_graph_,
 					const Problem<State>& problem) =0;
 	};
 }

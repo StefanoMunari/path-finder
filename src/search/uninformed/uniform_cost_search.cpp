@@ -5,9 +5,8 @@ using std::list;
 using std::string;
 
 template <typename State>
-UniformCostSearch<State>::UniformCostSearch(GraphPtr_IdMap static_graph)
+UniformCostSearch<State>::UniformCostSearch()
 noexcept{
-	this->_static_graph = static_graph;
 	this->_qmaker = ColoredQueueMaker<State>();
 	this->_search_map_maker = ColoredSearchMapMaker<State>();
 }
@@ -26,21 +25,22 @@ UniformCostSearch<State>::Solve(Node<State>* last){
 
 template <typename State>
 list<State>*
-UniformCostSearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
+UniformCostSearch<State>::Search(GraphPtr_IdMap static_graph_,
+	GraphPtr_IdMap dynamic_graph_,
 	const Problem<State>& problem)
 {
 	/* boost-property accessors */
 	IndexMap node_index =
-		boost::get(boost::vertex_index, (*_static_graph.first));
+		boost::get(boost::vertex_index, (*static_graph_.first));
 	/* define variables */
-	Graph *static_graph = _static_graph.first;
+	Graph *static_graph = static_graph_.first;
 	Graph *dynamic_graph = dynamic_graph_.first;
-	map<string, int>* indexes_map = (map<string, int>*)_static_graph.second;
+	map<string, int>* indexes_map = (map<string, int>*)static_graph_.second;
 	auto ids_map = Algorithm::GetReversedMap<string, int>(indexes_map);
 	auto contour = this->_qmaker.MakeQueue(problem.GetFirstState());
 	auto search_map =
 		this->_search_map_maker.MakeSearchMap(
-			(contour->top()).first->state, &ids_map, _static_graph.first);
+			(contour->top()).first->state, &ids_map, static_graph_.first);
 	VertexDescriptor current, end;
 	end = boost::graph_traits<Graph>::null_vertex();
 
@@ -55,7 +55,7 @@ UniformCostSearch<State>::Search(GraphPtr_IdMap dynamic_graph_,
 		/* explore the current area */
 		current_node.first->color = BLACK;
 		auto neighbors =
-			boost::adjacent_vertices(current, *_static_graph.first);
+			boost::adjacent_vertices(current, *static_graph_.first);
 
 		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
 			string neighbor = ids_map[node_index[*n_it]];

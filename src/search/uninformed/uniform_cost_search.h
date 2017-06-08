@@ -54,12 +54,12 @@ namespace path_finder
 			 *	with the associated static costs for each edge
 			 * @return a uniform-cost search algorithm
 			*/
-			UniformCostSearch(GraphPtr_IdMap static_graph) noexcept;
+			UniformCostSearch() noexcept;
 			std::list<State>* Solve(Node<State>*);
-			list<State>* Search(GraphPtr_IdMap, const Problem<State>&);
+			std::list<State>* Search(GraphPtr_IdMap, GraphPtr_IdMap,
+									const Problem<State>&);
 
 		private:
-			GraphPtr_IdMap _static_graph;
 			/**
 			 * @brief instance of a colored queue factory class
 			 * @see colored_queue_maker.h
