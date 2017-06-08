@@ -37,8 +37,8 @@ compile: $(BINDIR)/$(BIN)
 
 .PHONY: run
 run: compile
-	@echo "=>Running: $(BINDIR)/$(BIN)"\
-	$(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
+	@echo "=>Running: $(BINDIR)/$(BIN)"
+	$(BINDIR)/$(BIN) $(ARGS)
 
 .PHONY: profile
 profile: compile
