@@ -10,6 +10,21 @@ GreedySearch<State>::GreedySearch() noexcept{
 	this->_search_map_maker = ColoredSearchMapMaker<State>();
 }
 
+
+template <typename State>
+GreedySearch<State>::GreedySearch(const GreedySearch& that){
+	this->_qmaker = that._qmaker;
+	this->_search_map_maker = that._search_map_maker;
+}
+
+template <typename State>
+GreedySearch<State>&
+GreedySearch<State>::operator=(const GreedySearch& that){
+	this->_qmaker = that._qmaker;
+	this->_search_map_maker = that._search_map_maker;
+	return *this;
+}
+
 template <typename State>
 list<State>*
 GreedySearch<State>::Solve(Node<State>* last){

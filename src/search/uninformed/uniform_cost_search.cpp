@@ -5,10 +5,24 @@ using std::list;
 using std::string;
 
 template <typename State>
-UniformCostSearch<State>::UniformCostSearch()
-noexcept{
+UniformCostSearch<State>::UniformCostSearch() noexcept
+{
 	this->_qmaker = ColoredQueueMaker<State>();
 	this->_search_map_maker = ColoredSearchMapMaker<State>();
+}
+
+template <typename State>
+UniformCostSearch<State>::UniformCostSearch(const UniformCostSearch& that){
+	this->_qmaker = that._qmaker;
+	this->_search_map_maker = that._search_map_maker;
+}
+
+template <typename State>
+UniformCostSearch<State>&
+UniformCostSearch<State>::operator=(const UniformCostSearch& that){
+	this->_qmaker = that._qmaker;
+	this->_search_map_maker = that._search_map_maker;
+	return *this;
 }
 
 template <typename State>

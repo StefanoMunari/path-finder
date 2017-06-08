@@ -28,9 +28,9 @@ namespace path_finder
 			#endif /*DEBUG*/
 		protected:
 			GraphRegistry();
-			~GraphRegistry() noexcept {};
 			GraphRegistry(const GraphRegistry&);
 			GraphRegistry& operator= (const GraphRegistry&);
+			~GraphRegistry() noexcept;
 		private:
 			static GraphRegistry _instance;
 			std::map<std::string, GraphPtr_IdMap> _registry;

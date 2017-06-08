@@ -45,6 +45,23 @@ namespace path_finder
 		GraphRegistry::_instance._registry = map<string, GraphPtr_IdMap>();
 	}
 
+	GraphRegistry::GraphRegistry(const GraphRegistry& that){
+		/* since it is static class this body is empty/not needed */
+	}
+
+	GraphRegistry& GraphRegistry::operator= (const GraphRegistry&){
+		/* since it is static class this body is empty/not needed */
+		return GraphRegistry::_instance;
+	}
+
+	GraphRegistry::~GraphRegistry() noexcept{
+		/* free the registry */
+		for(auto & element : GraphRegistry::_instance._registry){
+			delete element.second.first;
+			delete element.second.second;
+		}
+	}
+
 	#ifdef DEBUG
 	void GraphRegistry::PrintGraph(GraphPtr_IdMap graph){
 		/* Boost-property accessors */

@@ -57,8 +57,11 @@ namespace path_finder
 				auto path = finder->Search(static_graphptr_idmap,
 									dynamic_graphptr_idmap,
 									Problem<State>(source, destination));
-				//delete graphptr_idmap;
-				//delete finder;
+				/* free the resources */
+				/* NOTE: do not delete the graphs because they directly refers
+					the registry graphs */
+				delete finder;
+				/* return the result */
 				return path;
 			};
 		return

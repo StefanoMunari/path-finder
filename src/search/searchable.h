@@ -22,6 +22,8 @@ namespace path_finder
 	template <typename State>
 	class Searchable{
 		public:
+			Searchable() noexcept {};
+			virtual ~Searchable() noexcept {};
 			/**
 			 * Search for a path from source to destination
 			 * @param dynamic_graph_ - a pair which contains info about the

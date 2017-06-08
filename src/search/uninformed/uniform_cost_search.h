@@ -55,6 +55,9 @@ namespace path_finder
 			 * @return a uniform-cost search algorithm
 			*/
 			UniformCostSearch() noexcept;
+			UniformCostSearch(const UniformCostSearch&);
+			UniformCostSearch& operator=(const UniformCostSearch&);
+			~UniformCostSearch() noexcept {};
 			std::list<State>* Solve(Node<State>*);
 			std::list<State>* Search(GraphPtr_IdMap, GraphPtr_IdMap,
 									const Problem<State>&);
