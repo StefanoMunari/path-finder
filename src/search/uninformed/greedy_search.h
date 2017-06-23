@@ -20,6 +20,7 @@
 #include <vector>
 #include <list>
 #include <string>
+#include <memory>// std::shared_ptr
 #include <utility>// std::pair
 #include <algorithm>// std::for_each
 #include <climits>// UINT_MAX
@@ -59,7 +60,8 @@ namespace path_finder
 			GreedySearch& operator=(const GreedySearch&);
 			~GreedySearch() noexcept {};
 			std::list<State>* Solve(Node<State>*);
-			std::list<State>* Search(GraphPtr_IdMap, GraphPtr_IdMap,
+			std::list<State>* Search(GraphPtr_IdMap,
+									std::shared_ptr<GraphPtr_IdMap>,
 									const Problem<State>&);
 
 		private:

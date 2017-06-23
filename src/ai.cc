@@ -21,18 +21,17 @@ namespace path_finder
 	//GraphObserver AI::_graph_observer = GraphObserver();
 
 	AI::AI(vector<string>& factory_data, map<string, vector<string>>& data_map,
-		const string& subject_file, const string& subject_dir)
+		const string& category, const string& subject_dir)
 	{
-		this->_subject = subject_file;
-		GraphRegistry::Instance().AddGraph("static"+subject_file,
-			data_map, factory_data);
+		this->_category = category;
+		GraphRegistry::Instance().AddGraph(category, data_map, factory_data);
 		//AI::_graph_observer.Observe(subject_dir);
 	}
 
 	#ifdef DEBUG
 	void AI::Print(void){
-		string name = "static"+_subject;
-		GraphRegistry::Instance().PrintGraph(GraphRegistry::Instance().GetGraph(name));
+		GraphRegistry::Instance().PrintGraph(
+			GraphRegistry::Instance().GetGraph(_category));
 	}
 	#endif /*DEBUG*/
 }

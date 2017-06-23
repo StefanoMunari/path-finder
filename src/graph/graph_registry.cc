@@ -14,6 +14,7 @@
 using std::map;
 using std::vector;
 using std::string;
+using std::shared_ptr;
 
 namespace path_finder
 {
@@ -28,21 +29,56 @@ namespace path_finder
 								map<string, vector<string>>& data_map,
 								vector<string>& factory_data)
 	{
-		if(GraphRegistry::_instance._registry.count(id) == 0){
+		/*
+			check if GraphRegistry is not already initialized
+		*/
+		if(GraphRegistry::_instance._static_registry.count(id) == 0){
 			GraphFactory factory = GraphFactory(factory_data);
-			cout<<&factory<<endl;
-			GraphPtr_IdMap g = factory.CreateGraph(data_map);
-			GraphRegistry::_instance._registry.insert(
-				std::pair<string, GraphPtr_IdMap>(id,g));
+			GraphPtr_IdMap g0 = factory.CreateGraph(data_map);
+			/* copy the extracted graph */
+			GraphPtr_IdMap * g1 = new GraphPtr_IdMap();
+			g1->first = new Graph(*(g0.first));
+			g1->second = new IdVertexMap(*(g0.second));
+			/*
+				C++ map does not insert the element if the element's key
+				already exists in the map
+			*/
+			GraphRegistry::_instance._static_registry.insert(
+				std::pair<string, GraphPtr_IdMap>(id,g0));
+			/*
+				destructor used by shared_ptr<GraphPtr_IdMap>
+			*/
+			auto destructor = [](GraphPtr_IdMap* graph_pair){
+					delete graph_pair->first;
+					delete graph_pair->second;
+				};
+			/*
+				use the static_graph values (by copy) for the default
+				dynamic graph. It will be updated when new information will
+				be provided through the Observer. These values works for
+				the initial computations of the paths.
+			*/
+			GraphRegistry::_instance._dynamic_registry.insert(
+				std::pair<string, shared_ptr<GraphPtr_IdMap>>(
+					id,
+					shared_ptr<GraphPtr_IdMap>(g1,destructor))
+				);
 		}
 	}
 
-	GraphPtr_IdMap GraphRegistry::GetGraph(string& id){
-		return GraphRegistry::_instance._registry[id];
+	GraphPtr_IdMap GraphRegistry::GetStaticGraph(string& id){
+		return GraphRegistry::_instance._static_registry[id];
+	}
+
+	shared_ptr<GraphPtr_IdMap> GraphRegistry::GetDynamicGraph(string& id){
+		return GraphRegistry::_instance._dynamic_registry[id];
 	}
 
 	GraphRegistry::GraphRegistry(){
-		GraphRegistry::_instance._registry = map<string, GraphPtr_IdMap>();
+		GraphRegistry::_instance._static_registry =
+			map<string, GraphPtr_IdMap>();
+		GraphRegistry::_instance._static_registry =
+			map<string, GraphPtr_IdMap>();
 	}
 
 	GraphRegistry::GraphRegistry(const GraphRegistry& that){
@@ -55,11 +91,15 @@ namespace path_finder
 	}
 
 	GraphRegistry::~GraphRegistry() noexcept{
-		/* free the registry */
-		for(auto & element : GraphRegistry::_instance._registry){
+		/* free the static registry */
+		for(auto & element : GraphRegistry::_instance._static_registry){
 			delete element.second.first;
 			delete element.second.second;
 		}
+		/* free the dynamic registry */
+		GraphRegistry::_instance._dynamic_registry.erase(
+			GraphRegistry::_instance._dynamic_registry.begin(),
+			GraphRegistry::_instance._dynamic_registry.end());
 	}
 
 	#ifdef DEBUG

@@ -3,6 +3,7 @@ using std::map;
 using std::vector;
 using std::list;
 using std::string;
+using std::shared_ptr;
 
 template <typename State>
 GreedySearch<State>::GreedySearch() noexcept{
@@ -40,7 +41,7 @@ GreedySearch<State>::Solve(Node<State>* last){
 template <typename State>
 list<State>*
 GreedySearch<State>::Search(GraphPtr_IdMap static_graph_,
-	GraphPtr_IdMap dynamic_graph_,
+	shared_ptr<GraphPtr_IdMap> dynamic_graph_,
 	const Problem<State>& problem){
 
 	/* boost-property accessors */
@@ -48,7 +49,7 @@ GreedySearch<State>::Search(GraphPtr_IdMap static_graph_,
 		boost::get(boost::vertex_index, (*static_graph_.first));
 	/* define variables */
 	Graph *static_graph = static_graph_.first;
-	Graph *dynamic_graph = dynamic_graph_.first;
+	Graph *dynamic_graph = (dynamic_graph_.get())->first;
 	map<string, int>* indexes_map = (map<string, int>*)static_graph_.second;
 	auto ids_map = Algorithm::GetReversedMap<string, int>(indexes_map);
 	auto contour = this->_qmaker.MakeQueue(problem.GetFirstState());

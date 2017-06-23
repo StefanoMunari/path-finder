@@ -31,43 +31,25 @@ namespace path_finder
 				const std::string& subject_dir);
 			~AI() noexcept {};
 			template<typename State>
-			std::list<State>* FindPath(const std::string&, const std::string&,
+			std::list<State>* FindPath(const std::string& source,
+										const std::string& destination,
 										SearchableType algorithm);
 			#ifdef DEBUG
 			static void Print(void);
 			#endif /*DEBUG*/
 		private:
 			//static GraphObserver _graph_observer;
-			std::string _subject;
+			/** Identify the category of the graph requested by the client.
+				e.g.
+				a pedestrian will instantiated an AI with sidewalk category
+				a car will instantiate an AI with a street category, etc.
+				The category id is chosen by the client
+			*/
+			std::string _category;
 	};
 
-	template<typename State>
-	list<State>* AI::FindPath(const string& source,
-							const string& destination,
-							SearchableType algorithm)
-	{
-		auto _lambda_find =
-			[&source, &destination](Searchable<State>* finder)
-			{
-				std::string graph_name = "staticfootway";
-				auto static_graphptr_idmap =
-					GraphRegistry::Instance().GetGraph(graph_name);
-				auto dynamic_graphptr_idmap =
-					GraphRegistry::Instance().GetGraph(graph_name);
-				auto path = finder->Search(static_graphptr_idmap,
-									dynamic_graphptr_idmap,
-									Problem<State>(source, destination));
-				/* free the resources */
-				/* NOTE: do not delete the graphs because they directly refers
-					the registry graphs */
-				delete finder;
-				/* return the result */
-				return path;
-			};
-		return
-			_lambda_find(SearchableFactory::MakeSearchable<State>(algorithm));
-	}
-
+	/* import template implementation */
+	#include "ai.cpp"
 }
 
 #endif /*AI_H*/
