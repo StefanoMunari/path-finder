@@ -28,7 +28,7 @@ namespace path_finder
 		MakeSearchMap(State, std::map<int, std::string> *, Graph *);
 	};
 
-	/* import template implementation */
+	// import template implementation
 	#include "colored_search_map_maker.cpp"
 }
 #endif /*COLORED_SEARCH_MAP_MAKER_H*/

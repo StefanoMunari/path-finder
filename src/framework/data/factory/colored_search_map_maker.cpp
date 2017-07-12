@@ -6,15 +6,15 @@ map<string, std::pair<NodeColored<State> *, uint>> *
 ColoredSearchMapMaker<State>::MakeSearchMap(State source,
 	map<int, string> * ids_map, Graph * graph)
 {
-	/* shortcut for verbose type */
+	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, uint> SearchableTreeNode;
-	/* Boost-property accessors */
+	// Boost-property accessors
 	IndexMap node_index =
 		boost::get(boost::vertex_index,*graph);
-	/* vars */
+	// vars
 	auto search_map = new map<string, SearchableTreeNode>();
 	auto vertexes = boost::vertices(*graph);
-	/* body */
+	// body
 	search_map->insert(
 			std::pair<string, SearchableTreeNode>(
 				source,

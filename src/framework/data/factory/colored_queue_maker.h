@@ -30,7 +30,7 @@ namespace path_finder
 		MakeQueue(State);
 	};
 
-	/* import template implementation */
+	// import template implementation
 	#include "colored_queue_maker.cpp"
 }
 #endif /*COLORED_QUEUE_MAKER_H*/

@@ -12,7 +12,7 @@ namespace path_finder
 	  	State state;
 	  	Node* parent;
 	};
-	/* import template implementation */
+	// import template implementation
 	#include "node.cpp"
 }
 #endif /*NODE_H*/
