@@ -7,7 +7,8 @@ Searchable<State>* SearchableFactory::MakeSearchable(SearchableType algorithm){
 			return new GreedySearch<State>();
 		default:
 			throw
-			std::invalid_argument("SearchableFactory::Invalid algorithm identifier");
+				std::invalid_argument(
+					"SearchableFactory::Invalid algorithm identifier");
 			break;
 	}
 }
