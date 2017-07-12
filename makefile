@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=-std=c++17 -Wall -Werror $(CDBG) $(CVGD)
+CFLAGS=-std=c++17 -Wall -Werror -pthread $(CDBG) $(CVGD)
 
 SRCDIR=$(PWD)/src
 OBJDIR=$(PWD)/obj
@@ -42,13 +42,14 @@ run: compile
 
 .PHONY: profile
 profile: compile
-	@echo "=>Profiled: $(BINDIR)/$(BIN)"\
+	@echo "=>Profiled: $(BINDIR)/$(BIN)"
 	valgrind $(VGDOPTS) $(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
 
 .PHONY: help
 help:
 	@echo "Usage: make [commands] [options]\n"\
 		"Options:\n"\
+		"\t ARGS=<arg_list>\t\t\t\t  Runs with the argument list for main process.\n"\
 		"\t CDBG=-DDEBUG=1\t\t\t\t  Compiles with the debugging flag activated.\n"\
 		"\t CVGD=-g\t\t\t\t\t  Compiles with the valgrind flag activated.\n"\
 		"\t VGDOPTS=<valgrind_options>\t  Execs with the defined options for valgrind (only in profile mode).\n"\
