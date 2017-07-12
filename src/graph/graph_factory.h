@@ -23,8 +23,8 @@ namespace path_finder
 			GraphFactory(const GraphFactory&);
 			GraphFactory& operator=(const GraphFactory&);
 			~GraphFactory() noexcept {};
-			GraphPtr_IdMap CreateGraph(std::map<std::string,
-				std::vector<std::string>>&);
+			GraphPtr_IdMap
+				CreateGraph(std::map<std::string, std::vector<std::string>>&);
 		private:
 			DictionaryFactory _dictionary_factory;
 			GraphEncoder _graph_encoder;

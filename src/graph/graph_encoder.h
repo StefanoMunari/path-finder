@@ -11,11 +11,6 @@
 #include "../utils/boost_types.h"
 #include <python2.7/Python.h>
 
-
-#include <iostream>
-
-using namespace std;
-
 namespace path_finder
 {
 	class GraphEncoder{

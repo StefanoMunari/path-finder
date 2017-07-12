@@ -1,4 +1,4 @@
-/**
+/*
  * @file
  * @brief  Brief description of file.
  * @author <stefanomunari.sm@gmail.com>
@@ -16,12 +16,12 @@ namespace path_finder
 {
 	DictionaryFactory::DictionaryFactory(const string& file_name,
 		const std::string& directory){
-		/* add target directory to the current syspath env variable */
+		// add target directory to the current syspath env variable
 		PyObject* sysPath = PySys_GetObject((char*)"path");
 		PyList_Append(sysPath, PyString_FromString(directory.c_str()));
-		/* retrieve the target module */
+		// retrieve the target module
 		PyObject * module = PyImport_Import(PyString_FromString(file_name.c_str()));
-		/* get the corresponding factory */
+		// get the corresponding factory
 		_function_factory = FunctionFactory(module);
 	}
 
@@ -39,7 +39,7 @@ namespace path_finder
 	PyDictObject* DictionaryFactory::CreateDictionary
 	(const string& function_name, const string& configuration_path){
 		return (PyDictObject*) PyObject_CallObject(
-					_function_factory.CreateFunction(function_name),
-					_function_factory.CreateArgument(configuration_path));
+						_function_factory.CreateFunction(function_name),
+						_function_factory.CreateArgument(configuration_path));
 	}
 }

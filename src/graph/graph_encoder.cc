@@ -87,8 +87,10 @@ namespace path_finder
 						#ifdef DEBUG
 						std::cout<<"Source : "<< ids_map[node_index[*it]]<<
 						" = > Index Source: "<< node_index[*it] <<std::endl;
-						std::cout<<"Neighbor : "<<neighbors[node_index[*it]][i]<<
-						" = > Index Neighbor: "<< node_index[neighbor_descr] <<std::endl;
+						std::cout<<"Neighbor : "<<
+						neighbors[node_index[*it]][i]<<
+						" = > Index Neighbor: "<<
+						node_index[neighbor_descr] <<std::endl;
 						std::cout<<"Weight : "<<(*graph)[edge_descr]<<std::endl;
 						std::cout<<"----------------------"<<std::endl;
 						#endif /*DEBUG*/
@@ -96,12 +98,12 @@ namespace path_finder
 			    	++it;
 			    }
 			}
-			Py_DECREF(keys[0]);
-			Py_DECREF(keys[1]);
-			Py_DECREF(values[0]);
-			Py_DECREF(values[1]);
-			Py_DECREF((PyObject*) graph_dictionary);
-			Py_DECREF((PyObject*) costs_dictionary);
+			Py_CLEAR(keys[0]);
+			Py_CLEAR(keys[1]);
+			Py_CLEAR(values[0]);
+			Py_CLEAR(values[1]);
+			Py_CLEAR(graph_dictionary);
+			Py_CLEAR(costs_dictionary);
 		}
 		return std::pair<Graph*, IdVertexMap*>(graph, converter);
 	}

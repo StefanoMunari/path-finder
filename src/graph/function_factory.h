@@ -20,7 +20,7 @@ namespace path_finder
 			FunctionFactory(PyObject*);
 			FunctionFactory(const FunctionFactory&);
 			FunctionFactory& operator=(const FunctionFactory&);
-			~FunctionFactory() noexcept {};
+			~FunctionFactory() noexcept;
 			PyObject* CreateFunction(const std::string&);
 			PyObject* CreateArgument(const std::string&);
 		private:
