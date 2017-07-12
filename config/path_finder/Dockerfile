@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM debian:latest
 MAINTAINER <stefanomunari.sm@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -9,6 +9,7 @@ ADD loop.sh /tmp/
 
 RUN apt-get update && apt-get upgrade -y \
 && apt-get install -y \
+	build-essential \
     libboost-all-dev \
     g++ \
     libpython2.7

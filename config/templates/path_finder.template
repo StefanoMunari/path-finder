@@ -14,7 +14,7 @@ services:
       build: ./data
       container_name: path_finder_data
       volumes:
-        - K:PFINDER_ROOT:/home/cds/path_finder
+        - K:PATH_FINDER_ROOT:/home/cds/path_finder
 
     path_finder:
       build: ./path_finder

@@ -14,7 +14,7 @@ services:
       build: ./data
       container_name: path_finder_data
       volumes:
-        - $HOME/Git/path-finder:/home/cds/path-finder
+        - $HOME/Git/path-finder:/home/cds/path_finder
 
     path_finder:
       build: ./path_finder
@@ -23,6 +23,6 @@ services:
         - path_finder_data
       volumes_from:
         - path_finder_data
-      working_dir: /home/cds/path-finder
+      working_dir: /home/cds/path_finder
 volumes:
    path_finder_data:
