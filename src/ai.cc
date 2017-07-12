@@ -6,6 +6,7 @@
  * Detailed description of file.
  */
 #include "ai.h"
+//#include "graph/graph_observer.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -25,7 +26,12 @@ namespace path_finder
 	{
 		this->_category = category;
 		GraphRegistry::Instance().AddGraph(category, data_map, factory_data);
-		//AI::_graph_observer.Observe(subject_dir);
+		/*
+		// TODO: Fix notification (Python issue)
+		// the reader crash during the 2nd invocation (read the costs)
+		// it correctly finds the file but can not load the json representation
+		GraphObserver::Instance().Observe(subject_dir);
+		*/
 	}
 
 	#ifdef DEBUG

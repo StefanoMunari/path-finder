@@ -9,7 +9,6 @@
 #define AI_H
 
 #include "graph/graph_registry.h"
-//#include "graph/graph_observer.h"
 #include "search/factory/searchable_factory.h"
 #include "search/utils/searchable_type.h"
 #include "framework/problem/problem.h"
@@ -38,13 +37,12 @@ namespace path_finder
 			static void Print(void);
 			#endif /*DEBUG*/
 		private:
-			//static GraphObserver _graph_observer;
-			/** Identify the category of the graph requested by the client.
-				e.g.
-				a pedestrian will instantiated an AI with sidewalk category
-				a car will instantiate an AI with a street category, etc.
-				The category id is chosen by the client
-			*/
+			//	Identify the category of the graph requested by the client.
+			//	The category corresponds to the name prefix of the
+			//	infrastructure graph file.
+			//	e.g.
+			//	a pedestrian will instantiated an AI with sidewalk category
+			//	a car will instantiate an AI with a street category, etc.
 			std::string _category;
 	};
 
