@@ -7,17 +7,17 @@ priority_queue<
 	vector<std::pair<NodeColored<State>*, uint>>,
 	NodeComparator<State, uint>
 	>*
-ColoredQueueMaker<State>::MakeQueue(State source_id) {
+ColoredQueueMaker<State>::MakeQueue(State node_id) {
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, uint> SearchableColoredNode;
 	// declare local vars
-	auto source_node =
+	auto node =
 		SearchableColoredNode(
-			new NodeColored<State>(source_id, nullptr, BLACK), 0);
+			new NodeColored<State>(node_id, nullptr, BLACK), 0);
 	// create the colored queue
 	auto colored_queue =
 		new priority_queue<SearchableColoredNode, vector<SearchableColoredNode>,
 		NodeComparator<State, uint>>();
-	colored_queue->push(source_node);
+	colored_queue->push(node);
 	return colored_queue;
 }

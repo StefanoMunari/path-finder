@@ -102,15 +102,15 @@ int main(int argc, char **argv){
 
 	AI ai = AI(factory_data, data_map, key, prefix+data_prefix);
 	AI ai0 = AI(factory_data, data_map, key, prefix+data_prefix);
+	AI ai1 = AI(factory_data, data_map, key, prefix+data_prefix);
 
 	auto result =
 		ai.FindPath<string>(source, destination, path_finder::UNIFORM_COST);
 	auto result0 =
 		ai0.FindPath<string>(source, destination, path_finder::GREEDY);
-/*
 	auto result1 =
-		ai0.FindPath<string>(source, destination, path_finder::ASTAR);
-*/
+		ai1.FindPath<string>(source, destination, path_finder::ASTAR);
+
 	std::cout<<"==========PRINT RESULT========="<<std::endl;
 	std::cout<<"==========UNIFORM COST========="<<std::endl;
 	for(auto const& node : (*result)) {
@@ -120,7 +120,8 @@ int main(int argc, char **argv){
 	for(auto const& node : (*result0)) {
 	    std::cout<< node <<std::endl;
 	}
-
+	std::cout<<"==========ASTAR========="<<std::endl;
+	std::cout<<result1<<std::endl;
     // Necessary to wait for a signal from AI before releasing the static
     // memory. Otherwise Graph_Registry destructor is automatically invoked.
     // Main acts as the master thread

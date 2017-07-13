@@ -3,11 +3,12 @@
  * @brief Interface for the solver.
  * @author <stefanomunari.sm@gmail.com>
  */
-#ifndef HEURISTIC_FUNCTION_H
-#define HEURISTIC_FUNCTION_H
+#ifndef EXACT_HEURISTIC_H
+#define EXACT_HEURISTIC_H
 
-#include "../framework/data/node.h"
-#include <list>
+#include "heuristic_function.h"
+#include "../../../framework/data/factory/colored_informed_queue_maker.h"
+#include "../../../framework/data/utils/node_color.h"
 
 typedef unsigned int uint;
 
@@ -16,34 +17,39 @@ namespace path_finder
 	template <typename State> class HeuristicFunction;
 
 	/**
-	 * @brief Computes an exact cost heuristic based on the info available.
+	 * @brief Computes an exact cost heuristic based on the available info.
 	*/
 	template <typename State>
 	class ExactHeuristic
 	: public HeuristicFunction<State> {
 
 		public:
+			ExactHeuristic() noexcept {};
+			ExactHeuristic(const ExactHeuristic&) {};
+			ExactHeuristic& operator=(const ExactHeuristic&) {};
+			~ExactHeuristic() noexcept {};
 			/**
 			 * Computes the estimated value from the goal for each edge of
-			 * the map.
+			 * the map. It is computed based on the exact static cost of each
+			 * node, the tree is traversed in BFS considering the goal node as
+			 * root and keeping the cheapest path as better estimated cost each
+			 * time there are multiple estimated costs for a node.
 			 *
-			 * @param graph_map - the map which contains all default costs
-			 *					  (UINT_MAX) which HeuristicFunction estimates
-			 * @param goal - the goal node
-			 * @return the informed graph - it contains a
-			 *			map in the following format:
-			 *				key -> [<key, cost>, <key, cost>, ...]
-			 *			where each key is a Vertex_Id; each <key, cost>
-			 *			represents an edge where the cost is the estimated cost
-			 *			calculated by the heuristic function. It is similar to
-			 *			an adjacency list but with access in O(1).
+			 * @pre the cost of each edge of the graph parameter is symmetric.
+			 *		i.e. cost(A -> B) == cost(B -> A) == 10
 			 */
-			virtual
-			std::map<NodeColored<State> *,
-				list<pair<NodeColored<State> *, uint>>> *
-				Eval(std::map<NodeColored<State> *,
-						list<pair<NodeColored<State> *, uint>>> *,
-					NodeColored<State> *) =0;
+			std::map<std::string,
+					std::pair<NodeColored<State> *, NodeCosts *>> *
+			Eval(
+				std::map<std::string,
+						std::pair<NodeColored<State> *, NodeCosts *>> *,
+				Graph *,
+				std::map<std::string, int> * const,
+				std::map<int, std::string>&,
+				State);
 	};
+
+	// import template implementation
+	#include "exact_heuristic.cpp"
 }
-#endif /*HEURISTIC_FUNCTION_H*/
+#endif /*EXACT_HEURISTIC_H*/

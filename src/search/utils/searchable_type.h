@@ -10,7 +10,7 @@
 
 namespace path_finder
 {
-	enum SearchableType {UNIFORM_COST, GREEDY};
+	enum SearchableType {UNIFORM_COST, GREEDY, ASTAR};
 }
 
 #endif /*SEARCHABLE_TYPE_H*/

@@ -10,7 +10,7 @@ namespace path_finder
 	  public:
 	  	Node(State state, Node* parent) noexcept;
 	  	State state;
-	  	Node* parent;
+	  	Node * parent;
 	};
 	// import template implementation
 	#include "node.cpp"

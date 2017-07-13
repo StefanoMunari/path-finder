@@ -9,9 +9,10 @@
 #define SEARCHABLE_FACTORY_H
 
 #include "../searchable.h"
-#include "../utils/searchable_type.h"
+#include "../informed/astar_search.h"
 #include "../uninformed/greedy_search.h"
 #include "../uninformed/uniform_cost_search.h"
+#include "../utils/searchable_type.h"
 #include <stdexcept>
 
 namespace path_finder

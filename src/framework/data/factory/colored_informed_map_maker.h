@@ -9,6 +9,7 @@
 #define COLORED_INFORMED_MAP_MAKER_H
 
 #include "../node_colored.h"
+#include "../utils/node_costs.h"
 #include "../../../utils/boost_types.h"
 #include <map>
 #include <string>
@@ -22,31 +23,25 @@ namespace path_finder
 	template <typename State> class ColoredInformedMapMaker;
 
 	/**
-	 * @brief  Factory of map<key, <ColoredNode, cost>>.
+	 * @brief  Factory of map<key, <ColoredNode, costs>>.
 	 *
-	 * Creates a map of CONNECTED nodes. Each node is initialized with a
-	 * WHITE color and each edge with UINT_MAX cost by default.
-	 * Each node is a key of the map,
-	 * each entry referenced by a key contains a list of edges represented as
-	 * pairs of node * and cost.
+	 * Creates a map of nodes with the associated costs struct useful for
+	 * informed searches. All costs are set to UINT_MAX by default.
 	 *
-	 * @param ids_map - a map<vertex_id, vertex_name>
-	 * @param graph - the graph which contains the vertexes and the edges
+	 * @param search_map - the search_map used in uninformed searches.
 	 *
-	 * @return map<ColoredNode*, [<ColoredNode*, cost>]> - key is a pointer to
-	 *			the current node while the tuple <ColoredNode *, cost>
-	 *			contains info on the node and its cost
-	 *
-	 * @pre the graph has only NOT negative costs
+	 * @return the informed_map which contains a struct for the costs related
+	 *			to informed searches.
 	*/
 	template <typename State>
 	class ColoredInformedMapMaker {
 	  public:
-		std::map<NodeColored<State> *, list<pair<NodeColored<State> *, uint>>> *
-		MakeInformedMap(std::map<int, std::string> *, Graph *);
+		std::map<std::string, std::pair<NodeColored<State> *, NodeCosts *>> *
+		MakeInformedMap(
+				std::map<std::string, std::pair<NodeColored<State> *, uint>> *);
 	};
 
 	// import template implementation
-	#include "colored_search_map_maker.cpp"
+	#include "colored_informed_map_maker.cpp"
 }
 #endif /*COLORED_INFORMED_MAP_MAKER_H*/

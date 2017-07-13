@@ -5,6 +5,8 @@ Searchable<State>* SearchableFactory::MakeSearchable(SearchableType algorithm){
 			return new UniformCostSearch<State>();
 		case GREEDY:
 			return new GreedySearch<State>();
+		case ASTAR:
+			return new AStarSearch<State>();
 		default:
 			throw
 				std::invalid_argument(

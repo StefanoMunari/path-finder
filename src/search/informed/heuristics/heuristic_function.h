@@ -6,8 +6,13 @@
 #ifndef HEURISTIC_FUNCTION_H
 #define HEURISTIC_FUNCTION_H
 
-#include "../framework/data/node.h"
-#include <list>
+#include "../../../framework/data/node_colored.h"
+#include "../../../framework/data/utils/node_costs.h"
+#include "../../../utils/boost_types.h"
+#include <map>
+#include <string>
+#include <utility>// std::pair
+#include <climits>// UINT_MAX
 
 typedef unsigned int uint;
 
@@ -21,27 +26,35 @@ namespace path_finder
 	template <typename State>
 	class HeuristicFunction{
 		public:
+			HeuristicFunction() noexcept {};
+			virtual ~HeuristicFunction() noexcept {};
 			/**
-			 * Computes the estimated value from the goal for each edge of
-			 * the map.
+			 * Computes the estimated value for each node of the map starting
+			 * from the node which contains the goal state.
 			 *
-			 * @param graph_map - the map which contains all default costs
-			 *					  (UINT_MAX) which HeuristicFunction estimates
-			 * @param goal - the goal node
-			 * @return the informed graph - it contains a
-			 *			map in the following format:
-			 *				key -> [<key, cost>, <key, cost>, ...]
-			 *			where each key is a Vertex_Id; each <key, cost>
-			 *			represents an edge where the cost is the estimated cost
-			 *			calculated by the heuristic function. It is similar to
-			 *			an adjacency list but with access in O(1).
+			 * @param informed_map - the map which contains all default costs
+			 *						which HeuristicFunction will update
+			 * @param graph - the graph which contains all the connections
+			 *				between the nodes of the topology
+			 * @param indexes_map - contains the mapping between node names
+			 *						(aka states of the informed_map)
+			 *						and the vertex_indexes of the graph
+			 * @param ids_map - contains the mapping between vertex_indexes
+			 *					of the graph and the node names (aka states)
+			 * @param goal - the goal state
+			 *
+			 * @return the informed_map updated -  the estimated costs are
+			 *			updated (distance current_node -> goal).
 			 */
 			virtual
-			std::map<NodeColored<State> *,
-				list<pair<NodeColored<State> *, uint>>> *
-				Eval(std::map<NodeColored<State> *,
-						list<pair<NodeColored<State> *, uint>>> *,
-					NodeColored<State> *) =0;
+			std::map<std::string,
+					std::pair<NodeColored<State> *, NodeCosts *>> *
+			Eval(std::map<std::string,
+						std::pair<NodeColored<State> *, NodeCosts *>> *,
+				Graph *,
+				std::map<std::string, int> * const,
+				std::map<int, std::string>&,
+				State) =0;
 	};
 }
 #endif /*HEURISTIC_FUNCTION_H*/
