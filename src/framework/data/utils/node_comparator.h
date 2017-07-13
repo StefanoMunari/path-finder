@@ -8,6 +8,15 @@ namespace path_finder
 {
 	template <typename State, typename Num> struct NodeComparator;
 
+	/**
+	 * @brief  Compare two nodes - true if the value of the first is greater
+	 *			than the value of the second one, false otherwise.
+	 *
+	 * @param n1 - the first node
+	 * @param n2 - the second node
+	 *
+	 * @return the result of the comparison
+	*/
 	template <typename State, typename Num>
 	struct NodeComparator
 	{
