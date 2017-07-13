@@ -1,6 +1,6 @@
 CXX=g++
-CFLAGS=-std=c++17 -Wall -Werror -pthread $(CDBG) $(CVGD)
-
+CFLAGS=-std=c++17 -Wall -pthread $(CDBG) $(CVGD)
+# -Werror
 SRCDIR=$(PWD)/src
 OBJDIR=$(PWD)/obj
 BINDIR=$(PWD)/bin
