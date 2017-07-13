@@ -43,6 +43,7 @@ int main(int argc, char **argv){
 		throw std::invalid_argument("main - environment var not specified");
 
 	const string prefix = string(c_prefix);
+	string data_prefix = "";
 	string key = "";
 	vector<string> factory_data = vector<string>();
 	vector<string> function_names = vector<string>();
@@ -53,13 +54,12 @@ int main(int argc, char **argv){
 		std::ifstream configuration_ptr =
 			std::ifstream(prefix+"/etc/path_finder.conf", std::ifstream::in);
 		string line;
-		string gprefix;
 		int vline_counter = 0;
 
 		while (std::getline(configuration_ptr, line))
 		{
 
-	        if(line[0] != '#')
+	        if(line[0] != '#')// not a commented line
 			{
 				switch(vline_counter){
 					case 0:
@@ -73,13 +73,13 @@ int main(int argc, char **argv){
 						function_names.push_back(line);
 						break;
 					case 3:
-						gprefix = line;
+						data_prefix = line;
 						break;
 					case 4:
-						configuration_paths.push_back(prefix+gprefix+line);
+						configuration_paths.push_back(prefix+data_prefix+line);
 						break;
 					case 5:
-						configuration_paths.push_back(prefix+gprefix+line);
+						configuration_paths.push_back(prefix+data_prefix+line);
 						break;
 					case 6:
 						key = line;
@@ -100,13 +100,17 @@ int main(int argc, char **argv){
 		pair<string, vector<string>>(
 			"configuration_paths", configuration_paths));
 
-	AI ai = AI(factory_data, data_map,"romania",prefix+"/data");
-	AI ai0 = AI(factory_data, data_map,"romania",prefix+"/data");
+	AI ai = AI(factory_data, data_map, key, prefix+data_prefix);
+	AI ai0 = AI(factory_data, data_map, key, prefix+data_prefix);
+
 	auto result =
 		ai.FindPath<string>(source, destination, path_finder::UNIFORM_COST);
 	auto result0 =
 		ai0.FindPath<string>(source, destination, path_finder::GREEDY);
-
+/*
+	auto result1 =
+		ai0.FindPath<string>(source, destination, path_finder::ASTAR);
+*/
 	std::cout<<"==========PRINT RESULT========="<<std::endl;
 	std::cout<<"==========UNIFORM COST========="<<std::endl;
 	for(auto const& node : (*result)) {
