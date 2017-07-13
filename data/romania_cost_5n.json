@@ -1,7 +1,7 @@
 {
   "Sibiu": [99,80],
   "Rimnicu Vilcea": [80,97],
-  "Fagaras": [99,211],
-  "Pitesti": [97,101],
+  "Fagaras": [99,211,230],
+  "Pitesti": [97,101,230],
   "Bucharest": [101,211]
 }
