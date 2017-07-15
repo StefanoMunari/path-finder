@@ -29,9 +29,11 @@ namespace path_finder
 				return (*this);
 			}
 			~NodeCosts() noexcept {};
-			bool operator>(const NodeCosts& nc) const
+			bool operator >(const NodeCosts& nc) const
 			{
-				return (this->g > nc.g) && (this->h > nc.h);
+				unsigned long f0 = this->g + this->h;
+				unsigned long f1 = nc.g + nc.h;
+				return f0>f1;
 			}
 			/*
 			 * effective cost (source, n)
