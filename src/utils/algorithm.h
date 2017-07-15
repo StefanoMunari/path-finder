@@ -20,7 +20,7 @@ namespace path_finder{
 			static std::map<T1, T0>
 			GetReversedMap(std::map<T0, T1>* to_reverse);
 	};
-	/* import template implementation */
+	// import template implementation
 	#include "algorithm.cpp"
 }
 #endif /*ALGORITHM_H*/

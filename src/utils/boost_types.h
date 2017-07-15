@@ -15,19 +15,19 @@
 #include <map>
 #include <string>
 
-/* Internal Bundled Properties */
+// Internal Bundled Properties
 typedef int Index;
 typedef unsigned int Weight;
-/* Graph Type */
+// Graph Type
 typedef boost::adjacency_list<boost::vecS,boost::vecS,boost::directedS,
 Index, Weight> Graph;
-/* External Properties */
+// External Properties
 typedef boost::property_map<Graph, boost::vertex_index_t>::type IndexMap;
-/* Graph Traits */
+// Graph Traits
 typedef boost::graph_traits<Graph>::vertex_iterator VertexIterator;
 typedef boost::graph_traits<Graph>::vertex_descriptor VertexDescriptor;
 typedef boost::graph_traits<Graph>::edge_descriptor EdgeDescriptor;
-/* Auxiliary Types */
+// Auxiliary Types
 typedef std::map<std::string, VertexDescriptor> IdVertexMap;
 typedef std::pair<Graph*, IdVertexMap*> GraphPtr_IdMap;
 typedef long unsigned int luint;
