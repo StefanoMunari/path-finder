@@ -10,14 +10,14 @@ using std::shared_ptr;
 template <typename State>
 AStarSearch<State>::AStarSearch() noexcept
 {
-	this->_qmaker = ColoredQueueMaker<State>();
+	this->_informed_qmaker = ColoredInformedQueueMaker<State>();
 	this->_informed_map_maker = ColoredInformedMapMaker<State>();
 	this->_heuristic = new ExactHeuristic<State>();
 }
 
 template <typename State>
 AStarSearch<State>::AStarSearch(const AStarSearch& that){
-	this->_qmaker = that._qmaker;
+	this->_informed_qmaker = that._informed_qmaker;
 	this->_informed_map_maker = that._informed_map_maker;
 	this->_heuristic = that._heuristic;
 }
@@ -25,7 +25,7 @@ AStarSearch<State>::AStarSearch(const AStarSearch& that){
 template <typename State>
 AStarSearch<State>&
 AStarSearch<State>::operator=(const AStarSearch& that){
-	this->_qmaker = that._qmaker;
+	this->_informed_qmaker = that._informed_qmaker;
 	this->_informed_map_maker = that._informed_map_maker;
 	this->_heuristic = that._heuristic;
 	return *this;
@@ -63,33 +63,88 @@ AStarSearch<State>::Search(GraphPtr_IdMap static_graph_,
 	shared_ptr<GraphPtr_IdMap> dynamic_graph_,
 	const Problem<State>& problem)
 {
+// declare vars and execute heuristic function
 	// boost-property accessors
 	IndexMap node_index =
 		boost::get(boost::vertex_index, (*static_graph_.first));
+	// shortcuts for verbose types
+	typedef std::priority_queue<
+			std::pair<NodeColored<State>*,  NodeCosts *>,
+			std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
+			NodeComparator<State, NodeCosts>> * InformedQueue;
+	typedef map<string, std::pair<NodeColored<State> *, NodeCosts *>> *
+			InformedMap;
 	// define variables
 	Graph * static_graph = static_graph_.first;
 	Graph * dynamic_graph = (dynamic_graph_.get())->first;
 	map<string, int> * indexes_map = (map<string, int>*)static_graph_.second;
 	auto ids_map = Algorithm::GetReversedMap<string, int>(indexes_map);
-	auto contour = this->_qmaker.MakeQueue(problem.GetFirstState());
+	// the resulting path is empty (no solution found yet)
+	list<State>* result = EMPTY;
 	// compute the informed_map from a search_map
-	map<string, std::pair<NodeColored<State> *, NodeCosts *>> *
-		informed_map = nullptr;
+	InformedMap informed_map = EMPTY;
+	// compute the contour inserting the source from the informed map
+	InformedQueue contour = EMPTY;
 	{
-		auto search_map = ColoredSearchMapMaker<State>();
-		informed_map =
-			this->_informed_map_maker.MakeInformedMap(
-				search_map.MakeSearchMap(
-					(contour->top()).first->state,
+		auto search_map_maker = ColoredSearchMapMaker<State>();
+		// search map creates the actual colored nodes
+		auto search_map = search_map_maker.MakeMap(
 					&ids_map,
-					static_graph_.first));
+					static_graph_.first);
+		informed_map =
+			this->_informed_map_maker.MakeMap(search_map);
+		// contour and informed map use only pointers to colored nodes
+		// already created in search_map
+		contour = this->_informed_qmaker.MakeQueue();
 	}
 	// update the informed_map with the costs computed by the heuristic
 	informed_map =
 		this->_heuristic->Eval(
 			informed_map, static_graph, indexes_map, ids_map,
 			problem.GetGoalState());
+	// insert the source node with the correct effective cost,
+	// by default all the effective costs are set to MAX
+	{
+		auto source_node = (*informed_map)[problem.GetFirstState()];
+		source_node.second->g = 0;
+		// add the source node to the contour
+		contour->push(source_node);
+	}
+	// declare iterators
+	VertexDescriptor current, end;
+	end = boost::graph_traits<Graph>::null_vertex();
 
-	// search failed
-	return EMPTY;
+	// apply the A* search algorithm:
+	while(!contour->empty() && (current != end)){
+		auto current_node = contour->top();
+		contour->pop();
+		current = (*indexes_map)[current_node.first->state];
+		// goal reached - search completed
+		if(problem.IsGoal(current_node.first->state)){
+			result = Solve(current_node.first);
+			break;
+		}
+		// explore the current area
+		auto neighbors =
+			boost::adjacent_vertices(current, *static_graph_.first);
+
+		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
+			string neighbor = ids_map[node_index[*n_it]];
+			auto current_neigh = (*informed_map)[neighbor];
+			// neigh.g = parent.g + dynamic_cost(parent, neigh);
+			auto effective_neigh_cost =
+					current_node.second->g +
+					(*dynamic_graph)
+					[boost::edge(current,*n_it,(*dynamic_graph)).first];
+			// neighbor not yet explored
+			if(current_neigh.second->g > effective_neigh_cost){
+		   		current_neigh.first->parent = current_node.first;
+		   		current_neigh.second->g = effective_neigh_cost;
+		   		contour->push(current_neigh);
+			}
+		}
+	}
+
+	(this->_informed_map_maker.MakeMapDestructor())(informed_map);
+	return result;
 }

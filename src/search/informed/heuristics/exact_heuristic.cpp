@@ -17,14 +17,18 @@ ExactHeuristic<State>::Eval(
 	ColoredInformedQueueMaker<State> qmaker =
 		ColoredInformedQueueMaker<State>();
 	// the contour is a priority colored informed queue
-	auto contour = qmaker.MakeQueue((*informed_map)[goal]);
-	// the estimated cost for the goal node is zero
-	std::pair<NodeColored<State> *, NodeCosts *> goal_node = contour->top();
-	goal_node.second->h = 0;
+	auto contour = qmaker.MakeQueue();
+	{
+		// the estimated cost for the goal node is zero
+		auto goal_node = (*informed_map)[goal];
+		goal_node.second->h = 0;
+		// insert the goal as the first node of the priority queue
+		contour->push(goal_node);
+	}
 	// declare graph iterators
 	VertexDescriptor current, end;
 	end = boost::graph_traits<Graph>::null_vertex();
-	// BFS
+
 	while(!contour->empty() && (current != end)){
 		// get the colored informed node
 		auto current_node = contour->top();
@@ -32,7 +36,7 @@ ExactHeuristic<State>::Eval(
 		// get the related boost::vertex_descriptor
 		current = (*indexes_map)[current_node.first->state];
 		// mark node as completed
-		goal_node.first->color = BLACK;
+		current_node.first->color = BLACK;
 		// get the set of neighbors using the vertex descriptor
 		auto neighbors =
 			boost::adjacent_vertices(current, (*graph));

@@ -28,11 +28,6 @@
 #include <algorithm>// std::for_each
 #include <climits>// UINT_MAX
 
-#include <iostream>
-
-using namespace std;
-
-
 typedef unsigned int uint;
 
 namespace path_finder
@@ -41,6 +36,8 @@ namespace path_finder
 
 	/**
 	 * @brief  A* search on a graph.
+	 *
+	 * @pre use a consistent heuristic
 	*/
 	template <typename State>
 	class AStarSearch
@@ -68,7 +65,7 @@ namespace path_finder
 			 * @brief instance of a colored queue factory class
 			 * @see colored_queue_maker.h
 			*/
-			ColoredQueueMaker<State> _qmaker;
+			ColoredInformedQueueMaker<State> _informed_qmaker;
 			/**
 			 * @brief instance of a colored search map factory class
 			 * @see colored_search_map_maker.h

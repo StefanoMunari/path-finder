@@ -37,6 +37,8 @@ namespace path_finder
 			 *
 			 * @pre the cost of each edge of the graph parameter is symmetric.
 			 *		i.e. cost(A -> B) == cost(B -> A) == 10
+			 *
+			 * @post all nodes->color are BLACK (has been completely visited)
 			 */
 			std::map<std::string,
 					std::pair<NodeColored<State> *, NodeCosts *>> *
