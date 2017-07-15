@@ -15,13 +15,13 @@
 #include <string>
 #include <utility>// std::pair
 #include <climits>// UINT_MAX
+#include <functional>// std::function
 
 typedef unsigned int uint;
 
 namespace path_finder
 {
 	template <typename State> class ColoredInformedMapMaker;
-
 	/**
 	 * @brief  Factory of map<key, <ColoredNode, costs>>.
 	 *
@@ -34,11 +34,18 @@ namespace path_finder
 	 *			to informed searches.
 	*/
 	template <typename State>
-	class ColoredInformedMapMaker {
+	class ColoredInformedMapMaker{
 	  public:
-		std::map<std::string, std::pair<NodeColored<State> *, NodeCosts *>> *
-		MakeInformedMap(
-				std::map<std::string, std::pair<NodeColored<State> *, uint>> *);
+
+		std::map<std::string, std::pair<NodeColored<State> *,NodeCosts *>> *
+		MakeMap(std::map<std::string, std::pair<NodeColored<State> *, uint>> *);
+
+		std::function<
+					void
+					(std::map<std::string,
+							std::pair<NodeColored<State> *,NodeCosts *>> *)
+					>
+		MakeMapDestructor(void);
 	};
 
 	// import template implementation

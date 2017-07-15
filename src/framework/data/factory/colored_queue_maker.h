@@ -40,7 +40,7 @@ namespace path_finder
 			std::pair<NodeColored<State>*, uint>,
 			std::vector<std::pair<NodeColored<State>*, uint>>,
 			NodeComparator<State, uint>>*
-		MakeQueue(State);
+		MakeQueue();
 	};
 
 	// import template implementation

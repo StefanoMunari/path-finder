@@ -39,8 +39,8 @@ namespace path_finder
 		std::priority_queue<
 			std::pair<NodeColored<State>*,  NodeCosts *>,
 			std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
-			NodeComparator<State, NodeCosts *>>*
-		MakeQueue(std::pair<NodeColored<State>*,  NodeCosts *>);
+			NodeComparator<State, NodeCosts>>*
+		MakeQueue();
 	};
 
 	// import template implementation
