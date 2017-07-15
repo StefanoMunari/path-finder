@@ -121,7 +121,9 @@ int main(int argc, char **argv){
 	    std::cout<< node <<std::endl;
 	}
 	std::cout<<"==========ASTAR========="<<std::endl;
-	std::cout<<result1<<std::endl;
+	for(auto const& node : (*result1)) {
+	    std::cout<< node <<std::endl;
+	}
     // Necessary to wait for a signal from AI before releasing the static
     // memory. Otherwise Graph_Registry destructor is automatically invoked.
     // Main acts as the master thread

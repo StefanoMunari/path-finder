@@ -46,7 +46,7 @@ namespace path_finder
 			std::string _category;
 	};
 
-	/* import template implementation */
+	// import template implementation
 	#include "ai.cpp"
 }
 

@@ -10,14 +10,15 @@ list<State>* AI::FindPath(const string& source,
 				GraphRegistry::Instance().GetStaticGraph(this->_category);
 			auto dynamic_graphptr_idmap =
 				GraphRegistry::Instance().GetDynamicGraph(this->_category);
-			auto path = finder->Search(static_graphptr_idmap,
+			auto path = finder->Search(
+								static_graphptr_idmap,
 								dynamic_graphptr_idmap,
 								Problem<State>(source, destination));
-			/* free the resources */
-			/* NOTE: do not delete the graphs because they directly refers
-				the registry graphs */
+			// Free resources
+			// NOTE: do not delete the graphs because they directly refers
+			// the registry graphs (pointers)
 			delete finder;
-			/* return the result */
+			// return the resulting path
 			return path;
 		};
 	return
