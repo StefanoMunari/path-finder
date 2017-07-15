@@ -11,7 +11,6 @@
 #include "../node_colored.h"
 #include "../../../utils/boost_types.h"
 #include <map>
-#include <string>
 #include <utility>// std::pair
 #include <climits>// UINT_MAX
 #include <functional>// std::function
@@ -41,11 +40,11 @@ namespace path_finder
 	template <typename State>
 	class ColoredSearchMapMaker {
 	  public:
-		std::map<std::string, std::pair<NodeColored<State>*, uint>> *
-		MakeMap(std::map<int, std::string> *, Graph *);
+		std::map<State, std::pair<NodeColored<State>*, uint>> *
+		MakeMap(std::map<int, State> *, Graph *);
 		std::function<
 					void
-					(std::map<std::string,
+					(std::map<State,
 							std::pair<NodeColored<State>*, uint>> *)
 					>
 		MakeMapDestructor(void);

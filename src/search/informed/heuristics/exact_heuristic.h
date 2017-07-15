@@ -40,14 +40,14 @@ namespace path_finder
 			 *
 			 * @post all nodes->color are BLACK (has been completely visited)
 			 */
-			std::map<std::string,
+			std::map<State,
 					std::pair<NodeColored<State> *, NodeCosts *>> *
 			Eval(
-				std::map<std::string,
+				std::map<State,
 						std::pair<NodeColored<State> *, NodeCosts *>> *,
 				Graph *,
-				std::map<std::string, int> * const,
-				std::map<int, std::string>&,
+				std::map<State, int> * const,
+				std::map<int, State>&,
 				State);
 	};
 

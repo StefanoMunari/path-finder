@@ -12,7 +12,6 @@
 #include "../utils/node_costs.h"
 #include "../../../utils/boost_types.h"
 #include <map>
-#include <string>
 #include <utility>// std::pair
 #include <climits>// UINT_MAX
 #include <functional>// std::function
@@ -37,12 +36,12 @@ namespace path_finder
 	class ColoredInformedMapMaker{
 	  public:
 
-		std::map<std::string, std::pair<NodeColored<State> *,NodeCosts *>> *
+		std::map<State, std::pair<NodeColored<State> *,NodeCosts *>> *
 		MakeMap(std::map<std::string, std::pair<NodeColored<State> *, uint>> *);
 
 		std::function<
 					void
-					(std::map<std::string,
+					(std::map<State,
 							std::pair<NodeColored<State> *,NodeCosts *>> *)
 					>
 		MakeMapDestructor(void);

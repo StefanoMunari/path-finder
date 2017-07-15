@@ -59,7 +59,8 @@ AStarSearch<State>::Solve(Node<State>* last){
 
 template <typename State>
 list<State>*
-AStarSearch<State>::Search(GraphPtr_IdMap static_graph_,
+AStarSearch<State>::Search(
+	GraphPtr_IdMap static_graph_,
 	shared_ptr<GraphPtr_IdMap> dynamic_graph_,
 	const Problem<State>& problem)
 {
@@ -72,13 +73,13 @@ AStarSearch<State>::Search(GraphPtr_IdMap static_graph_,
 			std::pair<NodeColored<State>*,  NodeCosts *>,
 			std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
 			NodeComparator<State, NodeCosts>> * InformedQueue;
-	typedef map<string, std::pair<NodeColored<State> *, NodeCosts *>> *
+	typedef map<State, std::pair<NodeColored<State> *, NodeCosts *>> *
 			InformedMap;
 	// define variables
 	Graph * static_graph = static_graph_.first;
 	Graph * dynamic_graph = (dynamic_graph_.get())->first;
-	map<string, int> * indexes_map = (map<string, int>*)static_graph_.second;
-	auto ids_map = Algorithm::GetReversedMap<string, int>(indexes_map);
+	map<State, int> * indexes_map = (map<State, int>*)static_graph_.second;
+	auto ids_map = Algorithm::GetReversedMap<State, int>(indexes_map);
 	// the resulting path is empty (no solution found yet)
 	list<State>* result = EMPTY;
 	// compute the informed_map from a search_map
@@ -129,7 +130,7 @@ AStarSearch<State>::Search(GraphPtr_IdMap static_graph_,
 			boost::adjacent_vertices(current, *static_graph_.first);
 
 		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
-			string neighbor = ids_map[node_index[*n_it]];
+			State neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*informed_map)[neighbor];
 			// neigh.g = parent.g + dynamic_cost(parent, neigh);
 			auto effective_neigh_cost =

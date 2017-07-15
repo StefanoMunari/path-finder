@@ -2,12 +2,12 @@ using std::map;
 using std::string;
 
 template <typename State>
-std::map<std::string, std::pair<NodeColored<State> *, NodeCosts *>> *
+std::map<State, std::pair<NodeColored<State> *, NodeCosts *>> *
 ExactHeuristic<State>::Eval(
-	map<string, std::pair<NodeColored<State> *, NodeCosts *>> * informed_map,
+	map<State, std::pair<NodeColored<State> *, NodeCosts *>> * informed_map,
 	Graph * graph,
-	map<string, int> * const indexes_map,
-	map<int, string>& ids_map,
+	map<State, int> * const indexes_map,
+	map<int, State>& ids_map,
 	State goal)
 {
 	// boost-property accessors
@@ -43,7 +43,7 @@ ExactHeuristic<State>::Eval(
 		// update the estimated costs for the neighbors
 		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
 			// get the neighbor name/state
-			string neighbor = ids_map[node_index[*n_it]];
+			State neighbor = ids_map[node_index[*n_it]];
 			// get the neighbor node (pointer)
 			auto current_neigh = (*informed_map)[neighbor];
 			// compute the estimated cost

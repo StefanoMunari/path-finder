@@ -55,9 +55,10 @@ namespace path_finder
 			~AStarSearch() noexcept;
 			void SetHeuristicFunction(HeuristicFunction<State> *);
 			std::list<State>* Solve(Node<State>*);
-			std::list<State>* Search(GraphPtr_IdMap,
-									std::shared_ptr<GraphPtr_IdMap>,
-									const Problem<State>&);
+			std::list<State>* Search(
+						GraphPtr_IdMap,
+						std::shared_ptr<GraphPtr_IdMap>,
+						const Problem<State>&);
 
 		private:
 			HeuristicFunction<State> * _heuristic = nullptr;

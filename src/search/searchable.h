@@ -35,7 +35,8 @@ namespace path_finder
 			 */
 			virtual std::list<State>*
 			Search(GraphPtr_IdMap static_graph_,
-					std::shared_ptr<GraphPtr_IdMap> dynamic_graph_,
+					std::shared_ptr<GraphPtr_IdMap>
+					dynamic_graph_,
 					const Problem<State>& problem) =0;
 	};
 }

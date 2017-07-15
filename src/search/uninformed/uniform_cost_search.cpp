@@ -2,7 +2,6 @@ using std::priority_queue;
 using std::map;
 using std::vector;
 using std::list;
-using std::string;
 using std::shared_ptr;
 
 template <typename State>
@@ -40,7 +39,8 @@ UniformCostSearch<State>::Solve(Node<State>* last){
 
 template <typename State>
 list<State>*
-UniformCostSearch<State>::Search(GraphPtr_IdMap static_graph_,
+UniformCostSearch<State>::Search(
+	GraphPtr_IdMap static_graph_,
 	shared_ptr<GraphPtr_IdMap> dynamic_graph_,
 	const Problem<State>& problem)
 {
@@ -55,9 +55,9 @@ UniformCostSearch<State>::Search(GraphPtr_IdMap static_graph_,
 	// the resulting path is empty (no solution found yet)
 	list<State>* result = EMPTY;
 	// state -> vertex_index
-	map<string, int>* indexes_map = (map<string, int>*)static_graph_.second;
+	map<State, int>* indexes_map = (map<State, int>*)static_graph_.second;
 	// vertex_index -> state
-	auto ids_map = Algorithm::GetReversedMap<string, int>(indexes_map);
+	auto ids_map = Algorithm::GetReversedMap<State, int>(indexes_map);
 	// set-up contour
 	auto contour = this->_qmaker.MakeQueue();
 	// push the source node and mark it as completed/explored
@@ -96,7 +96,7 @@ UniformCostSearch<State>::Search(GraphPtr_IdMap static_graph_,
 			boost::adjacent_vertices(current, *static_graph_.first);
 
 		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
-			string neighbor = ids_map[node_index[*n_it]];
+			State neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*search_map)[neighbor];
 			auto neigh_cost = current_node.second +
 					(*static_graph)
