@@ -1,15 +1,14 @@
 CXX=g++
-CFLAGS=-std=c++17 -Wall -pthread $(CDBG) $(CVGD)
-# -Werror
+CFLAGS=-std=c++17 -Wall -Werror -pthread $(CDBG) $(CVGD)
 SRCDIR=$(PWD)/src
 OBJDIR=$(PWD)/obj
 BINDIR=$(PWD)/bin
-TRASHDIR=$(SRCDIR)/_trash
+
 LIBDIR=/usr/include
-LIB=python2.7
+LIB=jsoncpp
 INCLUDE=/usr/include/boost
 
-SRC=$(shell find $(SRCDIR) -name *.cc)
+SRC=$(wildcard $(SRCDIR)/*.cc) $(wildcard $(SRCDIR)/*/*.cc) $(wildcard $(SRCDIR)/*/*/*.cc)
 OBJ=$(SRC:%.cc=%.o)
 BIN=find_path
 
@@ -17,23 +16,15 @@ all: compile
 
 %.o: %.cc
 	@echo "\n=>Compiling: $@"
-	$(CXX) $(CFLAGS) $(CVG) -I $(INCLUDE) -c $< -o $@
+	$(CXX) $(CFLAGS) $(CVG) -I $(INCLUDE) -c $< -o $(OBJDIR)/$(lastword $(subst /, ,$@))
 
-preprocessing:
-	@echo '' \
-	$$(mv $(TRASHDIR)/*.o $(SRCDIR) 2>&-) >/dev/null
-
-copy_to_obj: preprocessing $(OBJ)
-	@echo '' \
-	$$(cp $(OBJ) $(OBJDIR) ) >/dev/null
-
-$(BINDIR)/$(BIN): copy_to_obj
+$(BINDIR)/$(BIN): $(OBJ)
 	@echo "\n=>Linking: $(OBJDIR)/*.o"
 	$(CXX) $(CFLAGS) $(OBJDIR)/*.o -o $@ -L$(LIBDIR) -l$(LIB)
 
+
 compile: $(BINDIR)/$(BIN)
-	@echo '' \
-	$$(mv $(OBJ) $(TRASHDIR) ) >/dev/null
+	@echo "$(SRC)"
 
 .PHONY: run
 run: compile
@@ -43,13 +34,13 @@ run: compile
 .PHONY: profile
 profile: compile
 	@echo "=>Profiled: $(BINDIR)/$(BIN)"
-	valgrind $(VGDOPTS) $(BINDIR)/$(BIN) 2>&1 | tee -a make_run.log && rm make_run.log
+	valgrind $(VGDOPTS) $(BINDIR)/$(BIN) $(ARGS) 2>&1 | tee -a make_run.log && rm make_run.log
 
 .PHONY: help
 help:
 	@echo "Usage: make [commands] [options]\n"\
 		"Options:\n"\
-		"\t ARGS=<arg_list>\t\t\t\t  Runs with the argument list for main process.\n"\
+		"\t ARGS=<arg_list>\t\t\t  Runs with the argument list for main process. e.g. ARGS=\"Source Destination\"\n"\
 		"\t CDBG=-DDEBUG=1\t\t\t\t  Compiles with the debugging flag activated.\n"\
 		"\t CVGD=-g\t\t\t\t\t  Compiles with the valgrind flag activated.\n"\
 		"\t VGDOPTS=<valgrind_options>\t  Execs with the defined options for valgrind (only in profile mode).\n"\
