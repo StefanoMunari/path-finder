@@ -18,14 +18,12 @@ namespace path_finder{
 		public:
 
 			static
-			void
-			Read(const std::string&,
-				std::map<std::string, std::vector<std::string>> *);
+			void Read(const std::string&,
+					std::map<std::string, std::vector<std::string>> *);
 
 			static
-			void
-			Read(const std::string&,
-				std::map<std::string, std::vector<uint>> *);
+			void Read(const std::string&,
+					std::map<std::string, std::vector<uint>> *);
 	};
 }
 #endif /*JSON_READER_H*/

@@ -4,6 +4,7 @@
 #include <jsoncpp/json/value.h>
 #include <fstream>
 #include <utility>
+#include <stdexcept>
 
 namespace path_finder{
 
@@ -33,6 +34,10 @@ JSON_Reader::Read(const std::string& file_path,
 		}
 	}
 
+	if(!ifile.eof())
+		throw std::invalid_argument(
+			"JSON_Reader<string> - configuration stream error");
+
 	ifile.close();
 }
 
@@ -61,6 +66,10 @@ JSON_Reader::Read(const std::string& file_path,
 					it.key().asString(),values));
 		}
 	}
+
+	if(!ifile.eof())
+		throw std::invalid_argument(
+			"JSON_Reader<uint> - configuration stream error");
 
 	ifile.close();
 }
