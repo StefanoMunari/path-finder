@@ -82,6 +82,9 @@ int main(int argc, char **argv){
 		if(!configuration_stream.eof())
 			throw std::invalid_argument(
 				"main - configuration stream error : "+line);
+		if(data_path.empty() || f_name_prefix.empty() || f_extension.empty())
+			throw std::invalid_argument(
+				"main - empty arguments from configuration stream");
 	}
 
 	AI ai = AI(prefix+data_path, f_name_prefix, f_extension);
