@@ -1,4 +1,5 @@
-# Path Finder  
+# Path Finder
+
 A simple path-finder library for all kinds of maps (also not grid-based) written in C++ based on [aima](http://aima.cs.berkeley.edu/) algorithms.    
 
 Project for the  [Artificial Intelligence course 2016/2017](http://informatica.math.unipd.it/laureamagistrale/intelligenzaartificialeen.html)   
@@ -8,12 +9,16 @@ Project for the  [Artificial Intelligence course 2016/2017](http://informatica.m
 
 * [Boost Library](http://www.boost.org/)
 
-### Uninformed Search (Algorithms)  
+* [JSONCpp Library](https://en.wikiversity.org/wiki/JsonCpp)
+
+### Uninformed Search (Algorithms)
+
+* Greedy
+
+* Uniform Cost
 
 ### Informed-Search (Algorithms)
 
-* Best First Greedy  
-* A\* 
-* Recursive Best First Search (RBFS) 
+* A\*
 
 ## Usage
