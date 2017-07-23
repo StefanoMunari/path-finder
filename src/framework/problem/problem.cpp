@@ -17,17 +17,20 @@ Problem<State>::Problem(Problem && problem) noexcept{
 };
 */
 template <typename State>
-State Problem<State>::GetFirstState() const {
+State Problem<State>::GetFirstState() const
+{
   return _source;
 };
 
 template <typename State>
-State Problem<State>::GetGoalState() const {
+State Problem<State>::GetGoalState() const
+{
   return _goal;
 };
 
 template <typename State>
-bool Problem<State>::IsGoal(const State& state) const{
+bool Problem<State>::IsGoal(const State& state) const
+{
   return (state  ==  _goal);
 }
 /*
