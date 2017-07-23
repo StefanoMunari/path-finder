@@ -1,7 +1,7 @@
-#include "../core/ai_interface.h"
-#include "../core/ai.h"
-#include "../core/search/utils/searchable_type.h"
-#include "../core/utils/constants.h"
+#include "ai_interface.h"
+#include "../../core/ai.h"
+#include "../../core/search/utils/searchable_type.h"
+#include "../../core/utils/constants.h"
 #include <list>
 #include <string>
 #include <map>
@@ -11,10 +11,12 @@
 #include <stdexcept>
 
 using path_finder::AI;
+using path_finder::SearchableType;
+using std::list;
 using std::map;
-using std::vector;
-using std::string;
 using std::pair;
+using std::string;
+using std::vector;
 
 static
 std::map<std::string, AI*>
@@ -74,13 +76,14 @@ void Find(
 	const string pid = string(pid_);
 	const string source = string(source_);
 	const string destination = string(destination_);
+	SearchableType algorithm = SearchableType(algorithm_);
 
 	if(pid.empty() || source.empty() || destination.empty())
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - arguments not specified");
 
 	list<string> * path =
-		FS_ai_map_[pid]->FindPath<string>(source, destination, algorithm_);
+		FS_ai_map_[pid]->FindPath<string>(source, destination, algorithm);
 
 	if(FS_path_map_.count(pid) == 0 && path == nullptr)
 		throw std::invalid_argument(
@@ -111,7 +114,7 @@ void Init(
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Init - arguments not specified");
 
-	AI * ai = new AI(prefix+data_path, f_name_prefix, f_extension);
+	AI * ai = new AI(data_path, f_name_prefix, f_extension);
 	FS_ai_map_.insert(pair<string, AI *>(pid, ai));
 }
 
@@ -124,5 +127,5 @@ void Finalize(){
 		delete element.second;
 	/* free the root_path variable */
 	if(FS_root_path_ != NULL)
-		free(FS_root_path_);
+		free(const_cast<char *>(FS_root_path_));
 }
