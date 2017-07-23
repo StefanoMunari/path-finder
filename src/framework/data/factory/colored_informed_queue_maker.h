@@ -18,41 +18,43 @@
 
 namespace path_finder
 {
-	template <typename State> class ColoredInformedQueueMaker;
+
+template <typename State> class ColoredInformedQueueMaker;
 
 
-	/**
-	 * @brief  Factory of a priority queue of colored nodes.
-	 *
-	 * Creates a priority queue initialized only with the NOT connected source
-	 * node, which is BLACK and costs 0 by default.
-	 *
-	 * @param source - the source node
-	 *
-	 * @return priority queue which stores pairs of <Colored_Node*, cost>
-	 *
-	 * @pre the graph has only NOT negative costs (the minimum is 0)
-	*/
-	template <typename State>
-	class ColoredInformedQueueMaker{
-	  public:
-		std::priority_queue<
+/**
+ * @brief  Factory of a priority queue of colored nodes.
+ *
+ * Creates a priority queue initialized only with the NOT connected source
+ * node, which is BLACK and costs 0 by default.
+ *
+ * @param source - the source node
+ *
+ * @return priority queue which stores pairs of <Colored_Node*, cost>
+ *
+ * @pre the graph has only NOT negative costs (the minimum is 0)
+*/
+template <typename State>
+class ColoredInformedQueueMaker{
+  public:
+	std::priority_queue<
+		std::pair<NodeColored<State>*,  NodeCosts *>,
+		std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
+		NodeComparator<State, NodeCosts>>*
+	MakeQueue();
+	std::function<
+		void
+		(std::priority_queue<
 			std::pair<NodeColored<State>*,  NodeCosts *>,
 			std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
-			NodeComparator<State, NodeCosts>>*
-		MakeQueue();
-		std::function<
-			void
-			(std::priority_queue<
-				std::pair<NodeColored<State>*,  NodeCosts *>,
-				std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
-				NodeComparator<State, NodeCosts>
-				>*)
-			>
-		MakeQueueDestructor(void);
-	};
+			NodeComparator<State, NodeCosts>
+			>*)
+		>
+	MakeQueueDestructor(void);
+};
 
-	// import template implementation
-	#include "colored_informed_queue_maker.cpp"
+// import template implementation
+#include "colored_informed_queue_maker.cpp"
+
 }
 #endif /*COLORED_INFORMED_QUEUE_MAKER_H*/

@@ -7,7 +7,8 @@ priority_queue<
 	vector<std::pair<NodeColored<State>*, uint>>,
 	NodeComparator<State, uint>
 	>*
-ColoredQueueMaker<State>::MakeQueue() {
+ColoredQueueMaker<State>::MakeQueue()
+{
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, uint> SearchableColoredNode;
 
