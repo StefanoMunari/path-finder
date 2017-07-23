@@ -7,6 +7,7 @@
  */
 #include "ai.h"
 #include "search/utils/searchable_type.h"
+#include "utils/constants.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -20,16 +21,10 @@
 int main(int argc, char **argv){
 
 	using path_finder::AI;
-	//using path_finder::termination;
-	//using path_finder::wait_for_termination;
 	using std::map;
 	using std::vector;
 	using std::string;
 	using std::pair;
-	/*
-	extern std::mutex termination;
-	extern std::condition_variable wait_for_termination;
-	*/
 
 	if(argc != 3)
 		throw std::invalid_argument("main - arguments not specified");
@@ -37,7 +32,7 @@ int main(int argc, char **argv){
 	const string source = argv[1];
 	const string destination = argv[2];
 
-	char * c_prefix = getenv("PATH_FINDER_ROOT");
+	char * c_prefix = getenv(PROJECT_ROOT);
 
 	if(c_prefix == nullptr)
 		throw std::invalid_argument("main - environment var not specified");
@@ -49,7 +44,7 @@ int main(int argc, char **argv){
 
 	{
 		std::ifstream configuration_stream =
-			std::ifstream(prefix+"/etc/path_finder.conf", std::ifstream::in);
+			std::ifstream(prefix+CONFIGURATION_FILE, std::ifstream::in);
 		string line;
 		int vline_counter = 0;
 
