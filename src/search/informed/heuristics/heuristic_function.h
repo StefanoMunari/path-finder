@@ -55,7 +55,8 @@ class HeuristicFunction
 			Graph *,
 			std::map<std::string, int> * const,
 			std::map<int, std::string>&,
-			State) =0;
+			State)
+		const noexcept =0;
 };
 
 }

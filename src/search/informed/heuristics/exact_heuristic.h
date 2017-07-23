@@ -26,8 +26,8 @@ class ExactHeuristic
 
 	public:
 		ExactHeuristic() noexcept {};
-		ExactHeuristic(const ExactHeuristic&) {};
-		ExactHeuristic& operator=(const ExactHeuristic&) {};
+		ExactHeuristic(const ExactHeuristic&) noexcept {};
+		ExactHeuristic& operator=(const ExactHeuristic&) noexcept {};
 		~ExactHeuristic() noexcept {};
 		/**
 		 * Computes the estimated value from the goal for each edge of
@@ -49,7 +49,8 @@ class ExactHeuristic
 			Graph *,
 			std::map<State, int> * const,
 			std::map<int, State>&,
-			State);
+			State)
+		const noexcept;
 };
 
 // import template implementation

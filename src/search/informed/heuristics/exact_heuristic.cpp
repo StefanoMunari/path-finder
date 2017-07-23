@@ -9,6 +9,7 @@ ExactHeuristic<State>::Eval(
 	map<State, int> * const indexes_map,
 	map<int, State>& ids_map,
 	State goal)
+const noexcept
 {
 	// boost-property accessors
 	IndexMap node_index =

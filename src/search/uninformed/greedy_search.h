@@ -56,10 +56,10 @@ class GreedySearch
 		 * @return a greedy search algorithm
 		*/
 		GreedySearch() noexcept;
-		GreedySearch(const GreedySearch&);
-		GreedySearch& operator=(const GreedySearch&);
+		GreedySearch(const GreedySearch&) noexcept;
+		GreedySearch& operator=(const GreedySearch&) noexcept;
 		~GreedySearch() noexcept {};
-		std::list<State>* Solve(Node<State>*);
+		std::list<State>* Solve(Node<State>*) const noexcept;
 		std::list<State>* Search(
 					GraphPtr_IdMap,
 					std::shared_ptr<GraphPtr_IdMap>,

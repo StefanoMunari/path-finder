@@ -25,7 +25,9 @@ namespace path_finder
 			 * @param last - the goal node
 			 * @return the list of states which represents the resulting path
 			 */
-			virtual std::list<State>* Solve(Node<State>* last) =0;
+			virtual
+			std::list<State>* Solve(Node<State>* last)
+			const noexcept =0;
 	};
 }
 #endif /*SOLVABLE_H*/

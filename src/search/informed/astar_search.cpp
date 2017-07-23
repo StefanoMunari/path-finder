@@ -19,7 +19,7 @@ AStarSearch<State>::AStarSearch() noexcept
 }
 
 template <typename State>
-AStarSearch<State>::AStarSearch(const AStarSearch& that)
+AStarSearch<State>::AStarSearch(const AStarSearch& that) noexcept
 {
 	this->_informed_qmaker = that._informed_qmaker;
 	this->_informed_map_maker = that._informed_map_maker;
@@ -28,7 +28,7 @@ AStarSearch<State>::AStarSearch(const AStarSearch& that)
 
 template <typename State>
 AStarSearch<State>&
-AStarSearch<State>::operator=(const AStarSearch& that)
+AStarSearch<State>::operator=(const AStarSearch& that) noexcept
 {
 	this->_informed_qmaker = that._informed_qmaker;
 	this->_informed_map_maker = that._informed_map_maker;
@@ -45,6 +45,7 @@ AStarSearch<State>::~AStarSearch() noexcept
 template <typename State>
 void
 AStarSearch<State>::SetHeuristicFunction(HeuristicFunction<State> * heuristic)
+noexcept
 {
 	if(heuristic != nullptr)
 	{
@@ -55,7 +56,7 @@ AStarSearch<State>::SetHeuristicFunction(HeuristicFunction<State> * heuristic)
 
 template <typename State>
 list<State>*
-AStarSearch<State>::Solve(Node<State>* last)
+AStarSearch<State>::Solve(Node<State>* last) const noexcept
 {
 	Node<State>* iterator = last;
 	list<State>* result = new list<State>();

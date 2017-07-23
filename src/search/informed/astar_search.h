@@ -51,11 +51,11 @@ class AStarSearch
 		 * @return an A* search algorithm
 		*/
 		AStarSearch() noexcept;
-		AStarSearch(const AStarSearch&);
-		AStarSearch& operator=(const AStarSearch&);
+		AStarSearch(const AStarSearch&) noexcept;
+		AStarSearch& operator=(const AStarSearch&) noexcept;
 		~AStarSearch() noexcept;
-		void SetHeuristicFunction(HeuristicFunction<State> *);
-		std::list<State>* Solve(Node<State>*);
+		void SetHeuristicFunction(HeuristicFunction<State> *) noexcept;
+		std::list<State>* Solve(Node<State>*) const noexcept;
 		std::list<State>* Search(
 					GraphPtr_IdMap,
 					std::shared_ptr<GraphPtr_IdMap>,

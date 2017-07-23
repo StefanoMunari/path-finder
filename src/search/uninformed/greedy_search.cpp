@@ -16,7 +16,7 @@ GreedySearch<State>::GreedySearch() noexcept
 
 
 template <typename State>
-GreedySearch<State>::GreedySearch(const GreedySearch& that)
+GreedySearch<State>::GreedySearch(const GreedySearch& that) noexcept
 {
 	this->_qmaker = that._qmaker;
 	this->_search_map_maker = that._search_map_maker;
@@ -24,7 +24,7 @@ GreedySearch<State>::GreedySearch(const GreedySearch& that)
 
 template <typename State>
 GreedySearch<State>&
-GreedySearch<State>::operator=(const GreedySearch& that)
+GreedySearch<State>::operator=(const GreedySearch& that) noexcept
 {
 	this->_qmaker = that._qmaker;
 	this->_search_map_maker = that._search_map_maker;
@@ -33,7 +33,7 @@ GreedySearch<State>::operator=(const GreedySearch& that)
 
 template <typename State>
 list<State>*
-GreedySearch<State>::Solve(Node<State>* last)
+GreedySearch<State>::Solve(Node<State>* last) const noexcept
 {
 	Node<State>* iterator = last;
 	list<State>* result = new list<State>();
