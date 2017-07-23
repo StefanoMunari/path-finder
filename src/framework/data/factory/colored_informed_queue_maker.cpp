@@ -7,7 +7,7 @@ priority_queue<
 	vector<std::pair<NodeColored<State>*, NodeCosts *>>,
 	NodeComparator<State, NodeCosts>
 	>*
-ColoredInformedQueueMaker<State>::MakeQueue()
+ColoredInformedQueueMaker<State>::MakeQueue() const noexcept
 {
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, NodeCosts *> InformedColoredNode;
@@ -25,7 +25,7 @@ std::function<
 		NodeComparator<State, NodeCosts>
 		>*)
 	>
-ColoredInformedQueueMaker<State>::MakeQueueDestructor(void)
+ColoredInformedQueueMaker<State>::MakeQueueDestructor(void) const noexcept
 {
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, NodeCosts *> InformedColoredNode;

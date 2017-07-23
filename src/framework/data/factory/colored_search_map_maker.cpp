@@ -3,7 +3,7 @@ using std::map;
 template <typename State>
 map<State, std::pair<NodeColored<State>*, uint>> *
 ColoredSearchMapMaker<State>::MakeMap(
-	map<int, State> * ids_map, Graph * graph)
+	map<int, State> * ids_map, Graph * graph) const noexcept
 {
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, uint> SearchableColoredNode;
@@ -33,7 +33,7 @@ std::function<
 			void
 			(std::map<State, std::pair<NodeColored<State>*, uint>> *)
 			>
-ColoredSearchMapMaker<State>::MakeMapDestructor(void)
+ColoredSearchMapMaker<State>::MakeMapDestructor(void) const noexcept
 {
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, uint> SearchableColoredNode;

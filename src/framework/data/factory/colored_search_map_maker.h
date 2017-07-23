@@ -41,13 +41,13 @@ template <typename State>
 class ColoredSearchMapMaker {
   public:
 	std::map<State, std::pair<NodeColored<State>*, uint>> *
-	MakeMap(std::map<int, State> *, Graph *);
+	MakeMap(std::map<int, State> *, Graph *) const noexcept;
 	std::function<
 				void
 				(std::map<State,
 						std::pair<NodeColored<State>*, uint>> *)
 				>
-	MakeMapDestructor(void);
+	MakeMapDestructor(void) const noexcept;
 };
 
 // import template implementation

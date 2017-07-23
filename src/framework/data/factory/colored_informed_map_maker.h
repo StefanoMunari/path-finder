@@ -37,14 +37,15 @@ class ColoredInformedMapMaker{
   public:
 
 	std::map<State, std::pair<NodeColored<State> *,NodeCosts *>> *
-	MakeMap(std::map<std::string, std::pair<NodeColored<State> *, uint>> *);
+	MakeMap(std::map<std::string, std::pair<NodeColored<State> *, uint>> *)
+	const noexcept;
 
 	std::function<
 				void
 				(std::map<State,
 						std::pair<NodeColored<State> *,NodeCosts *>> *)
 				>
-	MakeMapDestructor(void);
+	MakeMapDestructor(void) const noexcept;
 };
 
 // import template implementation

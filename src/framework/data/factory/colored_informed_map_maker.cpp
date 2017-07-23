@@ -4,6 +4,7 @@ template <typename State>
 map<State, std::pair<NodeColored<State> *,NodeCosts *>> *
 ColoredInformedMapMaker<State>::MakeMap(
 	map<string, std::pair<NodeColored<State> *, uint>> * search_map)
+	const noexcept
 {
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State> *,NodeCosts *> InformedColoredNode;
@@ -28,7 +29,7 @@ std::function<
 			(std::map<State,
 					std::pair<NodeColored<State> *,NodeCosts *>> *)
 			>
-ColoredInformedMapMaker<State>::MakeMapDestructor(void)
+ColoredInformedMapMaker<State>::MakeMapDestructor(void) const noexcept
 {
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State> *,NodeCosts *> InformedColoredNode;

@@ -41,7 +41,7 @@ class ColoredInformedQueueMaker{
 		std::pair<NodeColored<State>*,  NodeCosts *>,
 		std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
 		NodeComparator<State, NodeCosts>>*
-	MakeQueue();
+	MakeQueue() const noexcept;
 	std::function<
 		void
 		(std::priority_queue<
@@ -50,7 +50,7 @@ class ColoredInformedQueueMaker{
 			NodeComparator<State, NodeCosts>
 			>*)
 		>
-	MakeQueueDestructor(void);
+	MakeQueueDestructor(void) const noexcept;
 };
 
 // import template implementation
