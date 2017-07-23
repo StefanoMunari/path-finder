@@ -43,6 +43,7 @@ template <typename State> class UniformCostSearch;
  * - Optimal: TRUE
  * - Time: O(braching^(1+round(optimal_cost/epsilon)))
  * - Space: O(braching^(1+round(optimal_cost/epsilon)))
+ * @note epsilon - the minimum step cost in the graph
 */
 template <typename State>
 class UniformCostSearch
@@ -75,7 +76,7 @@ class UniformCostSearch
 		 * @brief instance of a colored search map factory class
 		 * @see colored_search_map_maker.h
 		*/
-		ColoredSearchMapMaker<State> _search_map_maker;
+		ColoredSearchMapMaker<State> _map_maker;
 };
 
 /* import template implementation */

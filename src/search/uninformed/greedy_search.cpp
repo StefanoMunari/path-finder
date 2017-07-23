@@ -11,7 +11,7 @@ template <typename State>
 GreedySearch<State>::GreedySearch() noexcept
 {
 	this->_qmaker = ColoredSearchQueueMaker<State>();
-	this->_search_map_maker = ColoredSearchMapMaker<State>();
+	this->_map_maker = ColoredSearchMapMaker<State>();
 }
 
 
@@ -19,7 +19,7 @@ template <typename State>
 GreedySearch<State>::GreedySearch(const GreedySearch& that) noexcept
 {
 	this->_qmaker = that._qmaker;
-	this->_search_map_maker = that._search_map_maker;
+	this->_map_maker = that._map_maker;
 }
 
 template <typename State>
@@ -27,7 +27,7 @@ GreedySearch<State>&
 GreedySearch<State>::operator=(const GreedySearch& that) noexcept
 {
 	this->_qmaker = that._qmaker;
-	this->_search_map_maker = that._search_map_maker;
+	this->_map_maker = that._map_maker;
 	return *this;
 }
 
@@ -73,7 +73,7 @@ GreedySearch<State>::Search(
 			0));
 	// set-up search map
 	auto search_map =
-		this->_search_map_maker.MakeMap(&ids_map, static_graph_.first);
+		this->_map_maker.MakeMap(&ids_map, static_graph_.first);
 	// remove the deprecated source,
 	// insert the source node marking it as BLACK (visited/completed)
 	{
@@ -132,7 +132,7 @@ GreedySearch<State>::Search(
 		}
 	}
 
-	(this->_search_map_maker.MakeMapDestructor())(search_map);
+	(this->_map_maker.MakeMapDestructor())(search_map);
 
 	return result;
 }

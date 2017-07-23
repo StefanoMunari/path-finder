@@ -5,8 +5,8 @@
  *
  * Detailed description of file.
  */
-#ifndef COLORED_SEARCH_MAP_MAKER_H
-#define COLORED_SEARCH_MAP_MAKER_H
+#ifndef colored_search_map_maker_H
+#define colored_search_map_maker_H
 
 #include "../node_colored.h"
 #include "../../../utils/boost_types.h"
@@ -54,4 +54,4 @@ class ColoredSearchMapMaker {
 #include "colored_search_map_maker.cpp"
 
 }
-#endif /*COLORED_SEARCH_MAP_MAKER_H*/
+#endif /*colored_search_map_maker_H*/

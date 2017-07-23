@@ -75,7 +75,7 @@ class GreedySearch
 		 * @brief instance of a colored search map factory class
 		 * @see colored_search_map_maker.h
 		*/
-		ColoredSearchMapMaker<State> _search_map_maker;
+		ColoredSearchMapMaker<State> _map_maker;
 };
 
 /* import template implementation */
