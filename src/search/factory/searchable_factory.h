@@ -20,8 +20,14 @@ namespace path_finder
 	class SearchableFactory final{
 		public:
 			SearchableFactory() =delete;
+			SearchableFactory(const SearchableFactory&) =delete;
+			SearchableFactory& operator=(SearchableFactory&) =delete;
+			SearchableFactory(const SearchableFactory&&) =delete;
+			SearchableFactory& operator=(SearchableFactory&&) =delete;
+			~SearchableFactory() =delete;
 			template<typename State>
-			static Searchable<State>* MakeSearchable(SearchableType algorithm);
+			static
+			Searchable<State>* MakeSearchable(SearchableType algorithm);
 	};
 	/* import template implementation */
 	#include "searchable_factory.cpp"

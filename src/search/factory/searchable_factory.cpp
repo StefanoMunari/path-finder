@@ -1,5 +1,6 @@
 template<typename State>
-Searchable<State>* SearchableFactory::MakeSearchable(SearchableType algorithm){
+Searchable<State>* SearchableFactory::MakeSearchable(SearchableType algorithm)
+{
 	switch(algorithm){
 		case UNIFORM_COST:
 			return new UniformCostSearch<State>();
