@@ -13,6 +13,7 @@
 #include <queue>
 #include <vector>
 #include <utility>// std::pair
+#include <functional>// std::function
 
 typedef unsigned int uint;
 
@@ -39,8 +40,17 @@ namespace path_finder
 		std::priority_queue<
 			std::pair<NodeColored<State>*, uint>,
 			std::vector<std::pair<NodeColored<State>*, uint>>,
-			NodeComparator<State, uint>>*
+			NodeComparator<State, uint>> *
 		MakeQueue();
+		std::function<
+			void
+			(priority_queue<
+				std::pair<NodeColored<State>*, uint>,
+				vector<std::pair<NodeColored<State>*, uint>>,
+				NodeComparator<State, uint>
+				>*)
+			>
+		MakeQueueDestructor(void);
 	};
 
 	// import template implementation
