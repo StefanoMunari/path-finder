@@ -48,12 +48,15 @@ int main(int argc, char **argv){
 	string f_extension = "";
 
 	{
-		std::ifstream configuration_ptr =
+		std::ifstream configuration_stream =
 			std::ifstream(prefix+"/etc/path_finder.conf", std::ifstream::in);
 		string line;
 		int vline_counter = 0;
 
-		while (std::getline(configuration_ptr, line))
+		while(
+			configuration_stream.good()
+			&&
+			std::getline(configuration_stream, line))
 		{
 
 	        if(line[0] != '#')// not a commented line
@@ -75,6 +78,10 @@ int main(int argc, char **argv){
 				++vline_counter;
 			}
 		}
+
+		if(!configuration_stream.eof())
+			throw std::invalid_argument(
+				"main - configuration stream error : "+line);
 	}
 
 	AI ai = AI(prefix+data_path, f_name_prefix, f_extension);
