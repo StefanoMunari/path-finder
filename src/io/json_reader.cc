@@ -6,7 +6,8 @@
 #include <utility>
 #include <stdexcept>
 
-namespace path_finder{
+namespace path_finder
+{
 
 void
 JSON_Reader::Read(const std::string& file_path,
