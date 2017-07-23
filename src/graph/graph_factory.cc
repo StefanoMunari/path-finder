@@ -6,7 +6,10 @@
  * Detailed description of file.
  */
 #include "graph_factory.h"
+#include "graph_encoder.h"
 #include "../io/json_reader.h"
+#include <map>
+#include <vector>
 
 using std::map;
 using std::vector;

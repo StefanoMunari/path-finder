@@ -8,9 +8,7 @@
 #ifndef GRAPH_FACTORY_H
 #define GRAPH_FACTORY_H
 
-#include "graph_encoder.h"
-#include <map>
-#include <vector>
+#include "../utils/boost_types.h"
 #include <string>
 
 namespace path_finder{
