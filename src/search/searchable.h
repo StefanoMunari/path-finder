@@ -8,7 +8,7 @@
 
 #include "../utils/boost_types.h"
 #include "../framework/problem/problem.h"
-#include <memory>
+#include <memory>// std::shared_ptr
 #include <list>
 
 namespace path_finder
