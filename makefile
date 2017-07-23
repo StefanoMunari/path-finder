@@ -1,6 +1,6 @@
 CXX=g++
 CFLAGS=-std=c++17 -Wall -Werror -pthread $(CDBG) $(CVGD)
-SRCDIR=$(PWD)/src
+SRCDIR=$(PWD)/src$(BINDINGS)
 OBJDIR=$(PWD)/obj
 BINDIR=$(PWD)/bin
 
@@ -8,7 +8,7 @@ LIBDIR=/usr/include
 LIB=jsoncpp
 INCLUDE=/usr/include/boost
 
-SRC=$(wildcard $(SRCDIR)/*.cc) $(wildcard $(SRCDIR)/*/*.cc) $(wildcard $(SRCDIR)/*/*/*.cc)
+SRC=$(wildcard $(SRCDIR)/*.cc) $(wildcard $(SRCDIR)/*/*.cc) $(wildcard $(SRCDIR)/*/*/*.cc) $(wildcard $(SRCDIR)/*/*/*/*.cc)
 OBJ=$(SRC:%.cc=%.o)
 BIN=find_path
 
@@ -44,6 +44,7 @@ help:
 		"\t CDBG=-DDEBUG=1\t\t\t\t  Compiles with the debugging flag activated.\n"\
 		"\t CVGD=-g\t\t\t\t\t  Compiles with the valgrind flag activated.\n"\
 		"\t VGDOPTS=<valgrind_options>\t  Execs with the defined options for valgrind (only in profile mode).\n"\
+		"\t BINDINGS=<subdir_path>\t\t  Compiles the binding provided in the specificied subfolder. e.g. BINDINGS=\"/bindings/ada\"\n"\
 		"\n"\
 		"Commands:\n" \
 		"\t {compile, run, profile, clean, help}\n"
