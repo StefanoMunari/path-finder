@@ -7,7 +7,6 @@
  */
 #include "ai.h"
 #include "search/utils/searchable_type.h"
-//#include "utils/synch.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -39,16 +38,14 @@ int main(int argc, char **argv){
 	const string destination = argv[2];
 
 	char * c_prefix = getenv("PATH_FINDER_ROOT");
+
 	if(c_prefix == nullptr)
 		throw std::invalid_argument("main - environment var not specified");
 
 	const string prefix = string(c_prefix);
-	string data_prefix = "";
-	string key = "";
-	vector<string> factory_data = vector<string>();
-	vector<string> function_names = vector<string>();
-	vector<string> configuration_paths = vector<string>();
-	map<string, vector<string>> data_map = map<string, vector<string>>();
+	string data_path = "";
+	string f_name_prefix = "";
+	string f_extension = "";
 
 	{
 		std::ifstream configuration_ptr =
@@ -63,26 +60,13 @@ int main(int argc, char **argv){
 			{
 				switch(vline_counter){
 					case 0:
-						factory_data.push_back(line);
+						data_path = line;
 						break;
 					case 1:
-						factory_data.push_back(prefix+line);
+						f_name_prefix = line;
 						break;
 					case 2:
-						function_names.push_back(line);
-						function_names.push_back(line);
-						break;
-					case 3:
-						data_prefix = line;
-						break;
-					case 4:
-						configuration_paths.push_back(prefix+data_prefix+line);
-						break;
-					case 5:
-						configuration_paths.push_back(prefix+data_prefix+line);
-						break;
-					case 6:
-						key = line;
+						f_extension = line;
 						break;
 					default:
 						throw std::invalid_argument(
@@ -93,16 +77,9 @@ int main(int argc, char **argv){
 		}
 	}
 
-	data_map.insert(
-		pair<string, vector<string>>(
-			"function_names", function_names));
-	data_map.insert(
-		pair<string, vector<string>>(
-			"configuration_paths", configuration_paths));
-
-	AI ai = AI(factory_data, data_map, key, prefix+data_prefix);
-	AI ai0 = AI(factory_data, data_map, key, prefix+data_prefix);
-	AI ai1 = AI(factory_data, data_map, key, prefix+data_prefix);
+	AI ai = AI(prefix+data_path, f_name_prefix, f_extension);
+	AI ai0 = AI(prefix+data_path, f_name_prefix, f_extension);
+	AI ai1 = AI(prefix+data_path, f_name_prefix, f_extension);
 
 	auto result =
 		ai.FindPath<string>(source, destination, path_finder::UNIFORM_COST);
@@ -116,25 +93,20 @@ int main(int argc, char **argv){
 	for(auto const& node : (*result)) {
 	    std::cout<< node <<std::endl;
 	}
+
 	std::cout<<"==========GREEDY========="<<std::endl;
 	for(auto const& node : (*result0)) {
 	    std::cout<< node <<std::endl;
 	}
+
 	std::cout<<"==========ASTAR========="<<std::endl;
 	for(auto const& node : (*result1)) {
 	    std::cout<< node <<std::endl;
 	}
-    // Necessary to wait for a signal from AI before releasing the static
-    // memory. Otherwise Graph_Registry destructor is automatically invoked.
-    // Main acts as the master thread
-    // NOTE: this lock will not be used in the future when we will directly
-    // use the AI as facade for the system. Only if we use the main process
-    // written in C then this termination lock will be necessary.
-/*
-    {
-        std::unique_lock<std::mutex> lock(termination);
-        wait_for_termination.wait(lock, []{return 0;});
-    }
-*/
+
+	delete result;
+	delete result0;
+	delete result1;
+
 	return 0;
 }
