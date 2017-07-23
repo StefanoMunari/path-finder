@@ -70,11 +70,11 @@ GraphObserver::~GraphObserver(void) noexcept
 {
 	GraphObserver::_instance._state = STOPPED;
 	GraphObserver::_instance._executor.join();
-	//removing the _subject directory from the watch list*/
+	//removing the _subject directory from the watch list
 	inotify_rm_watch(
 		GraphObserver::_instance._notifier,
 		GraphObserver::_instance._subject);
-	// closing the INOTIFY instance*/
+	// closing the INOTIFY instance
 	close(GraphObserver::_instance._notifier);
 }
 
@@ -85,7 +85,7 @@ void GraphObserver::EventLoop(void)
 	// This read blocks until th* change event occurs
 	char buffer [EVENT_BUF_LEN];
 	while(GraphObserver::_instance._state  ==  RUNNING){
-		int length =
+		const int length =
 			read(GraphObserver::_instance._notifier, buffer, EVENT_BUF_LEN);
 		//checking for error*/
 		if ( length < 0 )
