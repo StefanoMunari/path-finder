@@ -12,13 +12,13 @@ package AI_Adapter is
 	type Object is tagged null record;
 	type Reference is access all AI_Adapter.Object'Class;
 
-	procedure Init (This : in Object;
+	procedure Init (This : in AI_Adapter.Object;
 					Data_Path : String;
 					File_Prefix : String;
 					File_Extension : String);
 
 	function Find_Path (
-				This : in Object;
+				This : in AI_Adapter.Object;
 				Source : String;
 				Destination : String;
 				Algorithm : Natural)
