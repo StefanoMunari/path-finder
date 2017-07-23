@@ -6,38 +6,33 @@
  * Detailed description of file.
  */
 #include "ai.h"
-//#include "graph/graph_observer.h"
+#include "graph/graph_observer.h"
 #include <map>
-#include <vector>
 #include <list>
 #include <string>
+#include <vector>
 
 using std::map;
 using std::vector;
 using std::list;
 using std::string;
 
-namespace path_finder
+namespace path_finder{
+
+AI::AI(const string& path, const string& f_name_prefix, const string& f_extension)
 {
-	//GraphObserver AI::_graph_observer = GraphObserver();
+	this->_category = f_name_prefix;
+	GraphRegistry::Instance().InsertGraph(
+		f_name_prefix, path+f_name_prefix, f_extension);
+	GraphObserver::Instance().Observe(path);
+}
 
-	AI::AI(vector<string>& factory_data, map<string, vector<string>>& data_map,
-		const string& category, const string& subject_dir)
-	{
-		this->_category = category;
-		GraphRegistry::Instance().AddGraph(category, data_map, factory_data);
-		/*
-		// TODO: Fix notification (Python issue)
-		// the reader crash during the 2nd invocation (read the costs)
-		// it correctly finds the file but can not load the json representation
-		GraphObserver::Instance().Observe(subject_dir);
-		*/
-	}
+#ifdef DEBUG
+void AI::Print(void)
+{
+	GraphRegistry::Instance().PrintGraph(
+		*(GraphRegistry::Instance().GetDynamicGraph(_category)));
+}
+#endif /*DEBUG*/
 
-	#ifdef DEBUG
-	void AI::Print(void){
-		GraphRegistry::Instance().PrintGraph(
-			GraphRegistry::Instance().GetGraph(_category));
-	}
-	#endif /*DEBUG*/
 }

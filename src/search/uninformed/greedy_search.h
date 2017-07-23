@@ -12,9 +12,11 @@
 #include "../../framework/data/node_colored.h"
 #include "../../framework/data/factory/colored_queue_maker.h"
 #include "../../framework/data/factory/colored_search_map_maker.h"
+#include "../../utils/algorithm.h"
 #include "../../utils/boost_types.h"
 #include "../../utils/constants.h"
-#include "../../utils/algorithm.h"
+#include "../../utils/synch.h"
+#include "../../utils/types.h"// mutex_graph
 #include <queue>
 #include <map>
 #include <vector>
@@ -23,8 +25,6 @@
 #include <utility>// std::pair
 #include <algorithm>// std::for_each
 #include <climits>// UINT_MAX
-
-typedef unsigned int uint;
 
 namespace path_finder
 {

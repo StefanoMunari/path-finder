@@ -13,49 +13,46 @@
 #include "../utils/constants.h"
 #include <map>
 #include <memory>// std::shared_ptr
-#include <shared_mutex>
-#include <vector>
 #include <string>
+#include <vector>
 
-namespace path_finder
+namespace path_finder{
+
+class GraphRegistry final
 {
-	class GraphRegistry final {
-		public:
-			static GraphRegistry& Instance();
-			static void AddGraph(const std::string&,
-								std::map<std::string,std::vector<std::string>>&,
-								std::vector<std::string>&);
-			static GraphPtr_IdMap
-				GetStaticGraph(std::string&);
-			static std::shared_ptr<GraphPtr_IdMap>
-				GetDynamicGraph(std::string&);
-			static void
-				UpdateDynamicRegistry(const std::string&, const std::string&);
-			#ifdef DEBUG
-			void PrintGraph(GraphPtr_IdMap);
-			#endif /*DEBUG*/
-		private:
-			GraphRegistry();
-			GraphRegistry(const GraphRegistry&);
-			GraphRegistry& operator= (const GraphRegistry&);
-			~GraphRegistry() noexcept;
-			const std::string GetId(const std::string&) const;
-			void SyncUpdate(const std::string&, GraphPtr_IdMap *);
-			static GraphRegistry
-				_instance;
-			std::shared_mutex
-				_mutex;
-			GraphFactory *
-				_graph_factory;
-			std::string
-				_reader_function_name = PYTHON_FUNCTION_NAME;
-			std::map<std::string, GraphPtr_IdMap>
-				_static_registry;
-			std::map<std::string, std::shared_ptr<GraphPtr_IdMap>>
-				_dynamic_registry;
-			std::map<std::string, std::string>
-				_graph_names;
-	};
-}
+	public:
+		static
+		GraphRegistry& Instance() noexcept;
+		static
+		void InsertGraph(
+			const std::string&, const std::string&, const std::string&)
+			noexcept;
+		static
+		GraphPtr_IdMap GetStaticGraph(std::string&) noexcept;
+		static
+		std::shared_ptr<GraphPtr_IdMap> GetDynamicGraph(std::string&) noexcept;
+		static
+		void UpdateDynamicRegistry(const std::string&, const std::string&);
+	public:
+		#ifdef DEBUG
+		static
+		void PrintGraph(GraphPtr_IdMap) noexcept;
+		#endif /*DEBUG*/
+	private:
+		GraphRegistry() noexcept;
+		GraphRegistry(const GraphRegistry&) noexcept;
+		GraphRegistry& operator= (const GraphRegistry&) noexcept;
+		~GraphRegistry() noexcept;
+		void _SynchUpdate(const std::string&, GraphPtr_IdMap *);
+	private:
+		static
+		GraphRegistry
+			_instance;
+		std::map<std::string, GraphPtr_IdMap>
+			_static_registry;
+		std::map<std::string, std::shared_ptr<GraphPtr_IdMap>>
+			_dynamic_registry;
+};
 
+}
 #endif /*GRAPH_REGISTRY_H*/

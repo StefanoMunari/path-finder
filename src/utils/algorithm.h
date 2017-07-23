@@ -18,7 +18,7 @@ namespace path_finder{
 		public:
 			template<typename T0, typename T1>
 			static std::map<T1, T0>
-			GetReversedMap(std::map<T0, T1>* to_reverse);
+			GetReversedMap(std::map<T0, T1> * to_reverse);
 	};
 	// import template implementation
 	#include "algorithm.cpp"

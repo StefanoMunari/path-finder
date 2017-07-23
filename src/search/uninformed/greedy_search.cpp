@@ -50,8 +50,7 @@ GreedySearch<State>::Search(
 	// shortcut for verbose type
 	typedef std::pair<NodeColored<State>*, uint> SearchableColoredNode;
 	// define variables
-	Graph *static_graph = static_graph_.first;
-	Graph *dynamic_graph = (dynamic_graph_.get())->first;
+	Graph * static_graph = static_graph_.first;
 	// the resulting path is empty (no solution found yet)
 	list<State>* result = EMPTY;
 	// state -> vertex_index
@@ -105,11 +104,20 @@ GreedySearch<State>::Search(
 			if(current_neigh.first->color  ==  WHITE){
 				// mark the node as explored
 				current_neigh.first->color = BLACK;
+				// <START> mutually shared region (multiple readers)
+				std::shared_lock<std::shared_mutex>
+					g_lock(path_finder::mutex_graph);
+				Graph * dynamic_graph = dynamic_graph_->first;
+				uint dynamic_cost =
+					(*dynamic_graph)
+		   			[boost::edge(current,*n_it,(*dynamic_graph)).first];
+		   		g_lock.unlock();
+				// <END> mutually shared region (multiple readers)
 				auto neigh_cost = current_node.second +
 		   			(*static_graph)
-		   			[boost::edge(current,*n_it,(*static_graph)).first] +
-		   			(*dynamic_graph)
-		   			[boost::edge(current,*n_it,(*dynamic_graph)).first];
+		   			[boost::edge(current,*n_it,(*static_graph)).first]
+		   			+
+		   			dynamic_cost;
 		   		current_neigh.first->parent = current_node.first;
 		   		current_neigh.second = neigh_cost;
 		   		contour->push(current_neigh);
@@ -118,5 +126,6 @@ GreedySearch<State>::Search(
 	}
 
 	(this->_search_map_maker.MakeMapDestructor())(search_map);
+
 	return result;
 }

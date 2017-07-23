@@ -5,17 +5,13 @@
  *
  * Detailed description of file.
  */
-#include <mutex>  // std::unique_lock
-#include <condition_variable>
+#include <shared_mutex>
 
 namespace path_finder
 {
 
-	#ifndef TERMINATION
-	static std::mutex termination;
-	#endif
-
-	#ifndef WAIT_FOR_TERMINATION
-	static std::condition_variable wait_for_termination;
+	#ifndef MUTEX_GRAPH
+	#define MUTEX_GRAPH
+	static std::shared_mutex mutex_graph;
 	#endif
 }

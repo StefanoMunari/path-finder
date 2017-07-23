@@ -6,7 +6,7 @@
  * Detailed description of file.
  */
 #include "graph_factory.h"
-#include <python2.7/Python.h>
+#include "../io/json_reader.h"
 
 using std::map;
 using std::vector;
@@ -14,41 +14,23 @@ using std::string;
 
 namespace path_finder
 {
-	GraphFactory::GraphFactory(std::vector<std::string>& factory_data){
-		int argc = 1;
-		char * argv[1];
-		argv[0] = const_cast<char*>(factory_data[0].c_str());
-		Py_SetProgramName(const_cast<char*>(factory_data[0].c_str()));
-		Py_Initialize();
-		PySys_SetArgv(argc, argv);
-		_dictionary_factory = DictionaryFactory
-			(factory_data[0].substr(0, factory_data[0].size()-3),
-				factory_data[1]);
-		_graph_encoder = GraphEncoder();
-	}
 
-	GraphFactory::GraphFactory(const GraphFactory& that){
-		this->_dictionary_factory = that._dictionary_factory;
-		this->_graph_encoder = that._graph_encoder;
-	}
+GraphPtr_IdMap
+GraphFactory::CreateGraph(
+	const std::string& topology_path,
+	const std::string& costs_path,
+	const std::string& extension)
+	const noexcept
+{
+	map<string, vector<string>> topology_map = map<string, vector<string>>();
+	map<string, vector<uint>> costs_map = map<string, vector<uint>>();
 
-	GraphFactory& GraphFactory::operator=(const GraphFactory& that){
-		this->_dictionary_factory = that._dictionary_factory;
-		this->_graph_encoder = that._graph_encoder;
-		return *this;
-	}
+	JSON_Reader::Read(topology_path+extension, &topology_map);
+	JSON_Reader::Read(costs_path+extension, &costs_map);
+	GraphEncoder encoder = GraphEncoder();
+	GraphPtr_IdMap graph = encoder.Encode(&topology_map, &costs_map);
 
-	GraphPtr_IdMap
-	GraphFactory::CreateGraph(map<string, vector<string>>& data_map){
-		// 0 : = graph_data
-		// 1 : = costs_data
-		return _graph_encoder.Encode(
-				_dictionary_factory.CreateDictionary(
-					data_map["function_names"][0],
-					data_map["configuration_paths"][0]),
-				_dictionary_factory.CreateDictionary(
-					data_map["function_names"][1],
-					data_map["configuration_paths"][1]));
+	return graph;
+}
 
-	}
 }

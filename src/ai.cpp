@@ -4,7 +4,7 @@ list<State>* AI::FindPath(const string& source,
 						SearchableType algorithm)
 {
 	auto _find =
-		[this, &source, &destination](Searchable<State>* finder)
+		[this, &source, &destination](Searchable<State> * finder)
 		{
 			auto static_graphptr_idmap =
 				GraphRegistry::Instance().GetStaticGraph(this->_category);

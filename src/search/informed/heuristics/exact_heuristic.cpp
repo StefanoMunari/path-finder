@@ -68,5 +68,7 @@ ExactHeuristic<State>::Eval(
 		}
 	}
 
+	(qmaker.MakeQueueDestructor())(contour);
+
 	return informed_map;
 }

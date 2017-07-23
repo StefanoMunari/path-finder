@@ -9,8 +9,7 @@
 #include "heuristic_function.h"
 #include "../../../framework/data/factory/colored_informed_queue_maker.h"
 #include "../../../framework/data/utils/node_color.h"
-
-typedef unsigned int uint;
+#include "../../../utils/types.h"
 
 namespace path_finder
 {

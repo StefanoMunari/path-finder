@@ -24,7 +24,8 @@ AStarSearch<State>::AStarSearch(const AStarSearch& that){
 
 template <typename State>
 AStarSearch<State>&
-AStarSearch<State>::operator=(const AStarSearch& that){
+AStarSearch<State>::operator=(const AStarSearch& that)
+{
 	this->_informed_qmaker = that._informed_qmaker;
 	this->_informed_map_maker = that._informed_map_maker;
 	this->_heuristic = that._heuristic;
@@ -32,14 +33,17 @@ AStarSearch<State>::operator=(const AStarSearch& that){
 }
 
 template <typename State>
-AStarSearch<State>::~AStarSearch() noexcept{
+AStarSearch<State>::~AStarSearch() noexcept
+{
 	delete this->_heuristic;
 }
 
 template <typename State>
 void
-AStarSearch<State>::SetHeuristicFunction(HeuristicFunction<State> * heuristic){
-	if(heuristic != nullptr){
+AStarSearch<State>::SetHeuristicFunction(HeuristicFunction<State> * heuristic)
+{
+	if(heuristic != nullptr)
+	{
 		delete this->_heuristic;
 		this->_heuristic = heuristic;
 	}
@@ -47,10 +51,12 @@ AStarSearch<State>::SetHeuristicFunction(HeuristicFunction<State> * heuristic){
 
 template <typename State>
 list<State>*
-AStarSearch<State>::Solve(Node<State>* last){
+AStarSearch<State>::Solve(Node<State>* last)
+{
 	Node<State>* iterator = last;
 	list<State>* result = new list<State>();
-	while(iterator){
+	while(iterator)
+	{
 		result->push_front(iterator->state);
 		iterator = iterator->parent;
 	}
@@ -77,7 +83,6 @@ AStarSearch<State>::Search(
 			InformedMap;
 	// define variables
 	Graph * static_graph = static_graph_.first;
-	Graph * dynamic_graph = (dynamic_graph_.get())->first;
 	map<State, int> * indexes_map = (map<State, int>*)static_graph_.second;
 	auto ids_map = Algorithm::GetReversedMap<State, int>(indexes_map);
 	// the resulting path is empty (no solution found yet)
@@ -132,11 +137,20 @@ AStarSearch<State>::Search(
 		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
 			State neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*informed_map)[neighbor];
+			// <START> mutually shared region (multiple readers)
+			std::shared_lock<std::shared_mutex>
+				g_lock(path_finder::mutex_graph);
+			Graph * dynamic_graph = (dynamic_graph_.get())->first;
+			uint dynamic_cost =
+				(*dynamic_graph)
+				[boost::edge(current,*n_it,(*dynamic_graph)).first];
+		   	g_lock.unlock();
+			// <END> mutually shared region (multiple readers)
 			// neigh.g = parent.g + dynamic_cost(parent, neigh);
 			auto effective_neigh_cost =
-					current_node.second->g +
-					(*dynamic_graph)
-					[boost::edge(current,*n_it,(*dynamic_graph)).first];
+					current_node.second->g
+					+
+					dynamic_cost;
 			// neighbor not yet explored
 			if(current_neigh.second->g > effective_neigh_cost){
 		   		current_neigh.first->parent = current_node.first;
@@ -147,5 +161,6 @@ AStarSearch<State>::Search(
 	}
 
 	(this->_informed_map_maker.MakeMapDestructor())(informed_map);
+
 	return result;
 }

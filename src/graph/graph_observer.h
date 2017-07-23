@@ -19,23 +19,26 @@
 
 namespace path_finder
 {
-	class GraphObserver final {
-		public:
-			static GraphObserver& Instance(void);
-			static void Observe(const std::string &);
-		private:
-			GraphObserver(void);
-			GraphObserver(const GraphObserver&);
-			GraphObserver& operator= (const GraphObserver&);
-			~GraphObserver(void) noexcept;
-			void EventLoop(void);
-			static GraphObserver _instance;
-			std::thread _executor;
-			int _notifier;
-			int _subject;
-			std::string _subject_name;
-		    ProcessState _state = WAITING;
-	};
-}
 
+class GraphObserver final
+{
+	public:
+		static GraphObserver& Instance(void) noexcept;
+		static void Observe(const std::string &);
+	private:
+		GraphObserver(void) noexcept;
+		GraphObserver(const GraphObserver&) noexcept;
+		GraphObserver& operator= (const GraphObserver&) noexcept;
+		~GraphObserver(void) noexcept;
+		void EventLoop(void);
+	private:
+		static GraphObserver _instance;
+		std::thread _executor;
+		int _notifier;
+		int _subject;
+		std::string _subject_name;
+	    ProcessState _state = WAITING;
+};
+
+}
 #endif /*GRAPH_OBSERVER_H*/

@@ -24,17 +24,14 @@ namespace path_finder
 	class AI{
 		public:
 			AI() =delete;
-			AI(std::vector<std::string>&,
-				std::map<std::string, std::vector<std::string>>&,
-				const std::string& subject_file,
-				const std::string& subject_dir);
+			AI(const string&, const string&, const string&);
 			~AI() noexcept {};
 			template<typename State>
 			std::list<State>* FindPath(const std::string& source,
 										const std::string& destination,
 										SearchableType algorithm);
 			#ifdef DEBUG
-			static void Print(void);
+			void Print(void);
 			#endif /*DEBUG*/
 		private:
 			//	Identify the category of the graph requested by the client.
