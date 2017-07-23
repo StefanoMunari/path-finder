@@ -10,12 +10,11 @@
 
 #include "../node_colored.h"
 #include "../../../utils/boost_types.h"
+#include "../../../utils/types.h"
 #include <map>
 #include <utility>// std::pair
 #include <climits>// UINT_MAX
 #include <functional>// std::function
-
-typedef unsigned int uint;
 
 namespace path_finder
 {

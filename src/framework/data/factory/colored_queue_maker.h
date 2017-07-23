@@ -10,12 +10,11 @@
 
 #include "../node.h"
 #include "../utils/node_comparator.h"
+#include "../../../utils/types.h"
 #include <queue>
 #include <vector>
 #include <utility>// std::pair
 #include <functional>// std::function
-
-typedef unsigned int uint;
 
 namespace path_finder
 {
