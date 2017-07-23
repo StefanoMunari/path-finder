@@ -27,8 +27,10 @@ namespace path_finder
 			virtual ~Searchable() noexcept {};
 			/**
 			 * Search for a path from source to destination
-			 * @param dynamic_graph_ - a pair which contains info about the
-			 *	current (dynamic) cost graph
+			 * @param static_graph_ - a pair which contains info about the
+			 * static graph (topology + static costs)
+			 * @param dynamic_graph_ - a pointer to a pair which contains info
+			 * about the current (dynamic) cost graph
 			 * @param problem - an instance of a problem which contains info
 			 *	about source and destination
 			 * @return the list of states which represents the resulting path
