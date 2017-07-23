@@ -11,4 +11,9 @@ namespace path_finder
 	#define UINT
 	typedef unsigned int uint;
 	#endif
+
+	#ifndef LUINT
+	#define LUINT
+	typedef long unsigned int luint;
+	#endif
 }

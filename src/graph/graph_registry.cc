@@ -6,7 +6,8 @@
  * Detailed description of file.
  */
 #include "graph_registry.h"
-#include "../utils/synch.h"// mutex_graph
+#include "../utils/synch.h"// G_mutex_graph
+#include "../utils/types.h"// luint
 #include <algorithm>// std::mismatch
 #include <mutex>  // std::unique_lock
 #include <shared_mutex>
@@ -26,7 +27,10 @@ namespace path_finder
 // Singleton
 GraphRegistry GraphRegistry::_instance = GraphRegistry();
 
-// FS_ as prefix for file-scoped vars
+// G_ prefix for global variables
+extern std::shared_mutex G_mutex_graph;
+
+// FS_ prefix for file-scoped vars
 static auto FS_destructor =
 	[](GraphPtr_IdMap * graph_pair){
 		delete graph_pair->first;
@@ -138,7 +142,7 @@ void GraphRegistry::_SynchUpdate(const std::string& id, GraphPtr_IdMap * g)
 {
 	auto shared_graph = shared_ptr<GraphPtr_IdMap>(g, FS_destructor);
 	// <START> mutually exclusive region
-	std::unique_lock<std::shared_mutex> g_lock(path_finder::mutex_graph);
+	std::unique_lock<std::shared_mutex> g_lock(path_finder::G_mutex_graph);
 	GraphRegistry::_instance._dynamic_registry.erase(id);
 	GraphRegistry::_instance._dynamic_registry.insert(
 		std::pair<string, shared_ptr<GraphPtr_IdMap>>(id, shared_graph));

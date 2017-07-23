@@ -7,17 +7,11 @@
  */
 #include "ai.h"
 #include "graph/graph_observer.h"
-#include <map>
-#include <list>
-#include <string>
-#include <vector>
 
-using std::map;
-using std::vector;
-using std::list;
 using std::string;
 
-namespace path_finder{
+namespace path_finder
+{
 
 AI::AI(
 	const string& path, const string& f_name_prefix, const string& f_extension)
@@ -30,7 +24,8 @@ AI::AI(
 }
 
 #ifdef DEBUG
-void AI::Print(void) const noexcept
+void AI::Print(void)
+const noexcept
 {
 	GraphRegistry::Instance().PrintGraph(
 		*(GraphRegistry::Instance().GetDynamicGraph(_category)));

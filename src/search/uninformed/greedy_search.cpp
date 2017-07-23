@@ -4,6 +4,9 @@ using std::vector;
 using std::list;
 using std::shared_ptr;
 
+// G_ prefix for global variables
+extern std::shared_mutex G_mutex_graph;
+
 template <typename State>
 GreedySearch<State>::GreedySearch() noexcept{
 	this->_qmaker = ColoredQueueMaker<State>();
@@ -106,7 +109,7 @@ GreedySearch<State>::Search(
 				current_neigh.first->color = BLACK;
 				// <START> mutually shared region (multiple readers)
 				std::shared_lock<std::shared_mutex>
-					g_lock(path_finder::mutex_graph);
+					g_lock(path_finder::G_mutex_graph);
 				Graph * dynamic_graph = dynamic_graph_->first;
 				uint dynamic_cost =
 					(*dynamic_graph)

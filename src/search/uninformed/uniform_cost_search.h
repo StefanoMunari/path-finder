@@ -15,7 +15,7 @@
 #include "../../utils/algorithm.h"
 #include "../../utils/boost_types.h"
 #include "../../utils/constants.h"
-#include "../../utils/synch.h"// mutex_graph
+#include "../../utils/synch.h"// G_mutex_graph
 #include "../../utils/types.h"
 #include <queue>
 #include <map>

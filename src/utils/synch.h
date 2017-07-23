@@ -12,6 +12,6 @@ namespace path_finder
 
 	#ifndef MUTEX_GRAPH
 	#define MUTEX_GRAPH
-	static std::shared_mutex mutex_graph;
+	static std::shared_mutex G_mutex_graph;
 	#endif
 }

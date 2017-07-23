@@ -30,6 +30,5 @@ typedef boost::graph_traits<Graph>::edge_descriptor EdgeDescriptor;
 // Auxiliary Types
 typedef std::map<std::string, VertexDescriptor> IdVertexMap;
 typedef std::pair<Graph *, IdVertexMap *> GraphPtr_IdMap;
-typedef long unsigned int luint;
 
 #endif /*BOOST_TYPES_H*/
