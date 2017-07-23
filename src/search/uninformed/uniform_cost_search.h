@@ -10,7 +10,7 @@
 #include "../solvable.h"
 #include "../../framework/problem/problem.h"
 #include "../../framework/data/node_colored.h"
-#include "../../framework/data/factory/colored_queue_maker.h"
+#include "../../framework/data/factory/colored_search_queue_maker.h"
 #include "../../framework/data/factory/colored_search_map_maker.h"
 #include "../../utils/algorithm.h"
 #include "../../utils/boost_types.h"
@@ -68,9 +68,9 @@ class UniformCostSearch
 	private:
 		/**
 		 * @brief instance of a colored queue factory class
-		 * @see colored_queue_maker.h
+		 * @see colored_search_queue_maker.h
 		*/
-		ColoredQueueMaker<State> _qmaker;
+		ColoredSearchQueueMaker<State> _qmaker;
 		/**
 		 * @brief instance of a colored search map factory class
 		 * @see colored_search_map_maker.h

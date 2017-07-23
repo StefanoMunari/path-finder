@@ -5,8 +5,8 @@
  *
  * Detailed description of file.
  */
-#ifndef COLORED_QUEUE_MAKER_H
-#define COLORED_QUEUE_MAKER_H
+#ifndef colored_search_queue_maker_H
+#define colored_search_queue_maker_H
 
 #include "../node.h"
 #include "../utils/node_comparator.h"
@@ -19,7 +19,7 @@
 namespace path_finder
 {
 
-template <typename State> class ColoredQueueMaker;
+template <typename State> class ColoredSearchQueueMaker;
 
 
 /**
@@ -35,7 +35,7 @@ template <typename State> class ColoredQueueMaker;
  * @pre the graph has only NOT negative costs (the minimum is 0)
 */
 template <typename State>
-class ColoredQueueMaker {
+class ColoredSearchQueueMaker {
   public:
 	std::priority_queue<
 		std::pair<NodeColored<State>*, uint>,
@@ -54,7 +54,7 @@ class ColoredQueueMaker {
 };
 
 // import template implementation
-#include "colored_queue_maker.cpp"
+#include "colored_search_queue_maker.cpp"
 
 }
-#endif /*COLORED_QUEUE_MAKER_H*/
+#endif /*colored_search_queue_maker_H*/

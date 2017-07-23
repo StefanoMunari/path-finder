@@ -10,7 +10,7 @@ extern std::shared_mutex G_mutex_graph;
 template <typename State>
 GreedySearch<State>::GreedySearch() noexcept
 {
-	this->_qmaker = ColoredQueueMaker<State>();
+	this->_qmaker = ColoredSearchQueueMaker<State>();
 	this->_search_map_maker = ColoredSearchMapMaker<State>();
 }
 

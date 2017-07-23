@@ -12,7 +12,7 @@
 #include "../solvable.h"
 #include "../../framework/problem/problem.h"
 #include "../../framework/data/node_colored.h"
-#include "../../framework/data/factory/colored_queue_maker.h"
+#include "../../framework/data/factory/colored_search_queue_maker.h"
 #include "../../framework/data/factory/colored_search_map_maker.h"
 #include "../../framework/data/factory/colored_informed_map_maker.h"
 #include "../../utils/algorithm.h"
@@ -65,7 +65,7 @@ class AStarSearch
 		HeuristicFunction<State> * _heuristic = nullptr;
 		/**
 		 * @brief instance of a colored queue factory class
-		 * @see colored_queue_maker.h
+		 * @see colored_search_queue_maker.h
 		*/
 		ColoredInformedQueueMaker<State> _informed_qmaker;
 		/**
