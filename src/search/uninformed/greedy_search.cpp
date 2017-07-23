@@ -8,21 +8,24 @@ using std::shared_ptr;
 extern std::shared_mutex G_mutex_graph;
 
 template <typename State>
-GreedySearch<State>::GreedySearch() noexcept{
+GreedySearch<State>::GreedySearch() noexcept
+{
 	this->_qmaker = ColoredQueueMaker<State>();
 	this->_search_map_maker = ColoredSearchMapMaker<State>();
 }
 
 
 template <typename State>
-GreedySearch<State>::GreedySearch(const GreedySearch& that){
+GreedySearch<State>::GreedySearch(const GreedySearch& that)
+{
 	this->_qmaker = that._qmaker;
 	this->_search_map_maker = that._search_map_maker;
 }
 
 template <typename State>
 GreedySearch<State>&
-GreedySearch<State>::operator=(const GreedySearch& that){
+GreedySearch<State>::operator=(const GreedySearch& that)
+{
 	this->_qmaker = that._qmaker;
 	this->_search_map_maker = that._search_map_maker;
 	return *this;
@@ -30,7 +33,8 @@ GreedySearch<State>::operator=(const GreedySearch& that){
 
 template <typename State>
 list<State>*
-GreedySearch<State>::Solve(Node<State>* last){
+GreedySearch<State>::Solve(Node<State>* last)
+{
 	Node<State>* iterator = last;
 	list<State>* result = new list<State>();
 	while(iterator){
@@ -45,8 +49,8 @@ list<State>*
 GreedySearch<State>::Search(
 	GraphPtr_IdMap static_graph_,
 	shared_ptr<GraphPtr_IdMap> dynamic_graph_,
-	const Problem<State>& problem){
-
+	const Problem<State>& problem)
+{
 	// boost-property accessors
 	IndexMap node_index =
 		boost::get(boost::vertex_index, (*static_graph_.first));

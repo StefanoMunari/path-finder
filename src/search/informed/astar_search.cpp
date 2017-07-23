@@ -19,7 +19,8 @@ AStarSearch<State>::AStarSearch() noexcept
 }
 
 template <typename State>
-AStarSearch<State>::AStarSearch(const AStarSearch& that){
+AStarSearch<State>::AStarSearch(const AStarSearch& that)
+{
 	this->_informed_qmaker = that._informed_qmaker;
 	this->_informed_map_maker = that._informed_map_maker;
 	this->_heuristic = that._heuristic;

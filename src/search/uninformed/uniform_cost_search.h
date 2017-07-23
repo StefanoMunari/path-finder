@@ -28,56 +28,58 @@
 
 namespace path_finder
 {
-	template <typename State> class UniformCostSearch;
 
-	/**
-	 * @brief  Uniform-cost search on a graph.
-	 *
-	 * @pre the branching factor of each node of the graph must be finite
-	 * @pre the step cost of each edge of the graph must be >= 0
-	 *
-	 * Search for the optimal path on the graph.
-	 * Analysis (assuming that pre-conditions hold):
-	 * - Complete: TRUE
-	 * - Optimal: TRUE
-	 * - Time: O(braching^(1+round(optimal_cost/epsilon)))
-	 * - Space: O(braching^(1+round(optimal_cost/epsilon)))
-	*/
-	template <typename State>
-	class UniformCostSearch
-	: public Searchable<State>, public Solvable<State> {
+template <typename State> class UniformCostSearch;
 
-		public:
-			/**
-			 * @brief Class constructor
-			 * @param static_graph - a pair which represents the static topology
-			 *	with the associated static costs for each edge
-			 * @return a uniform-cost search algorithm
-			*/
-			UniformCostSearch() noexcept;
-			UniformCostSearch(const UniformCostSearch&);
-			UniformCostSearch& operator=(const UniformCostSearch&);
-			~UniformCostSearch() noexcept {};
-			std::list<State>* Solve(Node<State>*);
-			std::list<State>* Search(
-							GraphPtr_IdMap,
-							std::shared_ptr<GraphPtr_IdMap>,
-							const Problem<State>&);
+/**
+ * @brief  Uniform-cost search on a graph.
+ *
+ * @pre the branching factor of each node of the graph must be finite
+ * @pre the step cost of each edge of the graph must be >= 0
+ *
+ * Search for the optimal path on the graph.
+ * Analysis (assuming that pre-conditions hold):
+ * - Complete: TRUE
+ * - Optimal: TRUE
+ * - Time: O(braching^(1+round(optimal_cost/epsilon)))
+ * - Space: O(braching^(1+round(optimal_cost/epsilon)))
+*/
+template <typename State>
+class UniformCostSearch
+: public Searchable<State>, public Solvable<State>
+{
+	public:
+		/**
+		 * @brief Class constructor
+		 * @param static_graph - a pair which represents the static topology
+		 *	with the associated static costs for each edge
+		 * @return a uniform-cost search algorithm
+		*/
+		UniformCostSearch() noexcept;
+		UniformCostSearch(const UniformCostSearch&);
+		UniformCostSearch& operator=(const UniformCostSearch&);
+		~UniformCostSearch() noexcept {};
+		std::list<State>* Solve(Node<State>*);
+		std::list<State>* Search(
+						GraphPtr_IdMap,
+						std::shared_ptr<GraphPtr_IdMap>,
+						const Problem<State>&);
 
-		private:
-			/**
-			 * @brief instance of a colored queue factory class
-			 * @see colored_queue_maker.h
-			*/
-			ColoredQueueMaker<State> _qmaker;
-			/**
-			 * @brief instance of a colored search map factory class
-			 * @see colored_search_map_maker.h
-			*/
-			ColoredSearchMapMaker<State> _search_map_maker;
-	};
+	private:
+		/**
+		 * @brief instance of a colored queue factory class
+		 * @see colored_queue_maker.h
+		*/
+		ColoredQueueMaker<State> _qmaker;
+		/**
+		 * @brief instance of a colored search map factory class
+		 * @see colored_search_map_maker.h
+		*/
+		ColoredSearchMapMaker<State> _search_map_maker;
+};
 
-	/* import template implementation */
-	#include "uniform_cost_search.cpp"
+/* import template implementation */
+#include "uniform_cost_search.cpp"
+
 }
 #endif /*UNIFORM_COST_SEARCH_H*/

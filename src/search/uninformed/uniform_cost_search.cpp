@@ -15,14 +15,16 @@ UniformCostSearch<State>::UniformCostSearch() noexcept
 }
 
 template <typename State>
-UniformCostSearch<State>::UniformCostSearch(const UniformCostSearch& that){
+UniformCostSearch<State>::UniformCostSearch(const UniformCostSearch& that)
+{
 	this->_qmaker = that._qmaker;
 	this->_search_map_maker = that._search_map_maker;
 }
 
 template <typename State>
 UniformCostSearch<State>&
-UniformCostSearch<State>::operator=(const UniformCostSearch& that){
+UniformCostSearch<State>::operator=(const UniformCostSearch& that)
+{
 	this->_qmaker = that._qmaker;
 	this->_search_map_maker = that._search_map_maker;
 	return *this;
@@ -30,7 +32,8 @@ UniformCostSearch<State>::operator=(const UniformCostSearch& that){
 
 template <typename State>
 list<State>*
-UniformCostSearch<State>::Solve(Node<State>* last){
+UniformCostSearch<State>::Solve(Node<State>* last)
+{
 	Node<State> * iterator = last;
 	list<State>* result = new list<State>();
 	while(iterator){
