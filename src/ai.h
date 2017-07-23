@@ -23,22 +23,25 @@ namespace path_finder
 
 	class AI{
 		public:
-			AI() =delete;
-			AI(const string&, const string&, const string&);
+			AI() = delete;
+			AI(const string&, const string&, const string&) noexcept;
 			~AI() noexcept {};
 			template<typename State>
-			std::list<State>* FindPath(const std::string& source,
-										const std::string& destination,
-										SearchableType algorithm);
+			std::list<State>* FindPath(
+					const std::string& source,
+					const std::string& destination,
+					SearchableType algorithm)
+					const noexcept;
+		public:
 			#ifdef DEBUG
-			void Print(void);
+			void Print(void) const noexcept;
 			#endif /*DEBUG*/
 		private:
 			//	Identify the category of the graph requested by the client.
 			//	The category corresponds to the name prefix of the
-			//	infrastructure graph file.
+			//	infrastructure/topology graph file.
 			//	e.g.
-			//	a pedestrian will instantiated an AI with sidewalk category
+			//	a pedestrian will instantiate an AI with sidewalk category.
 			//	a car will instantiate an AI with a street category, etc.
 			std::string _category;
 	};

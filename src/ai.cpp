@@ -1,7 +1,9 @@
 template<typename State>
-list<State>* AI::FindPath(const string& source,
-						const string& destination,
-						SearchableType algorithm)
+list<State>* AI::FindPath(
+	const string& source,
+	const string& destination,
+	SearchableType algorithm)
+	const noexcept
 {
 	auto _find =
 		[this, &source, &destination](Searchable<State> * finder)

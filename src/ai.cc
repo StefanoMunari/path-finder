@@ -19,7 +19,9 @@ using std::string;
 
 namespace path_finder{
 
-AI::AI(const string& path, const string& f_name_prefix, const string& f_extension)
+AI::AI(
+	const string& path, const string& f_name_prefix, const string& f_extension)
+	noexcept
 {
 	this->_category = f_name_prefix;
 	GraphRegistry::Instance().InsertGraph(
@@ -28,7 +30,7 @@ AI::AI(const string& path, const string& f_name_prefix, const string& f_extensio
 }
 
 #ifdef DEBUG
-void AI::Print(void)
+void AI::Print(void) const noexcept
 {
 	GraphRegistry::Instance().PrintGraph(
 		*(GraphRegistry::Instance().GetDynamicGraph(_category)));
