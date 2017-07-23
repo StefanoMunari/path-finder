@@ -71,12 +71,13 @@ void GraphRegistry::InsertGraph(
 	}
 }
 
-GraphPtr_IdMap GraphRegistry::GetStaticGraph(string& id) noexcept
+GraphPtr_IdMap GraphRegistry::GetStaticGraph(const string& id) noexcept
 {
 	return GraphRegistry::_instance._static_registry[id];
 }
 
-shared_ptr<GraphPtr_IdMap> GraphRegistry::GetDynamicGraph(string& id) noexcept
+shared_ptr<GraphPtr_IdMap> GraphRegistry::GetDynamicGraph(
+	const string& id) noexcept
 {
 	return GraphRegistry::_instance._dynamic_registry[id];
 }

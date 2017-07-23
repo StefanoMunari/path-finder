@@ -28,9 +28,10 @@ class GraphRegistry final
 			const std::string&, const std::string&, const std::string&)
 			noexcept;
 		static
-		GraphPtr_IdMap GetStaticGraph(std::string&) noexcept;
+		GraphPtr_IdMap GetStaticGraph(const std::string&) noexcept;
 		static
-		std::shared_ptr<GraphPtr_IdMap> GetDynamicGraph(std::string&) noexcept;
+		std::shared_ptr<GraphPtr_IdMap> GetDynamicGraph(
+			const std::string&) noexcept;
 		static
 		void UpdateDynamicRegistry(const std::string&, const std::string&);
 	public:
