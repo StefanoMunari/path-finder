@@ -79,7 +79,8 @@ UniformCostSearch<State>::Search(
 		this->_map_maker.MakeMap(&ids_map, static_graph_.first);
 
 	// remove the deprecated source,
-	// insert the source node marking it as BLACK (visited/completed)
+	// insert the source node marking it as BLACK (visited/completed) and with
+	// cost 0 (it is the source node)
 	{
 		auto deprecated_node = (*search_map)[problem.GetFirstState()];
 		delete deprecated_node.first;

@@ -37,6 +37,9 @@ template <typename State> class UniformCostSearch;
  * @pre the branching factor of each node of the graph must be finite
  * @pre the step cost of each edge of the graph must be >= 0
  *
+ * @post return a list of states which represents the best path. Otherwise
+ *		 returns an empty (nullptr) result
+ *
  * Search for the optimal path on the graph.
  * Analysis (assuming that pre-conditions hold):
  * - Complete: TRUE
@@ -44,18 +47,14 @@ template <typename State> class UniformCostSearch;
  * - Time: O(braching^(1+round(optimal_cost/epsilon)))
  * - Space: O(braching^(1+round(optimal_cost/epsilon)))
  * @note epsilon - the minimum step cost in the graph
+ *
+ *
 */
 template <typename State>
 class UniformCostSearch
 : public Searchable<State>, public Solvable<State>
 {
 	public:
-		/**
-		 * @brief Class constructor
-		 * @param static_graph - a pair which represents the static topology
-		 *	with the associated static costs for each edge
-		 * @return a uniform-cost search algorithm
-		*/
 		UniformCostSearch() noexcept;
 		UniformCostSearch(const UniformCostSearch&) noexcept;
 		UniformCostSearch& operator=(const UniformCostSearch&) noexcept;
@@ -68,7 +67,7 @@ class UniformCostSearch
 
 	private:
 		/**
-		 * @brief instance of a colored queue factory class
+		 * @brief instance of a colored search queue factory class
 		 * @see colored_search_queue_maker.h
 		*/
 		ColoredSearchQueueMaker<State> _qmaker;
