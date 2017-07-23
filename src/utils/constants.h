@@ -14,8 +14,4 @@ namespace path_finder
 	#ifndef EMPTY
 	#define EMPTY nullptr
 	#endif
-
-	#ifndef PYTHON_FUNCTION_NAME
-	#define PYTHON_FUNCTION_NAME "get_dictionary_from_file"
-	#endif
 }
