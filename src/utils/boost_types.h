@@ -15,6 +15,9 @@
 #include <map>
 #include <string>
 
+namespace path_finder
+{
+
 // Internal Bundled Properties
 typedef int Index;
 typedef unsigned int Weight;
@@ -31,4 +34,5 @@ typedef boost::graph_traits<Graph>::edge_descriptor EdgeDescriptor;
 typedef std::map<std::string, VertexDescriptor> IdVertexMap;
 typedef std::pair<Graph *, IdVertexMap *> GraphPtr_IdMap;
 
+}
 #endif /*BOOST_TYPES_H*/

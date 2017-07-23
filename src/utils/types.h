@@ -7,13 +7,15 @@
  */
 namespace path_finder
 {
-	#ifndef UINT
-	#define UINT
-	typedef unsigned int uint;
-	#endif
 
-	#ifndef LUINT
-	#define LUINT
-	typedef long unsigned int luint;
-	#endif
+#ifndef UINT
+#define UINT
+typedef unsigned int uint;
+#endif
+
+#ifndef LUINT
+#define LUINT
+typedef long unsigned int luint;
+#endif
+
 }

@@ -10,7 +10,9 @@
 
 namespace path_finder
 {
-	enum ProcessState {RUNNING, READY, STOPPED, WAITING, TERMINATED};
+
+enum ProcessState {RUNNING, READY, STOPPED, WAITING, TERMINATED};
+
 }
 
 #endif /*PROCESS_STATE_H*/
