@@ -10,40 +10,43 @@
 #ifndef NODE_COSTS_H
 #define NODE_COSTS_H
 
+#include "../../../utils/types.h"
 #include <climits>// UINT_MAX
-
-typedef unsigned int uint;
 
 namespace path_finder
 {
-	class NodeCosts{
-		public:
-			NodeCosts() : g(UINT_MAX), h(UINT_MAX) {}
-			NodeCosts(const NodeCosts& nc) {
-				this->h = nc.h;
-				this->g = nc.g;
-			}
-			NodeCosts& operator=(const NodeCosts& nc){
-				this->h = nc.h;
-				this->g = nc.g;
-				return (*this);
-			}
-			~NodeCosts() noexcept {};
-			bool operator >(const NodeCosts& nc) const
-			{
-				unsigned long f0 = this->g + this->h;
-				unsigned long f1 = nc.g + nc.h;
-				return f0>f1;
-			}
-			/*
-			 * effective cost (source, n)
-			 */
-			uint g;
-			/*
-			 * estimated cost (goal, n)
-			 */
-			uint h;
-	};
-}
 
+class NodeCosts{
+	public:
+		NodeCosts() noexcept
+		: g(UINT_MAX), h(UINT_MAX) {}
+		NodeCosts(const NodeCosts& nc) noexcept
+		{
+			this->h = nc.h;
+			this->g = nc.g;
+		}
+		NodeCosts& operator=(const NodeCosts& nc) noexcept
+		{
+			this->h = nc.h;
+			this->g = nc.g;
+			return (*this);
+		}
+		~NodeCosts() noexcept {};
+		bool operator >(const NodeCosts& nc) const noexcept
+		{
+			unsigned long f0 = this->g + this->h;
+			unsigned long f1 = nc.g + nc.h;
+			return f0>f1;
+		}
+		/*
+		 * effective cost (source, n)
+		 */
+		uint g;
+		/*
+		 * estimated cost (goal, n)
+		 */
+		uint h;
+};
+
+}
 #endif /*NODE_COSTS_H*/
