@@ -1,31 +1,24 @@
-FROM debian:latest
+FROM m0bius:base
 MAINTAINER <stefanomunari.sm@gmail.com>
 
-ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 ENV PROJECT_PATH /home/cds
-ENV PATH_FINDER_ROOT /home/cds/path_finder
+ENV PATH_FINDER_ROOT /home/cds/path-finder
 
 # <DEV_MODE>
 ADD loop.sh /tmp/
 # </DEV_MODE>
-
-RUN apt-get update && apt-get upgrade -y \
-&& apt-get install -y \
-	build-essential \
-    g++ \
-    libboost-all-dev \
-    libjsoncpp-dev
 
 # <DEV_MODE>
 RUN chmod +x /tmp/loop.sh
 # </DEV_MODE>
 RUN useradd -m -p cds cds
 USER cds
-WORKDIR $PROJECT_PATH
+RUN mkdir -p $PATH_FINDER_ROOT
+WORKDIR $PATH_FINDER_ROOT
 # <DEV_MODE>
 ENTRYPOINT ["sh","/tmp/loop.sh","&"]
 # </DEV_MODE>
 # <PROD_MODE>
-ENTRYPOINT ["make"]
+ENTRYPOINT ["make","run"]
 # </PROD_MODE>
