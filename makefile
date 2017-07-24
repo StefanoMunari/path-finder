@@ -1,8 +1,8 @@
 CXX=g++
 CFLAGS=-std=c++17 -Wall -Werror -pthread $(CDBG) $(CVGD)
-SRCDIR=$(PWD)/src$(MODE)
-OBJDIR=$(PWD)/obj
-BINDIR=$(PWD)/bin
+SRCDIR=$(PATH_FINDER_ROOT)/src$(MODE)
+OBJDIR=$(PATH_FINDER_ROOT)/obj
+BINDIR=$(PATH_FINDER_ROOT)/bin
 
 LIBDIR=/usr/include
 LIB=jsoncpp
@@ -53,5 +53,5 @@ help:
 .PHONY: clean
 clean:
 	@echo ""\
-	$$(find $(PWD) -type f -name "*.o" -delete) >/dev/null
+	$$(find $(PATH_FINDER_ROOT) -type f -name "*.o" -delete) >/dev/null
 	@echo "=>Cleaned object files"
