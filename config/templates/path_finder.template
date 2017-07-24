@@ -14,7 +14,7 @@ services:
       build: ./data
       container_name: path_finder_data
       volumes:
-        - K:PATH_FINDER_ROOT:/home/cds/path_finder
+        - K:PATH_FINDER_ROOT:/home/cds/path-finder
 
     path_finder:
       build: ./path_finder
@@ -23,6 +23,9 @@ services:
         - path_finder_data
       volumes_from:
         - path_finder_data
-      working_dir: /home/cds/path_finder
+      working_dir: /home/cds/path-finder
+      env_file:
+        - ./args.env
+
 volumes:
    path_finder_data:
