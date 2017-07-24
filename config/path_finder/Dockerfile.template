@@ -5,18 +5,24 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 ENV DATA_PATH /home/cds
 
+# <DEV_MODE>
 ADD loop.sh /tmp/
+# </DEV_MODE>
 
 RUN apt-get update && apt-get upgrade -y \
 && apt-get install -y \
 	build-essential \
-    libboost-all-dev \
     g++ \
-    libpython2.7
+    libboost-all-dev \
+    libjsoncpp-dev
 
 RUN chmod +x /tmp/loop.sh
 RUN useradd -m -p cds cds
 USER cds
 WORKDIR $DATA_PATH
-
+# <DEV_MODE>
 ENTRYPOINT ["sh","/tmp/loop.sh","&"]
+# </DEV_MODE>
+# <PROD_MODE>
+ENTRYPOINT ["make"]
+# </PROD_MODE>
