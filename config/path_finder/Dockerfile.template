@@ -3,7 +3,8 @@ MAINTAINER <stefanomunari.sm@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
-ENV DATA_PATH /home/cds
+ENV PROJECT_PATH /home/cds
+ENV PATH_FINDER_ROOT /home/cds/path_finder
 
 # <DEV_MODE>
 ADD loop.sh /tmp/
@@ -19,7 +20,7 @@ RUN apt-get update && apt-get upgrade -y \
 RUN chmod +x /tmp/loop.sh
 RUN useradd -m -p cds cds
 USER cds
-WORKDIR $DATA_PATH
+WORKDIR $PROJECT_PATH
 # <DEV_MODE>
 ENTRYPOINT ["sh","/tmp/loop.sh","&"]
 # </DEV_MODE>

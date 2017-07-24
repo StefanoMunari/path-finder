@@ -37,3 +37,7 @@ doc/*
 
 # Project files
 *.project
+
+# Docker files
+config/path_finder/Dockerfile
+config/docker-compose.*
