@@ -17,7 +17,9 @@ RUN apt-get update && apt-get upgrade -y \
     libboost-all-dev \
     libjsoncpp-dev
 
+# <DEV_MODE>
 RUN chmod +x /tmp/loop.sh
+# </DEV_MODE>
 RUN useradd -m -p cds cds
 USER cds
 WORKDIR $PROJECT_PATH
