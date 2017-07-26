@@ -27,9 +27,9 @@ std::map<std::string, std::list<std::string>*>
 FS_path_map_ = std::map<std::string, std::list<std::string>*>();
 
 static
-const char * FS_root_path_ = getenv(PROJECT_ROOT);
+char const * FS_root_path_ = getenv(PROJECT_ROOT);
 
-const int Get_Path_Size(const char * pid_)
+int Get_Path_Size(char * pid_)
 {
 	const string pid = string(pid_);
 	if(pid.empty())
@@ -38,7 +38,7 @@ const int Get_Path_Size(const char * pid_)
 	return FS_path_map_[pid]->size();
 }
 
-const char ** Get_Path(const char * pid_)
+char ** Get_Path(char * pid_)
 {
 	string pid = string(pid_);
 	if(pid.empty())
@@ -48,26 +48,26 @@ const char ** Get_Path(const char * pid_)
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Get_Path - no path for the request id : "+pid);
 
-	const char ** path =
-		(const char **) malloc(
-			FS_path_map_[pid]->size() * sizeof(const char *));
+	char const ** path =
+		(char const **) malloc(
+			FS_path_map_[pid]->size() * sizeof(char const *));
 	int index = 0;
 
 	for(auto&& element : (*FS_path_map_[pid]))
 	{
 		path[index] =
-			(const char *) malloc(sizeof(char) * strlen(element.c_str()));
+			(char const *) malloc(sizeof(char) * strlen(element.c_str()));
 		path[index] = element.c_str();
 		++index;
 	}
-	return path;
+	return const_cast<char **>(path);
 }
 
 void Find(
-	const char * pid_,
-	const char * source_,
-	const char * destination_,
-	const int algorithm_)
+	char * pid_,
+	char * source_,
+	char * destination_,
+	int algorithm_)
 {
 	if(algorithm_ < 0 || algorithm_ > 2)
 		throw std::invalid_argument(
@@ -96,10 +96,10 @@ void Find(
 }
 
 void Init(
-	const char * pid_,
-	const char * data_path_,
-	const char * f_name_prefix_,
-	const char * f_extension_)
+	char * pid_,
+	char * data_path_,
+	char * f_name_prefix_,
+	char * f_extension_)
 {
 	if(FS_root_path_ == NULL)
 		throw std::invalid_argument(
