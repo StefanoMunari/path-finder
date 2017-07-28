@@ -1,3 +1,5 @@
+-- PRE: generate ada spec of the ai_interface header
+-- g++ -c -fdump-ada-spec ai_interface.h
 with ai_interface_h;
 
 with Ada.Unchecked_Deallocation;
@@ -11,7 +13,7 @@ package body AI_Adapter is
 	package AI renames ai_interface_h;
 	package C_Strings renames Interfaces.C.Strings;
 
-	procedure Init (This : in AI_Adapter.Object;
+	procedure Init_AI (This : in AI_Adapter.Object;
 					Data_Path : String;
 					File_Prefix : String;
 					File_Extension : String)
@@ -32,7 +34,8 @@ package body AI_Adapter is
 		C_Strings.Free (C_Data_Path);
 		C_Strings.Free (C_File_Prefix);
 		C_Strings.Free (C_File_Extension);
-	end Init;
+		null;
+	end Init_AI;
 
 	function Find_Path (This : in AI_Adapter.Object;
 						Source : String;
@@ -47,15 +50,16 @@ package body AI_Adapter is
 		C_Source : C_Strings.chars_ptr := C_Strings.New_String (Source);
 		C_Destination : C_Strings.chars_ptr :=
 			C_Strings.New_String (Destination);
-		C_Algorithm : Integer = Integer (Algorithm);
+		C_Algorithm : Interfaces.C.int :=
+			Interfaces.C.int (Integer (Algorithm));
 	begin
 		-- Find Path
 		-- from Source to Destination using the specified Algorithm
 		AI.Find (C_AI_Id, C_Source, C_Destination, C_Algorithm);
-		-- Free resources
+		-- -- Free resources
 		C_Strings.Free (C_Source);
 		C_Strings.Free (C_Destination);
-		-- Get the found Path_Size
+		-- -- Get the found Path_Size
 		Path_Size := Integer (AI.Get_Path_Size (C_AI_Id));
 		-- Get the found Path
 		declare
