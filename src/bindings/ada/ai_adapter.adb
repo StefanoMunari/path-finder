@@ -13,7 +13,7 @@ package body AI_Adapter is
 	package AI renames ai_interface_h;
 	package C_Strings renames Interfaces.C.Strings;
 
-	procedure Init_AI (This : in AI_Adapter.Object;
+	procedure Init (This : in AI_Adapter.Object;
 					Data_Path : String;
 					File_Prefix : String;
 					File_Extension : String)
@@ -35,7 +35,7 @@ package body AI_Adapter is
 		C_Strings.Free (C_File_Prefix);
 		C_Strings.Free (C_File_Extension);
 		null;
-	end Init_AI;
+	end Init;
 
 	function Find_Path (This : in AI_Adapter.Object;
 						Source : String;
