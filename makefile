@@ -39,15 +39,15 @@ profile: compile
 .PHONY: help
 help:
 	@echo "Usage: make [commands] [options]\n"\
-		"Options:\n"\
-		"\t ARGS=<arg_list>\t\t\t  Runs with the argument list for main process. e.g. ARGS=\"Source Destination\"\n"\
-		"\t CDBG=-DDEBUG=1\t\t\t\t  Compiles with the debugging flag activated.\n"\
-		"\t CVGD=-g\t\t\t\t\t  Compiles with the valgrind flag activated.\n"\
-		"\t VGDOPTS=<valgrind_options>\t  Execs with the defined options for valgrind (only in profile mode).\n"\
-		"\t MODE=<subdir_path>\t\t  Compiles only specificied subfolder. e.g. MODE=\"/core\"\n"\
-		"\n"\
-		"Commands:\n" \
-		"\t {compile, run, profile, clean, help}\n"
+	"Options:\n"\
+	"\t ARGS=<arg_list>\t\t\t  Runs with the argument list for main process. e.g. ARGS=\"Source Destination\"\n"\
+	"\t CDBG=-DDEBUG=1\t\t\t\t  Compiles with the debugging flag activated.\n"\
+	"\t CVGD=-g\t\t\t\t\t  Compiles with the valgrind flag activated.\n"\
+	"\t VGDOPTS=<valgrind_options>\t  Execs with the defined options for valgrind (only in profile mode).\n"\
+	"\t MODE=<subdir_path>\t\t  Compiles only specificied subfolder. e.g. MODE=\"/core\"\n"\
+	"\n"\
+	"Commands:\n" \
+	"\t {compile, run, profile, clean, help}\n"
 
 
 .PHONY: clean
