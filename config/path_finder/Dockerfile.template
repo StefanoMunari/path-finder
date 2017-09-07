@@ -1,4 +1,4 @@
-FROM m0bius:base
+FROM m0bius/base:latest
 MAINTAINER <stefanomunari.sm@gmail.com>
 
 ENV TERM xterm
