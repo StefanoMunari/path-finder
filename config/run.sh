@@ -1,6 +1,18 @@
 #!/bin/bash
 service=${1:-}
 
+function help
+{
+   echo "Usage: "$0" [service]"
+   echo "   service :      the name of the service to build (e.g.\"path_finder\")"
+   exit
+}
+
+if [ -z ${service} ];
+then
+   help
+fi
+
 if [ ! -f $PWD/docker-compose.$service.yml ];
 then
 	cp templates/$service.template docker-compose.$service.yml
