@@ -44,3 +44,8 @@ fe/
 # Docker files
 config/path_finder/Dockerfile
 config/docker-compose.*
+
+# Data and other stuff
+data/*
+times/results/*
+times/stats/*
