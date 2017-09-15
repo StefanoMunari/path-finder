@@ -1,16 +1,25 @@
 CXX=g++
 CFLAGS=-std=c++17 -Wall -Werror -pthread $(CDBG) $(CVGD)
 SRCDIR=$(PATH_FINDER_ROOT)/src$(MODE)
+TIMESDIR=$(PATH_FINDER_ROOT)/times
 OBJDIR=$(PATH_FINDER_ROOT)/obj
 BINDIR=$(PATH_FINDER_ROOT)/bin
 
 LIBDIR=/usr/include
-LIB=jsoncpp
+LIB=-ljsoncpp
 INCLUDE=/usr/include/boost
 
 SRC=$(wildcard $(SRCDIR)/*.cc) $(wildcard $(SRCDIR)/*/*.cc) $(wildcard $(SRCDIR)/*/*/*.cc) $(wildcard $(SRCDIR)/*/*/*/*.cc)
 OBJ=$(SRC:%.cc=%.o)
 BIN=find_path
+
+ifeq ($(OPT),times)
+	# use the correct main (times)
+	AUX := $(filter-out $(SRCDIR)/main.cc, $(SRC)) $(wildcard $(TIMESDIR)/*.cc)
+	SRC := $(AUX)
+	# link filesystem experimental lib
+	LIB := $(LIB) -lstdc++fs
+endif
 
 all: compile
 
@@ -20,7 +29,7 @@ all: compile
 
 $(BINDIR)/$(BIN): $(OBJ)
 	@echo "\n=>Linking: $(OBJDIR)/*.o"
-	$(CXX) $(CFLAGS) $(OBJDIR)/*.o -o $@ -L$(LIBDIR) -l$(LIB)
+	$(CXX) $(CFLAGS) $(OBJDIR)/*.o -o $@ -L$(LIBDIR) $(LIB)
 
 
 compile: $(BINDIR)/$(BIN)
@@ -35,6 +44,11 @@ run: compile
 profile: compile
 	@echo "=>Profiled: $(BINDIR)/$(BIN)"
 	valgrind $(VGDOPTS) $(BINDIR)/$(BIN) $(ARGS) 2>&1 | tee -a make_run.log && rm make_run.log
+
+.PHONY: times
+times: compile
+	@echo "=>Running Times: $(BINDIR)/$(BIN)"
+	$(BINDIR)/$(BIN)
 
 .PHONY: help
 help:
