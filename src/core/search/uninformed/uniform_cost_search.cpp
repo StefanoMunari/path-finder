@@ -110,6 +110,7 @@ UniformCostSearch<State>::Search(
 		auto neighbors =
 			boost::adjacent_vertices(current, *static_graph);
 
+
 		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it)
 		{
 			State neighbor = ids_map[node_index[*n_it]];
@@ -135,15 +136,20 @@ UniformCostSearch<State>::Search(
 				current_neigh.first->color = GRAY;
 		   	current_neigh.first->parent = current_node.first;
 		   	current_neigh.second = neigh_cost;
+		   	// update search map
+		   	(*search_map)[neighbor] = current_neigh;
+		   	// insert in contour
 		   	contour->push(current_neigh);
 			}
 			// neighbor has been explored and
 			// has an higher cost than the current one
 			else if((current_neigh.first->color == GRAY) &&
-					(current_neigh.second > neigh_cost))
+				(current_neigh.second >= neigh_cost))
 			{
 				current_neigh.first->parent = current_node.first;
 				current_neigh.second = neigh_cost;
+		   	// update search map
+		   	(*search_map)[neighbor] = current_neigh;
 			}
 		}
 		// mark the node as explored
