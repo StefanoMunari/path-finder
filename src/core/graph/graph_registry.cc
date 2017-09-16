@@ -51,7 +51,7 @@ void GraphRegistry::InsertGraph(
 		GraphFactory factory = GraphFactory();
 		// extract the static graph
 		GraphPtr_IdMap g0 = factory.CreateGraph(
-			file_path+"_topology", file_path+"_costs", extension);
+			file_path+"-topology", file_path+"-costs", extension);
 
 		// make a copy of the extracted graph
 		GraphPtr_IdMap * g1 = new GraphPtr_IdMap();

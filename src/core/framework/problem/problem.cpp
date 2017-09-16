@@ -31,6 +31,7 @@ State Problem<State>::GetGoalState() const
 template <typename State>
 bool Problem<State>::IsGoal(const State& state) const
 {
+   std::cout<<"PROBLEM SAYS :"<< state <<" == "<<_goal<<std::endl;
   return (state  ==  _goal);
 }
 /*

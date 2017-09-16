@@ -67,11 +67,6 @@ class GreedySearch
 
 	private:
 		/**
-		 * @brief instance of a colored queue factory class
-		 * @see colored_search_queue_maker.h
-		*/
-		ColoredSearchQueueMaker<State> _qmaker;
-		/**
 		 * @brief instance of a colored search map factory class
 		 * @see colored_search_map_maker.h
 		*/
