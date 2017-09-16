@@ -126,6 +126,7 @@ GreedySearch<State>::Search(
 					[boost::edge(current,*n_it,(*static_graph)).first]
 					+
 					dynamic_cost;
+
 				if(neigh_cost < min)
 				{
 					min = neigh_cost;
@@ -138,6 +139,9 @@ GreedySearch<State>::Search(
 		{
 			neigh_node.first->parent = current_node.first;
 			neigh_node.second = current_node.second + min;
+			// update search map
+			(*search_map)[neigh_node.first->state] = neigh_node;
+			// move to the current neigh
 			current_node = neigh_node;
 		}
 		// mark the node as explored
