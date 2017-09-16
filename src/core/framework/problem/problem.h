@@ -1,6 +1,6 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
-
+#include <iostream>
 namespace path_finder
 {
 

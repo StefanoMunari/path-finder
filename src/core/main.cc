@@ -114,20 +114,21 @@ int main(int argc, char **argv){
 		ai.FindPath<string>(source, destination, path_finder::UNIFORM_COST);
 	auto result0 =
 		ai0.FindPath<string>(source, destination, path_finder::GREEDY);
+std::cout<<"qwe"<<std::endl;
 	auto result1 =
 		ai1.FindPath<string>(source, destination, path_finder::ASTAR);
-
+std::cout<<"ASD"<<std::endl;
 	std::map<std::string, std::vector<std::string>> * topology =
 		new std::map<std::string, std::vector<std::string>>();
 	std::map<std::string, std::vector<uint>> * costs =
 		new std::map<std::string, std::vector<uint>>();
 
 	path_finder::JSON_Reader::Read(
-		prefix+data_path+f_name_prefix+"_topology"+f_extension,
+		prefix+data_path+f_name_prefix+"-topology"+f_extension,
 		topology);
 
 	path_finder::JSON_Reader::Read(
-		prefix+data_path+f_name_prefix+"_costs"+f_extension,
+		prefix+data_path+f_name_prefix+"-costs"+f_extension,
 		costs);
 
 	std::cout<<"--------------SEARCH RESULTS--------------"<<std::endl;
@@ -135,35 +136,41 @@ int main(int argc, char **argv){
 	{
 		std::string prev = "";
 		uint total_cost = 0;
-		for(auto const& node : (*result))
+		if(result)
 		{
-			uint step_cost = GetStepCost(topology, costs, prev, node);
-			if(step_cost != UINT_MAX)
+			for(auto const& node : (*result))
 			{
-				std::cout<< "cost => "<< step_cost <<std::endl;
-				total_cost = total_cost+step_cost;
+				uint step_cost = GetStepCost(topology, costs, prev, node);
+				if(step_cost != UINT_MAX)
+				{
+					std::cout<< "cost => "<< step_cost <<std::endl;
+					total_cost = total_cost+step_cost;
+				}
+				std::cout<< node <<std::endl;
+				prev = node;
 			}
-			std::cout<< node <<std::endl;
-			prev = node;
-		}
 		std::cout<< "TOTAL COST : "<< total_cost <<std::endl;
+		}
 	}
 
 	std::cout<<"==========GREEDY========="<<std::endl;
 	{
 		std::string prev = "";
 		uint total_cost = 0;
-		for(auto const& node : (*result0)) {
-			uint step_cost = GetStepCost(topology, costs, prev, node);
-			if(step_cost != UINT_MAX)
-			{
-				std::cout<< "cost => "<< step_cost <<std::endl;
-				total_cost = total_cost+step_cost;
+		if(result0)
+		{
+			for(auto const& node : (*result0)) {
+				uint step_cost = GetStepCost(topology, costs, prev, node);
+				if(step_cost != UINT_MAX)
+				{
+					std::cout<< "cost => "<< step_cost <<std::endl;
+					total_cost = total_cost+step_cost;
+				}
+				std::cout<< node <<std::endl;
+				prev = node;
 			}
-			std::cout<< node <<std::endl;
-			prev = node;
+			std::cout<< "TOTAL COST : "<< total_cost <<std::endl;
 		}
-		std::cout<< "TOTAL COST : "<< total_cost <<std::endl;
 	}
 
 	std::cout<<"==========ASTAR========="<<std::endl;

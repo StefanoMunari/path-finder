@@ -94,23 +94,24 @@ UniformCostSearch<State>::Search(
 	VertexDescriptor current, end;
 	end = boost::graph_traits<Graph>::null_vertex();
 
-	while(!contour->empty() && (current != end)){
+	while(!contour->empty() && (current != end))
+	{
 
 		auto current_node = contour->top();
 		contour->pop();
 		current = (*indexes_map)[current_node.first->state];
 
 		// goal reached - search completed
-		if(problem.IsGoal(current_node.first->state)){
+		if(problem.IsGoal(current_node.first->state))
+		{
 			result = Solve(current_node.first);
 			break;
 		}
-		// explore the current area
-		current_node.first->color = BLACK;
 		auto neighbors =
 			boost::adjacent_vertices(current, *static_graph);
 
-		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
+		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it)
+		{
 			State neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*search_map)[neighbor];
 			// <START> mutually shared region (multiple readers)
@@ -119,29 +120,34 @@ UniformCostSearch<State>::Search(
 			Graph * dynamic_graph = dynamic_graph_->first;
 			uint dynamic_cost =
 				(*dynamic_graph)
-	   			[boost::edge(current,*n_it,(*dynamic_graph)).first];
-	   		g_lock.unlock();
+	   		[boost::edge(current,*n_it,(*dynamic_graph)).first];
+	   	g_lock.unlock();
 			// <END> mutually shared region (multiple readers)
 			auto neigh_cost = current_node.second +
 					(*static_graph)
 					[boost::edge(current,*n_it,(*static_graph)).first]
 					+
 					dynamic_cost;
+
 			// neighbor not yet explored
-			if(current_neigh.first->color  ==  WHITE){
+			if(current_neigh.first->color  ==  WHITE)
+			{
 				current_neigh.first->color = GRAY;
-		   		current_neigh.first->parent = current_node.first;
-		   		current_neigh.second = neigh_cost;
-		   		contour->push(current_neigh);
+		   	current_neigh.first->parent = current_node.first;
+		   	current_neigh.second = neigh_cost;
+		   	contour->push(current_neigh);
 			}
 			// neighbor has been explored and
 			// has an higher cost than the current one
 			else if((current_neigh.first->color == GRAY) &&
-					(current_neigh.second > neigh_cost)){
+					(current_neigh.second > neigh_cost))
+			{
 				current_neigh.first->parent = current_node.first;
 				current_neigh.second = neigh_cost;
 			}
 		}
+		// mark the node as explored
+		current_node.first->color = BLACK;
 	}
 
 	(this->_map_maker.MakeMapDestructor())(search_map);
