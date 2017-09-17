@@ -15,7 +15,8 @@ list<State>* AI::FindPath(
 			auto path = finder->Search(
 								static_graphptr_idmap,
 								dynamic_graphptr_idmap,
-								Problem<State>(source, destination));
+								Problem<State>(source, destination,
+									new ExplicitTest<State>()));
 			// Free resources
 			// NOTE: do not delete the graphs because they directly refers
 			// the registry graphs (pointers)

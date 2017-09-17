@@ -53,29 +53,55 @@ void GraphObserver::Observe(const std::string & _subject_dir)
 	}
 }
 
+void GraphObserver::Finalize(void) noexcept
+{
+	if(GraphObserver::_instance._state != TERMINATED)
+	{
+		GraphObserver::_instance.ChangeState(STOPPED);
+		//removing the _subject directory from the watch list
+		inotify_rm_watch(
+			GraphObserver::_instance._notifier,
+			GraphObserver::_instance._subject);
+		// closing the INOTIFY instance
+		close(GraphObserver::_instance._notifier);
+		// join the executor thread
+		GraphObserver::_instance._executor.join();
+	}
+}
+
 GraphObserver::GraphObserver(void) noexcept {}
 
 GraphObserver::GraphObserver(const GraphObserver& that) noexcept
 {
-	// since it is static class this body is empty/not needed*/
+	// since it is static class this body is empty/not needed
 }
 
 GraphObserver& GraphObserver::operator= (const GraphObserver&) noexcept
 {
-	// since it is static class this body is empty/not needed*/
+	// since it is static class this body is empty/not needed
 	return GraphObserver::_instance;
 }
 
-GraphObserver::~GraphObserver(void) noexcept
+GraphObserver::~GraphObserver(void) noexcept {}
+
+void  GraphObserver::ChangeState(ProcessState req_state)
 {
-	GraphObserver::_instance._state = STOPPED;
-	GraphObserver::_instance._executor.join();
-	//removing the _subject directory from the watch list
-	inotify_rm_watch(
-		GraphObserver::_instance._notifier,
-		GraphObserver::_instance._subject);
-	// closing the INOTIFY instance
-	close(GraphObserver::_instance._notifier);
+	if(req_state == STOPPED)
+	{
+		// it is running, then stop it
+		if(GraphObserver::_instance._state == RUNNING)
+		{
+			GraphObserver::_instance._state = STOPPED;
+			return;
+		}
+		// not running, directly terminate it
+		if(GraphObserver::_instance._state == READY ||
+			GraphObserver::_instance._state == WAITING)
+		{
+			GraphObserver::_instance._state = TERMINATED;
+			return;
+		}
+	}
 }
 
 void GraphObserver::EventLoop(void)
@@ -84,7 +110,9 @@ void GraphObserver::EventLoop(void)
 	// Wait for changes in the GraphObserver::_instance._subject.
 	// This read blocks until th* change event occurs
 	char buffer [EVENT_BUF_LEN];
-	while(GraphObserver::_instance._state  ==  RUNNING){
+
+	while(GraphObserver::_instance._state  ==  RUNNING)
+	{
 		const int length =
 			read(GraphObserver::_instance._notifier, buffer, EVENT_BUF_LEN);
 		//checking for error*/

@@ -1,11 +1,17 @@
 /**
  * @file
- * @brief  Brief description of file.
+ * @brief  PoC main. Use it to prototype the algorithms.
  * @author <stefanomunari.sm@gmail.com>
  *
- * Detailed description of file.
+ *	Given a configuration file, it runs all the algoritms provided by the system
+ * on the graph specified in the config file. It accepts as input the source and
+ * the destination state to search for.
+ * After the search phase, it prints the resulting found paths with their
+ * respective costs (also each step cost).
+ *
  */
 #include "ai.h"
+#include "graph/graph_observer.h"
 #include "io/json_reader.h"
 #include "search/utils/searchable_type.h"
 #include "utils/constants.h"
@@ -15,12 +21,14 @@
 #include <string>
 #include <utility>
 #include <climits> // UINT_MAX
-#include <iostream>
 #include <stdlib.h> // getenv
 #include <stdexcept>
 #include <fstream> // std::ifstream
+#include <iostream>
 
-uint GetStepCost(std::map<std::string, std::vector<std::string>> * topology,
+static
+uint GetStepCost(
+	std::map<std::string, std::vector<std::string>> * topology,
 	std::map<std::string, std::vector<uint>> * costs,
 	std::string prev, std::string node)
 {
@@ -42,24 +50,53 @@ uint GetStepCost(std::map<std::string, std::vector<std::string>> * topology,
 	return step_cost;
 }
 
-int main(int argc, char **argv){
+static
+void Help(char **argv)
+{
+	std::cout<<"Usage:"<<std::endl;
+	std::cout<<"\t argv[0] <source> <destination> <config_file>"<<std::endl;
+	std::cout<<"Example:"<<std::endl;
+	std::cout<<"\t argv[0] \"A\" \"C\" /etc/path_finder.conf"<<std::endl;
+}
+
+/*
+ * Entrypoint - use it during the prototyping of the system.
+ *
+ *
+ * @pre PATH_FINDER_ROOT environment variable is define.
+ * @pre Program arguments are correctly provided.
+ * @param argv contains 3 parameters: source, destination, config file path
+ */
+int main(int argc, char **argv)
+{
 
 	using path_finder::AI;
+	using path_finder::GraphObserver;
 	using std::map;
 	using std::vector;
 	using std::string;
 	using std::pair;
 
-	if(argc != 3)
+try
+{
+	if(argc != 4)
+	{
+		Help(argv);
 		throw std::invalid_argument("main - arguments not specified");
+	}
+
 
 	const string source = argv[1];
 	const string destination = argv[2];
+	const string conf_fpath = argv[3];
 
 	char * c_prefix = getenv(PROJECT_ROOT);
 
 	if(c_prefix == nullptr)
+	{
+		Help(argv);
 		throw std::invalid_argument("main - environment var not specified");
+	}
 
 	const string prefix = string(c_prefix);
 	string data_path = "";
@@ -68,7 +105,7 @@ int main(int argc, char **argv){
 
 	{
 		std::ifstream configuration_stream =
-			std::ifstream(prefix+CONFIGURATION_FILE, std::ifstream::in);
+			std::ifstream(prefix+conf_fpath, std::ifstream::in);
 		string line;
 		int vline_counter = 0;
 
@@ -78,7 +115,7 @@ int main(int argc, char **argv){
 			std::getline(configuration_stream, line))
 		{
 
-	        if(line[0] != '#')// not a commented line
+	       if(line[0] != '#')// not a commented line
 			{
 				switch(vline_counter){
 					case 0:
@@ -106,18 +143,19 @@ int main(int argc, char **argv){
 				"main - empty arguments from configuration stream");
 	}
 
-	AI ai = AI(prefix+data_path, f_name_prefix, f_extension);
 	AI ai0 = AI(prefix+data_path, f_name_prefix, f_extension);
 	AI ai1 = AI(prefix+data_path, f_name_prefix, f_extension);
+	AI ai2 = AI(prefix+data_path, f_name_prefix, f_extension);
 
-	auto result =
-		ai.FindPath<string>(source, destination, path_finder::UNIFORM_COST);
 	auto result0 =
-		ai0.FindPath<string>(source, destination, path_finder::GREEDY);
-std::cout<<"qwe"<<std::endl;
+		ai0.FindPath<string>(source, destination, path_finder::UNIFORM_COST);
+
 	auto result1 =
-		ai1.FindPath<string>(source, destination, path_finder::ASTAR);
-std::cout<<"ASD"<<std::endl;
+		ai1.FindPath<string>(source, destination, path_finder::GREEDY);
+
+	auto result2 =
+		ai2.FindPath<string>(source, destination, path_finder::ASTAR);
+
 	std::map<std::string, std::vector<std::string>> * topology =
 		new std::map<std::string, std::vector<std::string>>();
 	std::map<std::string, std::vector<uint>> * costs =
@@ -136,9 +174,9 @@ std::cout<<"ASD"<<std::endl;
 	{
 		std::string prev = "";
 		uint total_cost = 0;
-		if(result)
+		if(result0)
 		{
-			for(auto const& node : (*result))
+			for(auto const& node : (*result0))
 			{
 				uint step_cost = GetStepCost(topology, costs, prev, node);
 				if(step_cost != UINT_MAX)
@@ -155,11 +193,13 @@ std::cout<<"ASD"<<std::endl;
 
 	std::cout<<"==========GREEDY========="<<std::endl;
 	{
-		std::string prev = "";
-		uint total_cost = 0;
-		if(result0)
+		// check result0 - ignore if failed
+		if(result1)
 		{
-			for(auto const& node : (*result0)) {
+			std::string prev = "";
+			uint total_cost = 0;
+
+			for(auto const& node : (*result1)) {
 				uint step_cost = GetStepCost(topology, costs, prev, node);
 				if(step_cost != UINT_MAX)
 				{
@@ -171,13 +211,16 @@ std::cout<<"ASD"<<std::endl;
 			}
 			std::cout<< "TOTAL COST : "<< total_cost <<std::endl;
 		}
+		else
+			std::cout<< "SEARCH FAILED"<<std::endl;
 	}
 
 	std::cout<<"==========ASTAR========="<<std::endl;
 	{
 		std::string prev = "";
 		uint total_cost = 0;
-		for(auto const& node : (*result1)) {
+
+		for(auto const& node : (*result2)) {
 			uint step_cost = GetStepCost(topology, costs, prev, node);
 			if(step_cost != UINT_MAX)
 			{
@@ -191,11 +234,17 @@ std::cout<<"ASD"<<std::endl;
 	}
 	std::cout<<"------------------------------------------"<<std::endl;
 
-	delete result;
 	delete result0;
 	delete result1;
+	delete result2;
 	delete topology;
 	delete costs;
 
+	GraphObserver::Instance().Finalize();
 	return 0;
+}
+catch (const std::exception& exc)
+{
+	std::cerr << exc.what() << std::endl;
+}
 }

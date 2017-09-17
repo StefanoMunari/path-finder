@@ -12,6 +12,7 @@
 #include "search/factory/searchable_factory.h"
 #include "search/utils/searchable_type.h"
 #include "framework/problem/problem.h"
+#include "framework/problem/explicit_test.h"
 #include <string>
 #include <functional>
 
