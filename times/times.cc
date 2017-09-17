@@ -9,7 +9,7 @@
 #include "../src/core/ai.h"
 #include "../src/core/io/json_reader.h"
 #include "../src/core/search/utils/searchable_type.h"
-#include "../src/core/utils/constants.h"
+#include "../src/core/graph/graph_observer.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -28,56 +28,18 @@
 typedef long long int64; typedef unsigned long long uint64;
 #endif
 
+#ifndef TIMES_FILE
+#define TIMES_FILE "/etc/times.conf"
+#endif
+
+#ifndef EXP_FS
 namespace fs = std::experimental::filesystem;
-
-static
-uint GetStepCost(std::map<std::string, std::vector<std::string>> * topology,
-   std::map<std::string, std::vector<uint>> * costs,
-   std::string prev, std::string node)
-{
-   int neigh_index = -1;
-   uint step_cost = UINT_MAX;
-   if(!prev.empty())
-   {
-      std::vector<std::string> neighs = (*topology)[prev];
-      for(uint i=0; neigh_index == -1 && i < neighs.size(); ++i)
-      {
-         if(neighs[i] == node)
-         {
-            neigh_index = i;
-            std::vector<uint> neigh_costs = (*costs)[prev];
-            step_cost = neigh_costs[neigh_index];
-         }
-      }
-   }
-   return step_cost;
-}
-
-static
-uint GetTotalCost(std::map<std::string, std::vector<std::string>> * topology,
-   std::map<std::string, std::vector<uint>> * costs,
-   std::list<std::string> * result)
-{
-   using std::list;
-
-   std::string prev = "";
-   uint total_cost = 0;
-   for(auto const& node : (*result))
-   {
-      uint step_cost = GetStepCost(topology, costs, prev, node);
-      if(step_cost != UINT_MAX)
-         total_cost = total_cost+step_cost;
-      prev = node;
-   }
-   return total_cost;
-}
+#endif
 
 static
 void WriteResultToFile(
    std::map<path_finder::SearchableType, std::map<std::string, uint64>>
    tot_times,
-   std::map<path_finder::SearchableType, std::map<std::string, uint>>
-   tot_costs,
    std::string file_path)
 {
    std::string sep=",";
@@ -87,16 +49,14 @@ void WriteResultToFile(
    if(!file.good())
       throw std::invalid_argument("WriteResultToFile - error in stream");
 
-   file << "DATA"+sep+"ALGORITHM"+sep+"COST"+sep+"TIME\n";
+   file << "DATA"+sep+"ALGORITHM"+sep+"TIME\n";
 
    for(auto const & times : tot_times)
    {
-      auto costs = tot_costs[times.first];
       for(auto time_el : times.second)
       {
-         auto cost = costs[time_el.first];
          file << time_el.first << sep << times.first
-         << sep << cost << sep << time_el.second <<"\n";
+         << sep << time_el.second <<"\n";
       }
    }
 
@@ -139,7 +99,8 @@ int main(int argc, char **argv){
    using std::vector;
    using std::string;
    using std::pair;
-
+try
+{
    char * c_prefix = getenv(PROJECT_ROOT);
 
    if(c_prefix == nullptr)
@@ -207,10 +168,6 @@ int main(int argc, char **argv){
    std::map<path_finder::SearchableType, std::map<string, uint64>> times =
       std::map<path_finder::SearchableType, std::map<string, uint64>>();
 
-   std::map<path_finder::SearchableType, std::map<string, uint>>
-      tot_costs =
-      std::map<path_finder::SearchableType, std::map<string, uint>>();
-
    times.insert(
       std::pair<path_finder::SearchableType, std::map<string, uint64>>(
          path_finder::UNIFORM_COST, std::map<string, uint64>()));
@@ -222,18 +179,6 @@ int main(int argc, char **argv){
    times.insert(
       std::pair<path_finder::SearchableType, std::map<string, uint64>>(
          path_finder::ASTAR, std::map<string, uint64>()));
-
-   tot_costs.insert(
-      std::pair<path_finder::SearchableType, std::map<string, uint>>(
-         path_finder::UNIFORM_COST, std::map<string, uint>()));
-
-   tot_costs.insert(
-      std::pair<path_finder::SearchableType, std::map<string, uint>>(
-         path_finder::GREEDY, std::map<string, uint>()));
-
-   tot_costs.insert(
-      std::pair<path_finder::SearchableType, std::map<string, uint>>(
-         path_finder::ASTAR, std::map<string, uint>()));
 
    for(uint i=0; i < f_name_prefix.size(); ++i)
    {
@@ -270,13 +215,6 @@ int main(int argc, char **argv){
          uint64(elapsed)));
       times[path_finder::UNIFORM_COST] = time_el;
 
-      // get total costs
-      uint total_cost = GetTotalCost(topology, costs, result0);
-      auto measured_costs = tot_costs[path_finder::UNIFORM_COST];
-      measured_costs.insert(
-         std::pair<string, uint>(f_name_prefix[i], total_cost));
-      tot_costs[path_finder::UNIFORM_COST] = measured_costs;
-
       // measure performances
       time_start = GetTimeMs64();
       auto result1 =
@@ -290,13 +228,6 @@ int main(int argc, char **argv){
       time_el.insert(std::pair<string, uint64>(f_name_prefix[i],
          uint64(elapsed)));
       times[path_finder::GREEDY] = time_el;
-
-      // get total costs
-      total_cost = GetTotalCost(topology, costs, result1);
-      measured_costs = tot_costs[path_finder::GREEDY];
-      measured_costs.insert(
-         std::pair<string, uint>(f_name_prefix[i], total_cost));
-      tot_costs[path_finder::GREEDY] = measured_costs;
 
       // measure performances
       time_start = GetTimeMs64();
@@ -312,25 +243,24 @@ int main(int argc, char **argv){
          uint64(elapsed)));
       times[path_finder::ASTAR] = time_el;
 
-      // get total costs
-      total_cost = GetTotalCost(topology, costs, result2);
-      measured_costs = tot_costs[path_finder::ASTAR];
-      measured_costs.insert(
-         std::pair<string, uint>(f_name_prefix[i], total_cost));
-      tot_costs[path_finder::ASTAR] = measured_costs;
-
       // free resources
       delete result0;
-      delete result1;
+      if(result1)
+         delete result1;
       delete result2;
       delete topology;
       delete costs;
 
    }
 
-   WriteResultToFile(times, tot_costs, GetFilename(output_path));
+   WriteResultToFile(times, GetFilename(output_path));
 
-   std::cout<< "COMPLETED" <<std::endl;
-   // throw std::invalid_argument("main - abort process");
+   GraphObserver::Instance().Finalize();
+
    return 0;
+}
+catch (const std::exception& exc)
+{
+   std::cerr << exc.what() << std::endl;
+}
 }
