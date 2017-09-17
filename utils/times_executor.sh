@@ -3,9 +3,10 @@
 
 cd ..
 make clean
+# compile times
 make times OPT=times mode=/core
-for i in $(seq 1 20);
+# run 100 simulations
+for i in $(seq 1 100);
 do
-   ./bin/find_path &
-   sleep 100s;
+   ./bin/find_path
 done

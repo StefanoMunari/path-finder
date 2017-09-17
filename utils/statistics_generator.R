@@ -1,12 +1,13 @@
 ################################################################################
 # Measure in N points (sizes) with K algorithms (search algorithms)
 # with M runs (number of tests performed)
-# N=13
+# N=17
 # K=3
-# M=20
+# M=100
 ################################################################################
 require(stats)
 rm(list=ls())
+args=commandArgs(trailingOnly = TRUE)
 
 compare_times = function(results, algos, sizes)
 {
@@ -27,6 +28,7 @@ compare_times = function(results, algos, sizes)
    colors = c("blue", "red", "orange", "green", "brown")
    pchs = c(0,8,2,5,3)
    xlab = sizes[seq(1, length(sizes), 2)]
+   print(xlab)
    leg_colors = c(1:nrow(results))
    leg_pchs = c(1:nrow(results))
 
@@ -93,11 +95,12 @@ compare_costs = function(results, algos, sizes)
    dev.off()
 }
 
-main = function()
+main = function(data_folder)
 {
    # set variables
    prefix = Sys.getenv("PATH_FINDER_ROOT")
-   path = "/times/results/"
+   # example /times/results
+   path = gsub(" ", "", paste("/times/",data_folder), fixed = TRUE)
    file_path = gsub(" ", "", paste(prefix,path), fixed = TRUE)
    # change working dir
    setwd(file_path)
@@ -121,14 +124,15 @@ main = function()
    }
 
    prefix = Sys.getenv("PATH_FINDER_ROOT")
-   path = "/times/stats/"
+   # example times/stats/results
+   path = gsub(" ", "", paste("/times/stats/",data_folder), fixed = TRUE)
    file_path = gsub(" ", "", paste(prefix,path), fixed = TRUE)
    # change working dir
    setwd(file_path)
    # set-up data
    data$DATA = as.numeric(data$DATA)
    data$TIME = as.numeric(data$TIME)
-   data$COST = as.numeric(data$COST)
+   # data$COST = as.numeric(data$COST)
    data$ALGORITHM = as.numeric(data$ALGORITHM)
    data = data[order(data$DATA),]
    # group by algorithms
@@ -148,8 +152,8 @@ main = function()
          nrow=length(unique(data$ALGORITHM)),
          ncol=length(unique(data$DATA)))
 
-   compare_costs(results, algos, sizes)
+   # compare_costs(results, algos, sizes)
    compare_times(results, algos, sizes)
 }
 
-main()
+main(args[1])
