@@ -50,4 +50,3 @@ config/docker-compose.*
 data/
 times/results/
 times/stats/
-
