@@ -78,10 +78,9 @@ GreedySearch<State>::Search(
 									problem.GetFirstState(), nullptr, BLACK),0);
 
 	auto current_node = (*search_map)[problem.GetFirstState()];
-	auto last_visited_node =
-			SearchableColoredNode(new NodeColored<State>("", nullptr, BLACK),0);
+	State last_explored_state = "";
 
-	while(current_node.first->state != last_visited_node.first->state)
+	while(current_node.first->state != last_explored_state)
 	{
 		auto current = (*indexes_map)[current_node.first->state];
 
@@ -93,8 +92,8 @@ GreedySearch<State>::Search(
 		}
 
 		uint min = UINT_MAX;
-		last_visited_node = current_node;
-		auto neigh_node = current_node;
+		last_explored_state = current_node.first->state;
+		auto next_node = current_node;
 
 		auto neighbors =
 			boost::adjacent_vertices(current, *static_graph_.first);
@@ -105,8 +104,6 @@ GreedySearch<State>::Search(
 			auto current_neigh = (*search_map)[neighbor];
 
 			// node not yet explored
-			// if a node already exists in the priority queue, then do not
-			// insert it another time but keep the first found
 			if(current_neigh.first->color  ==  WHITE)
 			{
 				// <START> mutually shared region (multiple readers)
@@ -130,19 +127,19 @@ GreedySearch<State>::Search(
 				if(neigh_cost < min)
 				{
 					min = neigh_cost;
-					neigh_node = current_neigh;
+					next_node = current_neigh;
 				}
 			}
 		}
 
-		if(neigh_node != current_node)
+		if(next_node != current_node)
 		{
-			neigh_node.first->parent = current_node.first;
-			neigh_node.second = current_node.second + min;
+			next_node.first->parent = current_node.first;
+			next_node.second = current_node.second + min;
 			// update search map
-			(*search_map)[neigh_node.first->state] = neigh_node;
+			(*search_map)[next_node.first->state] = next_node;
 			// move to the current neigh
-			current_node = neigh_node;
+			current_node = next_node;
 		}
 		// mark the node as explored
 		current_node.first->color = BLACK;

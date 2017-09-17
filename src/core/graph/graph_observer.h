@@ -25,11 +25,13 @@ class GraphObserver final
 	public:
 		static GraphObserver& Instance(void) noexcept;
 		static void Observe(const std::string &);
+		static void Finalize(void) noexcept;
 	private:
 		GraphObserver(void) noexcept;
 		GraphObserver(const GraphObserver&) noexcept;
 		GraphObserver& operator= (const GraphObserver&) noexcept;
 		~GraphObserver(void) noexcept;
+		void ChangeState(ProcessState);
 		void EventLoop(void);
 	private:
 		static GraphObserver _instance;
@@ -37,7 +39,7 @@ class GraphObserver final
 		int _notifier;
 		int _subject;
 		std::string _subject_name;
-	    ProcessState _state = WAITING;
+	   ProcessState _state = WAITING;
 };
 
 }

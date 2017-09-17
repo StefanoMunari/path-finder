@@ -20,8 +20,4 @@ namespace path_finder
 #define PROJECT_ROOT "PATH_FINDER_ROOT"
 #endif
 
-#ifndef CONFIGURATION_FILE
-#define CONFIGURATION_FILE "/etc/path_finder.conf"
-#endif
-
 }
