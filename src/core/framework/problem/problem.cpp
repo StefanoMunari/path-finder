@@ -1,13 +1,21 @@
 template <typename State>
-Problem<State>::Problem(const State& source, const State& goal) noexcept
-: _source(source), _goal(goal) {};
+Problem<State>::Problem(const State& source, const State& goal,
+  GoalTest<State>* test) noexcept
+: _source(source), _goal(goal)
+{
+  _test = test;
+};
 /*
 template <typename State>
 Problem<State>::Problem(Problem && problem) noexcept
 : _source(problem._source), _goal(problem._goal) {};
 */
 template <typename State>
-Problem<State>::~Problem() noexcept {};
+Problem<State>::~Problem() noexcept
+{
+  if(_test)
+    delete _test;
+};
 /*
 template <typename State>
 Problem<State>::Problem(Problem && problem) noexcept{
@@ -31,15 +39,12 @@ State Problem<State>::GetGoalState() const
 template <typename State>
 bool Problem<State>::IsGoal(const State& state) const
 {
-   std::cout<<"PROBLEM SAYS :"<< state <<" == "<<_goal<<std::endl;
-  return (state  ==  _goal);
+  if(_test)
+    return _test->Test(state, _goal);
+  return false;
 }
-/*
-template <typename State>
-GoalTest<State>* Problem<State>::getGoalTest() const {
-  return test_;
-};
 
+/*
 template <typename State>
 ActionFunction* Problem<State>::getActionFunction() const {
   return action_function_;
