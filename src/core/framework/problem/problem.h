@@ -1,6 +1,8 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
-#include <iostream>
+
+#include "goal_test.h"
+
 namespace path_finder
 {
 
@@ -9,8 +11,7 @@ template <typename State> class Problem;
 template <typename State>
 class Problem {
   public:
-    Problem(const State&, const State&) noexcept;
-      //, GoalTest<State>*
+    Problem(const State&, const State&, GoalTest<State>*) noexcept;
     Problem(const Problem &)  =delete;
     /*
     Problem(Problem &&) noexcept;
@@ -22,18 +23,15 @@ class Problem {
     State GetGoalState() const;
     bool IsGoal(const State& state) const;
     /*
-    GoalTest<State>* getGoalTest() const;
     ActionFunction* getActionFunction() const;
-    CostFunction* getCostFunction() const;
     */
 
   private:
     State _source;
     State _goal;
+    GoalTest<State>* _test = nullptr;
     /*
-    GoalTest<State>* test_ = nullptr;
     ActionFunction* action_function_ = nullptr;
-    CostFunction* cost_function_;
     */
 };
 
