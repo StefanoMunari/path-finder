@@ -21,14 +21,15 @@ compare_times = function(results, algos, sizes)
       }
    }
 
-   pdf("times.pdf")
+   svg(filename="times_algo.svg")
+
    min_time = function(results, m){ for(i in 1:nrow(results)) {l = min(results[i, ]); if(l < m) m=l; }; m; }
    max_time = function(results, m){ for(i in 1:nrow(results)) {l = max(results[i, ]); if(l > m) m=l; }; m; }
 
    colors = c("blue", "red", "orange", "green", "brown")
    pchs = c(0,8,2,5,3)
    xlab = sizes[seq(1, length(sizes), 2)]
-   print(xlab)
+
    leg_colors = c(1:nrow(results))
    leg_pchs = c(1:nrow(results))
 
@@ -99,8 +100,9 @@ main = function(data_folder)
 {
    # set variables
    prefix = Sys.getenv("PATH_FINDER_ROOT")
-   # example /times/results
-   path = gsub(" ", "", paste("/times/",data_folder), fixed = TRUE)
+
+   # example /times/results/3
+   path = gsub(" ", "", paste("/times/results/",data_folder), fixed = TRUE)
    file_path = gsub(" ", "", paste(prefix,path), fixed = TRUE)
    # change working dir
    setwd(file_path)
@@ -123,12 +125,11 @@ main = function(data_folder)
       }
    }
 
-   prefix = Sys.getenv("PATH_FINDER_ROOT")
-   # example times/stats/results
    path = gsub(" ", "", paste("/times/stats/",data_folder), fixed = TRUE)
    file_path = gsub(" ", "", paste(prefix,path), fixed = TRUE)
    # change working dir
    setwd(file_path)
+
    # set-up data
    data$DATA = as.numeric(data$DATA)
    data$TIME = as.numeric(data$TIME)
