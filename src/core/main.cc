@@ -54,9 +54,9 @@ static
 void Help(char **argv)
 {
 	std::cout<<"Usage:"<<std::endl;
-	std::cout<<"\t argv[0] <source> <destination> <config_file>"<<std::endl;
+	std::cout<<"\t " << argv[0] <<" <source> <destination> <config_file>"<<std::endl;
 	std::cout<<"Example:"<<std::endl;
-	std::cout<<"\t argv[0] \"A\" \"C\" /etc/path_finder.conf"<<std::endl;
+	std::cout<<"\t " << argv[0] <<" \"A\" \"C\" /etc/path_finder.conf"<<std::endl;
 }
 
 /*
