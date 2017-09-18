@@ -5,6 +5,20 @@ ENV TERM xterm
 ENV PROJECT_PATH /home/cds
 ENV PATH_FINDER_ROOT /home/cds/path-finder
 
+RUN apt-get install -y \
+   r-base \
+   r-base-dev \
+   nodejs \
+   nodejs-dev \
+   node-gyp \
+   git
+
+RUN git clone https://github.com/StefanoMunari/path-finder $PATH_FINDER_ROOT
+RUN git clone https://samunari@bitbucket.org/samunari/path-finder-fe $PATH_FINDER_ROOT/fe
+
+WORKDIR $PATH_FINDER_ROOT/src/bindings/nodejs
+RUN make
+
 # <DEV_MODE>
 ADD loop.sh /tmp/
 # </DEV_MODE>
@@ -20,5 +34,6 @@ WORKDIR $PATH_FINDER_ROOT
 ENTRYPOINT ["sh","/tmp/loop.sh","&"]
 # </DEV_MODE>
 # <PROD_MODE>
-ENTRYPOINT ["make","run"]
+WORKDIR $PATH_FINDER_ROOT/fe/src/server/
+ENTRYPOINT ["nodejs","server.js"]
 # </PROD_MODE>
