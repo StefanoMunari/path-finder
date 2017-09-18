@@ -16,9 +16,9 @@ then
    exit 1
 fi
 
-directory=$(echo $to_remove| cut -d'-' -f 2)
+directory=$(echo $to_remove | cut -d'-' -f 2)
 
-cd ../times/
+cd ../times/results/
 files=($(ls $directory))
 cd $directory
 
