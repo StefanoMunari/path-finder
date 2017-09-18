@@ -3,7 +3,7 @@
  * @brief  Brief description of file.
  * @author <stefanomunari.sm@gmail.com>
  *
- * Detailed description of file.
+ * Creates the requested Searchable instance, which is a search algorithm.
  */
 #ifndef SEARCHABLE_FACTORY_H
 #define SEARCHABLE_FACTORY_H

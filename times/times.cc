@@ -3,7 +3,17 @@
  * @brief  Brief description of file.
  * @author <stefanomunari.sm@gmail.com>
  *
- * Detailed description of file.
+ * Runs time performance measurements on each algorithm defined in PathFinder.
+ *
+ *
+ * @pre the configuration file path-finder/etc/times.conf must be defined
+ * @pre the environment variable PROJECT_ROOT must be defined. It must reference
+ * the path-finder directory
+ *
+ * @return generates the results in the directory specified in the configuration
+ * file
+ *
+ * @see etc/times.conf as a configuration file example
  */
 #include "times.h"
 #include "../src/core/ai.h"

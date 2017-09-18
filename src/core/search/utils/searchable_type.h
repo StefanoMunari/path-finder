@@ -3,7 +3,7 @@
  * @brief  Brief description of file.
  * @author <stefanomunari.sm@gmail.com>
  *
- * Detailed description of file.
+ * Define an identifier for each algorithm provided by the AI.
  */
 #ifndef SEARCHABLE_TYPE_H
 #define SEARCHABLE_TYPE_H

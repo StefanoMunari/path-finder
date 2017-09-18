@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief Interface for the solver.
+ * @brief Reader for JSON files.
  * @author <stefanomunari.sm@gmail.com>
  */
 #ifndef JSON_READER_H

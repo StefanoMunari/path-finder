@@ -38,7 +38,14 @@ template <typename State> class AStarSearch;
 /**
  * @brief  A* search on a graph.
  *
- * @pre use a consistent heuristic
+ * @pre use admissible and consistent heuristic
+ *
+ * Search for the optimal path on the input graph.
+ * Analysis (assuming that pre-conditions hold):
+ * - Complete: TRUE
+ * - Optimal: TRUE
+ * - Time: O(braching^depth)
+ * - Space: O(braching^depth)
 */
 template <typename State>
 class AStarSearch

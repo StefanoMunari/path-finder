@@ -34,15 +34,16 @@ template <typename State> class GreedySearch;
 /**
  * @brief  Greedy search on a graph.
  *
- * Local search which choose, for each edge of the graph, the less costly
- * one avoiding cycles.
+ * Local search which chooses, for each neighbor edge of the graph, the less
+ * costly one avoiding cycles.
  * It is both fast and unreliable. It can easily fall in a local minimum.
  * Analysis:
- * - Complete: FALSE. It can not exit from a blind alley.
- *	It does not return on previous visited nodes to avoid cycles.
- * - Optimal: FALSE. It always choose the best local path.
- * - Time: O(depth)
- * - Space: O(branching*max_state_space)
+ * - Complete: FALSE. It can not exit from a blind alley, in this case it simply
+ * terminates returning failure as result.
+ *	It explores each node only one time to avoid cycles.
+ * - Optimal: FALSE. It always choose the best __local__ path.
+ * - Time: O(depth*branching)
+ * - Space: O(1)
 */
 template <typename State>
 class GreedySearch

@@ -35,18 +35,18 @@ template <typename State> class UniformCostSearch;
  * @brief  Uniform-cost search on a graph.
  *
  * @pre the branching factor of each node of the graph must be finite
- * @pre the step cost of each edge of the graph must be >= 0
+ * @pre the step cost of each edge of the graph must be > 0
  *
  * @post return a list of states which represents the best path. Otherwise
- *		 returns an empty (nullptr) result
+ *	returns an empty (nullptr) result
  *
- * Search for the optimal path on the graph.
+ * Search for the optimal path on the input graph.
  * Analysis (assuming that pre-conditions hold):
  * - Complete: TRUE
  * - Optimal: TRUE
  * - Time: O(braching^(1+round(optimal_cost/epsilon)))
  * - Space: O(braching^(1+round(optimal_cost/epsilon)))
- * @note epsilon - the minimum step cost in the graph
+ * @note epsilon - the positive minimum step cost of the graph
  *
  *
 */
