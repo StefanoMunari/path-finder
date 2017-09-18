@@ -255,7 +255,7 @@ try
 
    WriteResultToFile(times, GetFilename(output_path));
 
-   GraphObserver::Instance().Finalize();
+   path_finder::GraphObserver::Instance().Finalize();
 
    return 0;
 }
