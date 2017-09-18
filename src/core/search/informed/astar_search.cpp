@@ -126,7 +126,8 @@ AStarSearch<State>::Search(
 	end = boost::graph_traits<Graph>::null_vertex();
 
 	// apply the A* search algorithm:
-	while(!contour->empty() && (current != end)){
+	while(!contour->empty() && (current != end))
+	{
 		auto current_node = contour->top();
 		contour->pop();
 		current = (*indexes_map)[current_node.first->state];
@@ -139,7 +140,8 @@ AStarSearch<State>::Search(
 		auto neighbors =
 			boost::adjacent_vertices(current, *static_graph_.first);
 
-		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
+		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it)
+		{
 			State neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*informed_map)[neighbor];
 			// <START> mutually shared region (multiple readers)
@@ -157,10 +159,11 @@ AStarSearch<State>::Search(
 					+
 					dynamic_cost;
 			// neighbor not yet explored
-			if(current_neigh.second->g > effective_neigh_cost){
-		   		current_neigh.first->parent = current_node.first;
-		   		current_neigh.second->g = effective_neigh_cost;
-		   		contour->push(current_neigh);
+			if(current_neigh.second->g > effective_neigh_cost)
+			{
+				current_neigh.first->parent = current_node.first;
+				current_neigh.second->g = effective_neigh_cost;
+				contour->push(current_neigh);
 			}
 		}
 	}
