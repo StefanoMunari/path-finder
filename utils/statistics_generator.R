@@ -9,7 +9,7 @@ require(stats)
 rm(list=ls())
 args=commandArgs(trailingOnly = TRUE)
 
-compare_times = function(results, algos, sizes)
+compare_times = function(results, algos, sizes, branching)
 {
    for(i in 1:length(algos))
    {
@@ -36,7 +36,7 @@ compare_times = function(results, algos, sizes)
    # plot
    plot(results[1,],
       ylim=c(min_time(results, 999999999999), max_time(results, -1)),
-      pch=pchs[1], xaxt = "n", type="b", log="x",
+      pch=pchs[1], xaxt = "n", type="b",
       xlab="Size (# nodes)", ylab="Time (ms)", col=colors[1])
 
    # rename axis
@@ -58,7 +58,7 @@ compare_times = function(results, algos, sizes)
    }
 
     # add a title
-    title("Path finder - Elapsed time")
+    title(paste(paste("Branching factor (", branching),") - Elapsed time"))
     # add a legend
     legend('topleft', legend=c("Uniform-Cost", "Greedy", "A*"), col=leg_colors, pch=leg_pchs, lty=1:2, cex=0.8, title="Algorithms")
     dev.off()
@@ -154,7 +154,7 @@ main = function(data_folder)
          ncol=length(unique(data$DATA)))
 
    # compare_costs(results, algos, sizes)
-   compare_times(results, algos, sizes)
+   compare_times(results, algos, sizes, data_folder)
 }
 
 main(args[1])
