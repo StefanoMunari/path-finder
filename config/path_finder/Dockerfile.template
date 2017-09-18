@@ -14,10 +14,11 @@ RUN apt-get install -y \
    git
 
 RUN git clone https://github.com/StefanoMunari/path-finder $PATH_FINDER_ROOT
-RUN git clone https://samunari@bitbucket.org/samunari/path-finder-fe $PATH_FINDER_ROOT/fe
+RUN git clone https://bitbucket.org/m0bius/path-finder-fe $PATH_FINDER_ROOT/fe
 
 WORKDIR $PATH_FINDER_ROOT/src/bindings/nodejs
 RUN make
+RUN npm install --save ws
 
 # <DEV_MODE>
 ADD loop.sh /tmp/
