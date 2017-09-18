@@ -30,19 +30,21 @@ const noexcept
 	VertexDescriptor current, end;
 	end = boost::graph_traits<Graph>::null_vertex();
 
-	while(!contour->empty() && (current != end)){
+	while(!contour->empty() && (current != end))
+	{
 		// get the colored informed node
 		auto current_node = contour->top();
 		contour->pop();
+
 		// get the related boost::vertex_descriptor
 		current = (*indexes_map)[current_node.first->state];
-		// mark node as completed
-		current_node.first->color = BLACK;
+
 		// get the set of neighbors using the vertex descriptor
 		auto neighbors =
 			boost::adjacent_vertices(current, (*graph));
 		// update the estimated costs for the neighbors
-		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it){
+		for(auto n_it = neighbors.first; n_it !=  neighbors.second; ++n_it)
+		{
 			// get the neighbor name/state
 			State neighbor = ids_map[node_index[*n_it]];
 			// get the neighbor node (pointer)
@@ -51,22 +53,27 @@ const noexcept
 			auto estimated_neigh_cost =
 					current_node.second->h +
 					(*graph)[boost::edge(current,*n_it,(*graph)).first];
+
 			// neighbor not yet explored or completed
-			if(current_neigh.first->color  ==  WHITE){
+			if(current_neigh.first->color  ==  WHITE)
+			{
 				// mark as explored
 				current_neigh.first->color = GRAY;
-		   		// update the estimated cost for this neighbor
-		   		current_neigh.second->h = estimated_neigh_cost;
-		   		// add it to the priority queue
-		   		contour->push(current_neigh);
+				// update the estimated cost for this neighbor
+				current_neigh.second->h = estimated_neigh_cost;
+				// add it to the priority queue
+				contour->push(current_neigh);
 			}
 			// neighbor has been explored and
 			// has an higher estimated cost than the current one
 			else if((current_neigh.first->color == GRAY) &&
-					(current_neigh.second->h > estimated_neigh_cost)){
+					(current_neigh.second->h > estimated_neigh_cost))
+			{
 				current_neigh.second->h = estimated_neigh_cost;
 			}
 		}
+		// mark node as completed
+		current_node.first->color = BLACK;
 	}
 
 	(qmaker.MakeQueueDestructor())(contour);
