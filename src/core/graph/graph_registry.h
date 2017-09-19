@@ -24,8 +24,7 @@ class GraphRegistry final
 		GraphRegistry& Instance() noexcept;
 		static
 		void InsertGraph(
-			const std::string&, const std::string&, const std::string&)
-			noexcept;
+			const std::string&, const std::string&, const std::string&);
 		static
 		GraphPtr_IdMap GetStaticGraph(const std::string&) noexcept;
 		static

@@ -9,6 +9,7 @@
 #include <utility>
 #include <stdlib.h>
 #include <stdexcept>
+#include <iostream>
 
 using path_finder::AI;
 using path_finder::SearchableType;
@@ -32,13 +33,22 @@ char const * FS_root_path_ = getenv(PROJECT_ROOT);
 int Get_Path_Size(char * pid_)
 {
 	const string pid = string(pid_);
+try
+{
 	if(pid.empty())
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Get_Path_Size- invalid argument");
 	return FS_path_map_[pid]->size();
 }
+catch (const std::exception& exc)
+{
+	std::cerr << exc.what() << std::endl;
+}
+}
 
 char ** Get_Path(char * pid_)
+{
+try
 {
 	string pid = string(pid_);
 	if(pid.empty())
@@ -62,12 +72,19 @@ char ** Get_Path(char * pid_)
 	}
 	return const_cast<char **>(path);
 }
+catch (const std::exception& exc)
+{
+	std::cerr << exc.what() << std::endl;
+}
+}
 
 void Find(
 	char * pid_,
 	char * source_,
 	char * destination_,
 	int algorithm_)
+{
+try
 {
 	if(algorithm_ < 0 || algorithm_ > 2)
 		throw std::invalid_argument(
@@ -94,12 +111,19 @@ void Find(
 
 	// otherwise FS_path_map_ already contains a valid path => OK
 }
+catch (const std::exception& exc)
+{
+	std::cerr << exc.what() << std::endl;
+}
+}
 
 void Init(
 	char * pid_,
 	char * data_path_,
 	char * f_name_prefix_,
 	char * f_extension_)
+{
+try
 {
 	if(FS_root_path_ == NULL)
 		throw std::invalid_argument(
@@ -116,6 +140,11 @@ void Init(
 
 	AI * ai = new AI(data_path, f_name_prefix, f_extension);
 	FS_ai_map_.insert(pair<string, AI *>(pid, ai));
+}
+catch (const std::exception& exc)
+{
+	std::cerr << exc.what() << std::endl;
+}
 }
 
 void Finalize(){

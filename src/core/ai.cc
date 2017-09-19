@@ -7,6 +7,7 @@
  */
 #include "ai.h"
 #include "graph/graph_observer.h"
+#include <stdexcept>
 
 using std::string;
 
@@ -15,11 +16,19 @@ namespace path_finder
 
 AI::AI(
 	const string& path, const string& f_name_prefix, const string& f_extension)
-	noexcept
 {
 	this->_category = f_name_prefix;
+
+   try
+   {
 	GraphRegistry::Instance().InsertGraph(
 		f_name_prefix, path+f_name_prefix, f_extension);
+   }
+   catch (const std::exception& exc)
+   {
+      throw;
+   }
+
 	GraphObserver::Instance().Observe(path);
 }
 

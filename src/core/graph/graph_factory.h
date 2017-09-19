@@ -22,7 +22,7 @@ class GraphFactory
 		~GraphFactory() noexcept {}
 		GraphPtr_IdMap
 		CreateGraph(const std::string&, const std::string&, const std::string&)
-		const noexcept;
+		const;
 };
 
 }

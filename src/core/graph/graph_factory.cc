@@ -10,6 +10,7 @@
 #include "../io/json_reader.h"
 #include <map>
 #include <vector>
+#include <stdexcept>
 
 using std::map;
 using std::vector;
@@ -23,17 +24,25 @@ GraphFactory::CreateGraph(
 	const std::string& topology_path,
 	const std::string& costs_path,
 	const std::string& extension)
-	const noexcept
+	const
 {
 	map<string, vector<string>> topology_map = map<string, vector<string>>();
 	map<string, vector<uint>> costs_map = map<string, vector<uint>>();
 
+	try
+	{
 	JSON_Reader::Read(topology_path+extension, &topology_map);
 	JSON_Reader::Read(costs_path+extension, &costs_map);
+
 	GraphEncoder encoder = GraphEncoder();
 	GraphPtr_IdMap graph = encoder.Encode(&topology_map, &costs_map);
 
 	return graph;
+	}
+	catch (const std::exception& exc)
+	{
+		throw;
+	}
 }
 
 }
