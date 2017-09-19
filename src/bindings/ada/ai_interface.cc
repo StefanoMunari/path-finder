@@ -43,6 +43,7 @@ try
 catch (const std::exception& exc)
 {
 	std::cerr << exc.what() << std::endl;
+	return -1;
 }
 }
 
@@ -75,6 +76,7 @@ try
 catch (const std::exception& exc)
 {
 	std::cerr << exc.what() << std::endl;
+	return EMPTY;
 }
 }
 
