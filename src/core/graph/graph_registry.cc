@@ -11,6 +11,7 @@
 #include <algorithm>// std::mismatch
 #include <mutex>  // std::unique_lock
 #include <shared_mutex>
+#include <stdexcept>
 
 #ifdef DEBUG
 #include <iostream>
@@ -43,12 +44,15 @@ GraphRegistry& GraphRegistry::Instance() noexcept
 }
 
 void GraphRegistry::InsertGraph(
-	const string& id, const string& file_path, const string& extension) noexcept
+	const string& id, const string& file_path, const string& extension)
 {
 	// check if GraphRegistry is NOT already initialized for the requested id
 	if(GraphRegistry::_instance._static_registry.count(id) == 0)
 	{
 		GraphFactory factory = GraphFactory();
+
+		try
+		{
 		// extract the static graph
 		GraphPtr_IdMap g0 = factory.CreateGraph(
 			file_path+"-topology", file_path+"-costs", extension);
@@ -72,6 +76,11 @@ void GraphRegistry::InsertGraph(
 
 		GraphRegistry::_instance._dynamic_registry.insert(
 			std::pair<string, shared_ptr<GraphPtr_IdMap>>(id, shared_graph));
+		}
+		catch (const std::exception& exc)
+		{
+			throw;
+		}
 	}
 }
 
