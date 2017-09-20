@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief Interface for the solver.
+ * @brief Reader for JSON files.
  * @author <stefanomunari.sm@gmail.com>
  */
 #ifndef JSON_READER_H
@@ -16,13 +16,13 @@ namespace path_finder
 {
 
 class JSON_Reader {
-	public:
-		static
-		void Read(const std::string&,
-				std::map<std::string, std::vector<std::string>> *);
-		static
-		void Read(const std::string&,
-				std::map<std::string, std::vector<uint>> *);
+   public:
+      static
+      void Read(const std::string&,
+            std::map<std::string, std::vector<std::string>> *);
+      static
+      void Read(const std::string&,
+            std::map<std::string, std::vector<uint>> *);
 };
 
 }

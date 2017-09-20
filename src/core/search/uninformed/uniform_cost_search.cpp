@@ -53,6 +53,7 @@ UniformCostSearch<State>::Search(
 	shared_ptr<GraphPtr_IdMap> dynamic_graph_,
 	const Problem<State>& problem)
 {
+			std::cout << "UNIFORM" << std::endl;
 	/* boost-property accessors */
 	IndexMap node_index =
 		boost::get(boost::vertex_index, *(static_graph_.first));
@@ -115,15 +116,16 @@ UniformCostSearch<State>::Search(
 		{
 			State neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*search_map)[neighbor];
+			uint dynamic_cost = 0;
+			{
 			// <START> mutually shared region (multiple readers)
-			std::shared_lock<std::shared_mutex>
-				g_lock(path_finder::G_mutex_graph);
+			std::shared_lock<std::shared_mutex> g_lock(path_finder::G_mutex_graph);
 			Graph * dynamic_graph = dynamic_graph_->first;
 			uint dynamic_cost =
 				(*dynamic_graph)
 	   		[boost::edge(current,*n_it,(*dynamic_graph)).first];
-	   	g_lock.unlock();
 			// <END> mutually shared region (multiple readers)
+	   	}
 			auto neigh_cost = current_node.second +
 					(*static_graph)
 					[boost::edge(current,*n_it,(*static_graph)).first]

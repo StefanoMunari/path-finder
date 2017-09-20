@@ -4,6 +4,7 @@
 #include <list>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
 #include <v8.h> // v8 Engine
 #include <node.h> // Nodejs
 
@@ -49,14 +50,24 @@ static
 const SearchableType
 filter_algorithm_id_(const uint32_t algorithm)
 {
+try
+{
   if(algorithm > 2)
     throw std::invalid_argument(
       "<NodeJS bindings>::AI_INTERFACE::find_path - invalid algorithm");
   return static_cast<SearchableType>(algorithm);
 }
+catch (const std::exception& exc)
+{
+  std::cerr << exc.what() << std::endl;
+  return path_finder::UNIFORM_COST;
+}
+}
 
 void
 init(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+try
 {
   if(args.Length() == 1)
   {
@@ -91,9 +102,16 @@ init(const v8::FunctionCallbackInfo<v8::Value>& args)
     throw std::invalid_argument(
       "<NodeJS bindings>::AI_INTERFACE::init - invalid number of arguments");
 }
+catch (const std::exception& exc)
+{
+  std::cerr << exc.what() << std::endl;
+}
+}
 
 void
 find_path(const v8::FunctionCallbackInfo<v8::Value> & args)
+{
+try
 {
   // get the current V8 instance
   Isolate * isolate = args.GetIsolate();
@@ -140,6 +158,11 @@ find_path(const v8::FunctionCallbackInfo<v8::Value> & args)
   else
     throw std::invalid_argument(
     "<NodeJS bindings>::AI_INTERFACE::find_path - invalid number of arguments");
+}
+catch (const std::exception& exc)
+{
+  std::cerr << exc.what() << std::endl;
+}
 }
 
 // register the ai interface to make it callable from nodejs

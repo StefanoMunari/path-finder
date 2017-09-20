@@ -37,7 +37,7 @@ JSON_Reader::Read(const std::string& file_path,
 
 	if(!ifile.eof())
 		throw std::invalid_argument(
-			"JSON_Reader<string> - configuration stream error");
+			"JSON_Reader<string> - configuration stream error "+file_path);
 
 	ifile.close();
 }
@@ -70,7 +70,7 @@ JSON_Reader::Read(const std::string& file_path,
 
 	if(!ifile.eof())
 		throw std::invalid_argument(
-			"JSON_Reader<uint> - configuration stream error");
+			"JSON_Reader<uint> - configuration stream error "+file_path);
 
 	ifile.close();
 }

@@ -1,9 +1,8 @@
 /**
  * @file
- * @brief  Brief description of file.
+ * @brief  It contains all the maps used in the PathFinder system.
  * @author <stefanomunari.sm@gmail.com>
  *
- * Detailed description of file.
  */
 #ifndef GRAPH_REGISTRY_H
 #define GRAPH_REGISTRY_H
@@ -25,8 +24,7 @@ class GraphRegistry final
 		GraphRegistry& Instance() noexcept;
 		static
 		void InsertGraph(
-			const std::string&, const std::string&, const std::string&)
-			noexcept;
+			const std::string&, const std::string&, const std::string&);
 		static
 		GraphPtr_IdMap GetStaticGraph(const std::string&) noexcept;
 		static

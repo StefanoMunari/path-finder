@@ -6,8 +6,8 @@
  *	Given a configuration file, it runs all the algoritms provided by the system
  * on the graph specified in the config file. It accepts as input the source and
  * the destination state to search for.
- * After the search phase, it prints the resulting found paths with their
- * respective costs (also each step cost).
+ * After the search phase, it prints the resulting paths with their
+ * respective costs (also each step cost) to stdout.
  *
  */
 #include "ai.h"

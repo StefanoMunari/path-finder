@@ -25,6 +25,7 @@
 #include <utility>// std::pair
 #include <algorithm>// std::for_each
 #include <climits>// UINT_MAX
+#include <iostream>
 
 namespace path_finder
 {

@@ -22,7 +22,7 @@ namespace path_finder
 class AI{
 	public:
 		AI() = delete;
-		AI(const string&, const string&, const string&) noexcept;
+		AI(const string&, const string&, const string&);
 		~AI() noexcept {};
 		template<typename State>
 		std::list<State>* FindPath(
