@@ -106,7 +106,7 @@ AStarSearch<State>::Search(
 			this->_informed_map_maker.MakeMap(search_map);
 		// contour and informed map use only pointers to colored nodes
 		// already created in search_map
-		contour = this->_informed_qmaker.MakeQueue();
+		contour = this->_informed_qmaker.MakePriorityQueue();
 	}
 	// update the informed_map with the costs computed by the heuristic
 	informed_map =
@@ -144,16 +144,18 @@ AStarSearch<State>::Search(
 		{
 			State neighbor = ids_map[node_index[*n_it]];
 			auto current_neigh = (*informed_map)[neighbor];
+
+			uint dynamic_cost = 0;
+			{
 			// <START> mutually shared region (multiple readers)
-			std::shared_lock<std::shared_mutex>
-				g_lock(path_finder::G_mutex_graph);
-			Graph * dynamic_graph = (dynamic_graph_.get())->first;
-			uint dynamic_cost =
+			std::shared_lock<std::shared_mutex> g_lock(path_finder::G_mutex_graph);
+			Graph * dynamic_graph = dynamic_graph_->first;
+			dynamic_cost =
 				(*dynamic_graph)
 				[boost::edge(current,*n_it,(*dynamic_graph)).first];
-		   	g_lock.unlock();
 			// <END> mutually shared region (multiple readers)
-			// neigh.g = parent.g + dynamic_cost(parent, neigh);
+			}
+
 			auto effective_neigh_cost =
 					current_node.second->g
 					+

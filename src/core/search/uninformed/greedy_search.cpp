@@ -106,18 +106,18 @@ GreedySearch<State>::Search(
 			// node not yet explored
 			if(current_neigh.first->color  ==  WHITE)
 			{
+
+				uint dynamic_cost = 0;
+				{
 				// <START> mutually shared region (multiple readers)
-				std::shared_lock<std::shared_mutex>
-					g_lock(path_finder::G_mutex_graph);
-
-				// read graph
+				std::shared_lock<std::shared_mutex> g_lock(path_finder::G_mutex_graph);
 				Graph * dynamic_graph = dynamic_graph_->first;
-				uint dynamic_cost =
+				dynamic_cost =
 					(*dynamic_graph)
-						[boost::edge(current,*n_it,(*dynamic_graph)).first];
-
-				g_lock.unlock();
+					[boost::edge(current,*n_it,(*dynamic_graph)).first];
 				// <END> mutually shared region (multiple readers)
+				}
+
 				uint neigh_cost =
 					(*static_graph)
 					[boost::edge(current,*n_it,(*static_graph)).first]
