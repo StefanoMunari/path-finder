@@ -9,7 +9,7 @@ require(stats)
 rm(list=ls())
 args=commandArgs(trailingOnly = TRUE)
 
-compare_times = function(results, algos, sizes)
+compare_times = function(results, algos, sizes, data_folder)
 {
    for(i in 1:length(algos))
    {
@@ -21,7 +21,7 @@ compare_times = function(results, algos, sizes)
       }
    }
 
-   pdf("times.pdf")
+   svg("times.svg")
    min_time = function(results, m){ for(i in 1:nrow(results)) {l = min(results[i, ]); if(l < m) m=l; }; m; }
    max_time = function(results, m){ for(i in 1:nrow(results)) {l = max(results[i, ]); if(l > m) m=l; }; m; }
 
@@ -35,7 +35,7 @@ compare_times = function(results, algos, sizes)
    # plot
    plot(results[1,],
       ylim=c(min_time(results, 999999999999), max_time(results, -1)),
-      pch=pchs[1], xaxt = "n", type="b", log="x",
+      pch=pchs[1], xaxt = "n", type="b",
       xlab="Size (# nodes)", ylab="Time (ms)", col=colors[1])
 
    # rename axis
@@ -57,7 +57,7 @@ compare_times = function(results, algos, sizes)
    }
 
     # add a title
-    title("Path finder - Elapsed time")
+    title(paste(paste("Branching factor (",data_folder), " ) - Elapsed time"))
     # add a legend
     legend('topleft', legend=c("Uniform-Cost", "Greedy", "A*"), col=leg_colors, pch=leg_pchs, lty=1:2, cex=0.8, title="Algorithms")
     dev.off()
@@ -100,8 +100,9 @@ main = function(data_folder)
    # set variables
    prefix = Sys.getenv("PATH_FINDER_ROOT")
    # example /times/results
-   path = gsub(" ", "", paste("/times/",data_folder), fixed = TRUE)
+   path = gsub(" ", "", paste("/times/results/",data_folder), fixed = TRUE)
    file_path = gsub(" ", "", paste(prefix,path), fixed = TRUE)
+   print(file_path)
    # change working dir
    setwd(file_path)
 
@@ -153,7 +154,7 @@ main = function(data_folder)
          ncol=length(unique(data$DATA)))
 
    # compare_costs(results, algos, sizes)
-   compare_times(results, algos, sizes)
+   compare_times(results, algos, sizes, data_folder)
 }
 
 main(args[1])
