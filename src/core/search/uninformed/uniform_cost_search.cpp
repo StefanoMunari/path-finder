@@ -121,7 +121,7 @@ UniformCostSearch<State>::Search(
 			// <START> mutually shared region (multiple readers)
 			std::shared_lock<std::shared_mutex> g_lock(path_finder::G_mutex_graph);
 			Graph * dynamic_graph = dynamic_graph_->first;
-			uint dynamic_cost =
+			dynamic_cost =
 				(*dynamic_graph)
 	   		[boost::edge(current,*n_it,(*dynamic_graph)).first];
 			// <END> mutually shared region (multiple readers)
