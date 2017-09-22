@@ -33,7 +33,7 @@ const noexcept
 	while(!contour->empty() && (current != end))
 	{
 		// get the colored informed node
-		auto current_node = contour->top();
+		auto current_node = contour->front();
 		contour->pop();
 
 		// get the related boost::vertex_descriptor
