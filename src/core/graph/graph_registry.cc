@@ -12,7 +12,6 @@
 #include <mutex>  // std::unique_lock
 #include <shared_mutex>
 #include <stdexcept>
-#include <iostream>
 
 #ifdef DEBUG
 #include <iostream>
@@ -41,7 +40,6 @@ static auto FS_destructor =
 
 GraphRegistry& GraphRegistry::Instance() noexcept
 {
-		std::cout << "GR instance" << std::endl;
 	return GraphRegistry::_instance;
 }
 
@@ -100,26 +98,19 @@ shared_ptr<GraphPtr_IdMap> GraphRegistry::GetDynamicGraph(
 void GraphRegistry::UpdateDynamicRegistry(
 	const string& f_path, const string& f_name)
 {
-	std::cout << "A = " << f_name << std::endl;
 	const int separator = f_name.find("-");
 	const string id = f_name.substr(0, separator);
-	std::cout << "B = " << f_name << std::endl;
 	const string extension = f_name.substr(f_name.find("."), f_name.size());
-	std::cout << "C = " << extension << std::endl;
 	string f_postfix = f_name.substr(separator, f_name.size());
-	std::cout << "D = " << f_postfix << std::endl;
 	f_postfix = f_postfix.substr(0, f_postfix.find("."));
 
 	GraphFactory factory = GraphFactory();
 	GraphPtr_IdMap * g = new GraphPtr_IdMap();
-	std::cout << "E = create" << std::endl;
 	// extract the dynamic graph
 	(*g) = factory.CreateGraph(
 		f_path+id+"-topology", f_path+id+f_postfix, extension);
-	std::cout << "F = topo" << std::endl;
 	// update the registry with the new computed graph
 	GraphRegistry::_instance._SynchUpdate(id, g);
-	std::cout << "G = complete" << std::endl;
 }
 
 //================================PRIVATE=======================================
@@ -159,7 +150,6 @@ GraphRegistry::~GraphRegistry() noexcept
 void GraphRegistry::_SynchUpdate(const std::string& id, GraphPtr_IdMap * g)
 {
 	auto shared_graph = shared_ptr<GraphPtr_IdMap>(g, FS_destructor);
-		std::cout << "GR lock" << std::endl;
 	{
 	// <START> mutually exclusive region
 	std::unique_lock<std::shared_mutex> g_lock(path_finder::G_mutex_graph);

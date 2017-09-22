@@ -41,7 +41,10 @@ class ColoredInformedQueueMaker{
 		std::pair<NodeColored<State>*,  NodeCosts *>,
 		std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
 		NodeComparator<State, NodeCosts>>*
-	MakeQueue() const noexcept;
+	MakePriorityQueue(void) const noexcept;
+	std::queue<
+		std::pair<NodeColored<State>*,  NodeCosts *>>*
+	MakeQueue(void) const noexcept;
 	std::function<
 		void
 		(std::priority_queue<
@@ -49,6 +52,12 @@ class ColoredInformedQueueMaker{
 			std::vector<std::pair<NodeColored<State>*,  NodeCosts *>>,
 			NodeComparator<State, NodeCosts>
 			>*)
+		>
+	MakePriorityQueueDestructor(void) const noexcept;
+	std::function<
+		void
+		(std::queue<
+			std::pair<NodeColored<State>*,  NodeCosts *>>*)
 		>
 	MakeQueueDestructor(void) const noexcept;
 };

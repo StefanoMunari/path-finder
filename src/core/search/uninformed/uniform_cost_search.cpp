@@ -53,7 +53,6 @@ UniformCostSearch<State>::Search(
 	shared_ptr<GraphPtr_IdMap> dynamic_graph_,
 	const Problem<State>& problem)
 {
-			std::cout << "UNIFORM" << std::endl;
 	/* boost-property accessors */
 	IndexMap node_index =
 		boost::get(boost::vertex_index, *(static_graph_.first));

@@ -12,8 +12,8 @@
 #include "../solvable.h"
 #include "../../framework/problem/problem.h"
 #include "../../framework/data/node_colored.h"
-#include "../../framework/data/factory/colored_search_queue_maker.h"
 #include "../../framework/data/factory/colored_search_map_maker.h"
+#include "../../framework/data/factory/colored_informed_queue_maker.h"
 #include "../../framework/data/factory/colored_informed_map_maker.h"
 #include "../../utils/algorithm.h"
 #include "../../utils/boost_types.h"
@@ -38,7 +38,14 @@ template <typename State> class AStarSearch;
 /**
  * @brief  A* search on a graph.
  *
- * @pre use a consistent heuristic
+ * @pre use admissible and consistent heuristic
+ *
+ * Search for the optimal path on the input graph.
+ * Analysis (assuming that pre-conditions hold):
+ * - Complete: TRUE
+ * - Optimal: TRUE
+ * - Time: O(braching^depth)
+ * - Space: O(braching^depth)
 */
 template <typename State>
 class AStarSearch
