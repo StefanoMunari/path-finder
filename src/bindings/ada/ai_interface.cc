@@ -127,7 +127,6 @@ void Init(
 {
 try
 {
-	std::cout << FS_root_path_ << std::endl;
 	if(FS_root_path_ == NULL || FS_root_path_[0] == '\0')
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Init - environment variable unset");
