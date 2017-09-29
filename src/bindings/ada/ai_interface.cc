@@ -28,7 +28,7 @@ std::map<std::string, std::list<std::string>*>
 FS_path_map_ = std::map<std::string, std::list<std::string>*>();
 
 static
-char const * FS_root_path_ = getenv(PROJECT_ROOT);
+char const * FS_root_path_ = getenv("ADA_PROJECT_ROOT");
 
 int Get_Path_Size(char * pid_)
 {
@@ -127,12 +127,13 @@ void Init(
 {
 try
 {
-	if(FS_root_path_ == NULL)
+	std::cout << FS_root_path_ << std::endl;
+	if(FS_root_path_ == NULL || FS_root_path_[0] == '\0')
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Init - environment variable unset");
 
 	const string pid = string(pid_);
-	const string data_path = string(data_path_);
+	const string data_path = string(FS_root_path_) + string(data_path_);
 	const string f_name_prefix = string(f_name_prefix_);
 	const string f_extension = string(f_extension_);
 
