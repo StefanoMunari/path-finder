@@ -80,7 +80,7 @@ catch (const std::exception& exc)
 }
 }
 
-void Find(
+bool Find(
 	char * pid_,
 	char * source_,
 	char * destination_,
@@ -112,14 +112,16 @@ try
 		FS_path_map_.insert(pair<string, list<string>*>(pid, path));
 
 	// otherwise FS_path_map_ already contains a valid path => OK
+	return true;
 }
 catch (const std::exception& exc)
 {
 	std::cerr << exc.what() << std::endl;
+	return false;
 }
 }
 
-void Init(
+bool Init(
 	char * pid_,
 	char * data_path_,
 	char * f_name_prefix_,
@@ -142,14 +144,16 @@ try
 
 	AI * ai = new AI(data_path, f_name_prefix, f_extension);
 	FS_ai_map_.insert(pair<string, AI *>(pid, ai));
+	return true;
 }
 catch (const std::exception& exc)
 {
 	std::cerr << exc.what() << std::endl;
+	return false;
 }
 }
 
-void Finalize(){
+bool Finalize(){
 	/* free the map of AIs */
 	for(auto & element : FS_ai_map_)
 		delete element.second;
@@ -159,4 +163,5 @@ void Finalize(){
 	/* free the root_path variable */
 	if(FS_root_path_ != NULL)
 		free(const_cast<char *>(FS_root_path_));
+	return true;
 }
