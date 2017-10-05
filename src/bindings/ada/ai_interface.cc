@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include <utility>
+#include <atomic>
 #include <stdlib.h>
 #include <stdexcept>
 #include <iostream>
@@ -18,27 +19,53 @@ using std::map;
 using std::pair;
 using std::string;
 using std::vector;
-
+//////////////////////////////
+// FS : File Scoped variables
+//////////////////////////////
 static
 std::map<std::string, AI*>
 FS_ai_map_ = std::map<std::string, AI*>();
 
 static
-std::map<std::string, std::list<std::string>*>
-FS_path_map_ = std::map<std::string, std::list<std::string>*>();
-
-static
 char const * FS_root_path_ = getenv("ADA_PROJECT_ROOT");
 
-int Get_Path_Size(char * pid_)
+static
+std::atomic<ushort>
+FS_client_registry_index_ (0);
+
+static
+std::map<std::string, ushort>
+FS_key_to_index_ = std::map<std::string, ushort>();
+
+
+///////////////////////////////////////////
+//	Key_To_Index[type_idX+agent_idA] => path0
+//	Key_To_Index[type_idX+agent_idB] => path1
+//	....
+///////////////////////////////////////////
+static
+list<string> **
+FS_paths_registry_ = EMPTY;
+//////////////////////////////
+// File Scoped functions
+//////////////////////////////
+static
+const std::string Make_Key(const char * prefix, const char * postfix)
 {
-	const string pid = string(pid_);
+	return string(prefix)+string(postfix);
+}
+//////////////////////////////
+// Public functions
+//////////////////////////////
+int Get_Path_Size(char * type_id_, char * agent_id_)
+{
+	const string key = Make_Key(type_id_, agent_id_);
 try
 {
-	if(pid.empty())
+	if(FS_key_to_index_.count(key) == 0)
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Get_Path_Size- invalid argument");
-	return FS_path_map_[pid]->size();
+	return (*(FS_paths_registry_[FS_key_to_index_[key]])).size();
 }
 catch (const std::exception& exc)
 {
@@ -47,30 +74,36 @@ catch (const std::exception& exc)
 }
 }
 
-char ** Get_Path(char * pid_)
+char ** Get_Path(char * type_id_, char * agent_id_)
 {
 try
 {
-	string pid = string(pid_);
-	if(pid.empty())
+	const string type_id = string(type_id_);
+	const string agent_id = string(agent_id_);
+	const string key = Make_Key(type_id_, agent_id_);
+
+	if(type_id.empty() || agent_id.empty())
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Get_Path - invalid argument");
-	if(FS_path_map_.count(pid) == 0)
+	if(FS_key_to_index_.count(key) == 0)
 		throw std::invalid_argument(
-			"<Ada bindings>::AI_INTERFACE::Get_Path - no path for the request id : "+pid);
+			"<Ada bindings>::AI_INTERFACE::Get_Path - no path for the request type_id : "
+			+type_id+" and requested agent_id : "+agent_id);
 
 	char const ** path =
 		(char const **) malloc(
-			FS_path_map_[pid]->size() * sizeof(char const *));
-	int index = 0;
+			(*(FS_paths_registry_[FS_key_to_index_[key]])).size()
+			* sizeof(char const *));
+	int p_index = 0;
 
-	for(auto&& element : (*FS_path_map_[pid]))
+	for(auto&& element : (*(FS_paths_registry_[FS_key_to_index_[key]])))
 	{
-		path[index] =
+		path[p_index] =
 			(char const *) malloc(sizeof(char) * strlen(element.c_str()));
-		path[index] = element.c_str();
-		++index;
+		path[p_index] = element.c_str();
+		++p_index;
 	}
+
 	return const_cast<char **>(path);
 }
 catch (const std::exception& exc)
@@ -81,7 +114,8 @@ catch (const std::exception& exc)
 }
 
 bool Find(
-	char * pid_,
+	char * type_id_,
+	char * agent_id_,
 	char * source_,
 	char * destination_,
 	int algorithm_)
@@ -92,26 +126,31 @@ try
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - invalid algorithm");
 
-	const string pid = string(pid_);
+	const string type_id = string(type_id_);
+	const string key = Make_Key(type_id_, agent_id_);
 	const string source = string(source_);
 	const string destination = string(destination_);
 	SearchableType algorithm = SearchableType(algorithm_);
 
-	if(pid.empty() || source.empty() || destination.empty())
+	if(type_id.empty() || type_id == key || source.empty()
+		|| destination.empty())
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - arguments not specified");
 
 	list<string> * path =
-		FS_ai_map_[pid]->FindPath<string>(source, destination, algorithm);
+		FS_ai_map_[type_id]->FindPath<string>(source, destination, algorithm);
 
-	if(FS_path_map_.count(pid) == 0 && path == nullptr)
+	if(path == EMPTY)
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - path not found");
+	// remove the old path
+	if(FS_key_to_index_.count(key))
+		delete FS_paths_registry_[FS_key_to_index_[key]];
+	// path is already on the heap. Just copy the pointer to the heap and let
+	// the path pointer/variable go out of scope.
+	if(!(path == EMPTY))
+		FS_paths_registry_[FS_key_to_index_[key]] = path;
 
-	if(!(path == nullptr))
-		FS_path_map_.insert(pair<string, list<string>*>(pid, path));
-
-	// otherwise FS_path_map_ already contains a valid path => OK
 	return true;
 }
 catch (const std::exception& exc)
@@ -121,29 +160,47 @@ catch (const std::exception& exc)
 }
 }
 
+bool Set_Clients_Limit(int clients_limit)
+{
+	if(FS_paths_registry_ == EMPTY)
+		FS_paths_registry_ = new list<string> *[clients_limit];
+	return true;
+}
+
 bool Init(
-	char * pid_,
+	char * type_id_,
+	char * agent_id_,
 	char * data_path_,
 	char * f_name_prefix_,
 	char * f_extension_)
 {
 try
 {
-	if(FS_root_path_ == NULL || FS_root_path_[0] == '\0')
+	if(FS_root_path_ == EMPTY || FS_root_path_[0] == '\0')
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Init - environment variable unset");
 
-	const string pid = string(pid_);
+	const string type_id = string(type_id_);
+	const string key = Make_Key(type_id_, agent_id_);
 	const string data_path = string(FS_root_path_) + string(data_path_);
 	const string f_name_prefix = string(f_name_prefix_);
 	const string f_extension = string(f_extension_);
 
-	if(data_path.empty() || f_name_prefix.empty() || f_extension.empty())
+	if(type_id.empty() || data_path.empty() || f_name_prefix.empty()
+		|| f_extension.empty())
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Init - arguments not specified");
 
 	AI * ai = new AI(data_path, f_name_prefix, f_extension);
-	FS_ai_map_.insert(pair<string, AI *>(pid, ai));
+	// one AI for each type of agent
+	FS_ai_map_.insert(pair<string, AI *>(type_id, ai));
+	// one path for each new agent
+	// atomic op: returns the previous value and increment the FS_index
+	const int client_index =
+		FS_client_registry_index_.fetch_add(1, std::memory_order_relaxed);
+	// map the key to the array index of the new client
+	// @see FS_paths_registry_
+	FS_key_to_index_.insert(pair<string, ushort>(key, client_index));
 	return true;
 }
 catch (const std::exception& exc)
@@ -154,14 +211,19 @@ catch (const std::exception& exc)
 }
 
 bool Finalize(){
-	/* free the map of AIs */
+	// free the map of AIs
 	for(auto & element : FS_ai_map_)
 		delete element.second;
-	/* free the map of paths */
-	for(auto & element : FS_path_map_)
-		delete element.second;
-	/* free the root_path variable */
-	if(FS_root_path_ != NULL)
+	// free the map of residual paths
+	for(auto & element : FS_key_to_index_)
+	{
+		if(FS_paths_registry_[element.second])
+			delete FS_paths_registry_[element.second];
+	}
+	delete FS_paths_registry_;
+	// free the root_path variable
+	if(FS_root_path_ != EMPTY)
 		free(const_cast<char *>(FS_root_path_));
+	// TODO: Finalize the Observer
 	return true;
 }
