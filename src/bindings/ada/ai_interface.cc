@@ -104,6 +104,8 @@ try
 		++p_index;
 	}
 
+	delete FS_paths_registry_[FS_key_to_index_[key]];
+
 	return const_cast<char **>(path);
 }
 catch (const std::exception& exc)
@@ -143,13 +145,9 @@ try
 	if(path == EMPTY)
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - path not found");
-	// remove the old path
-	if(FS_key_to_index_.count(key))
-		delete FS_paths_registry_[FS_key_to_index_[key]];
 	// path is already on the heap. Just copy the pointer to the heap and let
 	// the path pointer/variable go out of scope.
-	if(!(path == EMPTY))
-		FS_paths_registry_[FS_key_to_index_[key]] = path;
+	FS_paths_registry_[FS_key_to_index_[key]] = path;
 
 	return true;
 }
