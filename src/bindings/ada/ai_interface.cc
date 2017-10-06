@@ -94,8 +94,8 @@ try
 		(char const **) malloc(
 			(*(FS_paths_registry_[FS_key_to_index_[key]])).size()
 			* sizeof(char const *));
-	int p_index = 0;
 
+	int p_index = 0;
 	for(auto&& element : (*(FS_paths_registry_[FS_key_to_index_[key]])))
 	{
 		path[p_index] =
@@ -122,6 +122,7 @@ bool Find(
 {
 try
 {
+	// check if the algorithm has a valid identifier
 	if(algorithm_ < 0 || algorithm_ > 2)
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - invalid algorithm");
@@ -132,7 +133,8 @@ try
 	const string destination = string(destination_);
 	SearchableType algorithm = SearchableType(algorithm_);
 
-	if(type_id.empty() || type_id == key || source.empty()
+	// check if arguments are valid
+	if(type_id.empty() || agent_id_ == EMPTY || source.empty()
 		|| destination.empty())
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - arguments not specified");
@@ -140,16 +142,24 @@ try
 	list<string> * path =
 		FS_ai_map_[type_id]->FindPath<string>(source, destination, algorithm);
 
+	// check if a path has been found
 	if(path == EMPTY)
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Find - path not found");
-	// remove the old path
-	if(FS_key_to_index_.count(key))
+
+	// remove the old path entry
+	if(FS_paths_registry_[FS_key_to_index_[key]])
+	{
+		// remove the old path entry
 		delete FS_paths_registry_[FS_key_to_index_[key]];
+		// set the path entry to EMPTY
+		FS_paths_registry_[FS_key_to_index_[key]] = EMPTY;
+	}
+
 	// path is already on the heap. Just copy the pointer to the heap and let
 	// the path pointer/variable go out of scope.
-	if(!(path == EMPTY))
-		FS_paths_registry_[FS_key_to_index_[key]] = path;
+	// NOTE: if this program point is reached then the path is not empty
+	FS_paths_registry_[FS_key_to_index_[key]] = path;
 
 	return true;
 }
@@ -163,7 +173,10 @@ catch (const std::exception& exc)
 bool Set_Clients_Limit(int clients_limit)
 {
 	if(FS_paths_registry_ == EMPTY)
+	{
 		FS_paths_registry_ = new list<string> *[clients_limit];
+		FS_paths_registry_[clients_limit] = { EMPTY };
+	}
 	return true;
 }
 
@@ -186,8 +199,8 @@ try
 	const string f_name_prefix = string(f_name_prefix_);
 	const string f_extension = string(f_extension_);
 
-	if(type_id.empty() || data_path.empty() || f_name_prefix.empty()
-		|| f_extension.empty())
+	if(type_id.empty() || agent_id_ == EMPTY || data_path.empty()
+		|| f_name_prefix.empty() || f_extension.empty())
 		throw std::invalid_argument(
 			"<Ada bindings>::AI_INTERFACE::Init - arguments not specified");
 
@@ -198,9 +211,12 @@ try
 	// atomic op: returns the previous value and increment the FS_index
 	const int client_index =
 		FS_client_registry_index_.fetch_add(1, std::memory_order_relaxed);
-	// map the key to the array index of the new client
+	// map the key to the array indexes of the new client
 	// @see FS_paths_registry_
 	FS_key_to_index_.insert(pair<string, ushort>(key, client_index));
+	// set the current path to EMPTY - not yet computed
+	FS_paths_registry_[FS_key_to_index_[key]] = EMPTY;
+
 	return true;
 }
 catch (const std::exception& exc)
