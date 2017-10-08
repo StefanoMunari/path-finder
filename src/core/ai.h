@@ -29,7 +29,7 @@ class AI{
 				const std::string& source,
 				const std::string& destination,
 				SearchableType algorithm)
-				const noexcept;
+				const;
 	public:
 		#ifdef DEBUG
 		void Print(void) const noexcept;

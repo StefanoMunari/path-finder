@@ -25,7 +25,7 @@ AI::AI(
 		f_name_prefix, path+f_name_prefix, f_extension);
    }
    catch (const std::exception& exc)
-   {
+   {// propagate exception
       throw;
    }
 

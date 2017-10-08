@@ -3,8 +3,10 @@ list<State>* AI::FindPath(
 	const string& source,
 	const string& destination,
 	SearchableType algorithm)
-	const noexcept
+	const
 {
+	try
+	{
 	auto _find =
 		[this, &source, &destination](Searchable<State> * finder)
 		{
@@ -26,4 +28,9 @@ list<State>* AI::FindPath(
 		};
 	return
 		_find(SearchableFactory::MakeSearchable<State>(algorithm));
+	}
+	catch (const std::exception& exc)
+	{// propagate exception
+		throw;
+	}
 }

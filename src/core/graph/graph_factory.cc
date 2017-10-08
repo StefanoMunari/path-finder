@@ -40,7 +40,7 @@ GraphFactory::CreateGraph(
 	return graph;
 	}
 	catch (const std::exception& exc)
-	{
+	{// propagate exception
 		throw;
 	}
 }

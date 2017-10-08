@@ -78,7 +78,7 @@ void GraphRegistry::InsertGraph(
 			std::pair<string, shared_ptr<GraphPtr_IdMap>>(id, shared_graph));
 		}
 		catch (const std::exception& exc)
-		{
+		{// propagate exception
 			throw;
 		}
 	}
