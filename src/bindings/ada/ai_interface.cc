@@ -226,10 +226,14 @@ catch (const std::exception& exc)
 }
 }
 
-bool Finalize(){
+bool Finalize()
+{
 	// free the map of AIs
 	for(auto & element : FS_ai_map_)
+	{
+		element.second->Finalize();
 		delete element.second;
+	}
 	// free the map of residual paths
 	for(auto & element : FS_key_to_index_)
 	{
@@ -240,6 +244,5 @@ bool Finalize(){
 	// free the root_path variable
 	if(FS_root_path_ != EMPTY)
 		free(const_cast<char *>(FS_root_path_));
-	// TODO: Finalize the Observer
 	return true;
 }
