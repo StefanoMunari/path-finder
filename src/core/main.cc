@@ -240,7 +240,10 @@ try
 	delete topology;
 	delete costs;
 
-	GraphObserver::Instance().Finalize();
+	ai0.Finalize();
+	ai1.Finalize();
+	ai2.Finalize();
+
 	return 0;
 }
 catch (const std::exception& exc)

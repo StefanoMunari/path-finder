@@ -14,6 +14,8 @@ using std::string;
 namespace path_finder
 {
 
+bool AI::_observer_state = 0;
+
 AI::AI(
 	const string& path, const string& f_name_prefix, const string& f_extension)
 {
@@ -30,6 +32,16 @@ AI::AI(
    }
 
 	GraphObserver::Instance().Observe(path);
+   AI::_observer_state  = 1;
+}
+
+void AI::Finalize() noexcept
+{
+   if(AI::_observer_state  == 1)
+   {
+      GraphObserver::Instance().Finalize();
+      AI::_observer_state  = 0;
+   }
 }
 
 #ifdef DEBUG
