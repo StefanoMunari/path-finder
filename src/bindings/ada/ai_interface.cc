@@ -241,8 +241,5 @@ bool Finalize()
 			delete FS_paths_registry_[element.second];
 	}
 	delete FS_paths_registry_;
-	// free the root_path variable
-	if(FS_root_path_ != EMPTY)
-		free(const_cast<char *>(FS_root_path_));
 	return true;
 }
