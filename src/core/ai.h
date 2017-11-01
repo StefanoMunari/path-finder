@@ -24,6 +24,7 @@ class AI{
 		AI() = delete;
 		AI(const string&, const string&, const string&);
 		~AI() noexcept {};
+		void Finalize() noexcept;
 		template<typename State>
 		std::list<State>* FindPath(
 				const std::string& source,
@@ -42,6 +43,8 @@ class AI{
 		//	a pedestrian will instantiate an AI with sidewalk category.
 		//	a car will instantiate an AI with a street category, etc.
 		std::string _category;
+		// Observer state (0 = off, 1 = on)
+		static bool _observer_state;
 };
 // import template implementation
 #include "ai.cpp"
